@@ -4,7 +4,7 @@
   "private": true,
   "description": "THIỀN VIÊN – Không gian an trú (Digital Meditation Sanctuary)",
   "scripts": {
-    "start": "node backend/dist/src/main",
+    "start": "node start.js",
     "postinstall": "npm --prefix backend install --omit=dev",
     "build": "npm --prefix backend run build && npm --prefix frontend run build",
     "dev:backend": "npm --prefix backend run start:dev",
@@ -23,6 +23,7 @@
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/websockets": "^10.4.15",
     "@prisma/client": "^5.22.0",
+    "prisma": "^5.22.0",
     "@types/jpeg-js": "^0.3.0",
     "@types/pngjs": "^6.0.5",
     "class-transformer": "^0.5.1",
