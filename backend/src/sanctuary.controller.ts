@@ -31,6 +31,22 @@ function getProjectRoot(): string {
   return process.cwd();
 }
 
+function cleanVietnameseFilename(rawName: string): string {
+  const ext = path.extname(rawName) || '.mp3';
+  const base = path.basename(rawName, ext);
+
+  const cleanBase = base
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritical marks
+    .replace(/[đĐ]/g, (m) => (m === 'đ' ? 'd' : 'D'))
+    .replace(/[^a-zA-Z0-9_-]+/g, '-') // Convert non-alphanumeric to dashes
+    .replace(/^-+|-+$/g, '') // Trim dashes
+    .replace(/-{2,}/g, '-'); // Deduplicate multiple dashes
+
+  const timestamp = Date.now().toString().slice(-6);
+  return `${cleanBase || 'audio'}_${timestamp}${ext.toLowerCase()}`;
+}
+
 function autoMatteImageBuffer(buffer: Buffer, originalExt: string): { buffer: Buffer; ext: string } {
   try {
     const isJpg = originalExt.toLowerCase() === '.jpg' || originalExt.toLowerCase() === '.jpeg';
@@ -336,7 +352,11 @@ export class SanctuaryController {
   }
 
   @Post('admin/audio/upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: 500 * 1024 * 1024 }, // 500 MB limit
+    })
+  )
   uploadAudioFile(
     @UploadedFile() file: Express.Multer.File,
     @Body()
@@ -350,7 +370,7 @@ export class SanctuaryController {
   ) {
     let fileUrl = '';
     if (file) {
-      const safeName = `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const safeName = cleanVietnameseFilename(file.originalname);
 
       const root = getProjectRoot();
 
@@ -430,7 +450,11 @@ export class SanctuaryController {
   }
 
   @Post('admin/characters/upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
+    })
+  )
   uploadCharacterImage(
     @UploadedFile() file: Express.Multer.File,
     @Body()

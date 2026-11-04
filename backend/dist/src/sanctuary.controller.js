@@ -30,6 +30,19 @@ function getProjectRoot() {
     }
     return process.cwd();
 }
+function cleanVietnameseFilename(rawName) {
+    const ext = path.extname(rawName) || '.mp3';
+    const base = path.basename(rawName, ext);
+    const cleanBase = base
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[đĐ]/g, (m) => (m === 'đ' ? 'd' : 'D'))
+        .replace(/[^a-zA-Z0-9_-]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .replace(/-{2,}/g, '-');
+    const timestamp = Date.now().toString().slice(-6);
+    return `${cleanBase || 'audio'}_${timestamp}${ext.toLowerCase()}`;
+}
 function autoMatteImageBuffer(buffer, originalExt) {
     try {
         const isJpg = originalExt.toLowerCase() === '.jpg' || originalExt.toLowerCase() === '.jpeg';
@@ -242,7 +255,7 @@ let SanctuaryController = class SanctuaryController {
     uploadAudioFile(file, body) {
         let fileUrl = '';
         if (file) {
-            const safeName = `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+            const safeName = cleanVietnameseFilename(file.originalname);
             const root = getProjectRoot();
             const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
             if (!fs.existsSync(distAssetDir)) {
@@ -468,7 +481,9 @@ __decorate([
 ], SanctuaryController.prototype, "updateAdminProfile", null);
 __decorate([
     (0, common_1.Post)('admin/audio/upload'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        limits: { fileSize: 500 * 1024 * 1024 },
+    })),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -512,7 +527,9 @@ __decorate([
 ], SanctuaryController.prototype, "updateSettings", null);
 __decorate([
     (0, common_1.Post)('admin/characters/upload'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        limits: { fileSize: 50 * 1024 * 1024 },
+    })),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

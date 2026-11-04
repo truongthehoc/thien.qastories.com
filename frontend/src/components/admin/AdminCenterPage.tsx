@@ -1445,56 +1445,106 @@ export const AdminCenterPage: React.FC = () => {
                 </form>
 
                 <div className="divide-y divide-[#d9a75a]/15">
-                  {data.audioTracks.map((track) => (
-                    <div
-                      key={track.id}
-                      className="py-3 flex items-center justify-between text-xs"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-[#fff6dc] font-serif">{track.title}</p>
-                          {track.isAmbientBg && (
-                            <span className="px-2 py-0.5 rounded-full bg-[#d9a75a]/25 text-[#ffe3a3] border border-[#d9a75a]/45 text-[10px] font-bold">
-                              ★ Nhạc nền chính (Luôn phát)
+                  {data.audioTracks.map((track) => {
+                    const mins = Math.floor(track.durationSeconds / 60);
+                    const secs = track.durationSeconds % 60;
+                    const durationStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+                    const categoryLabels: Record<string, string> = {
+                      NHAC_THIEN: 'Nhạc thiền',
+                      TIENG_SUOI: 'Tiếng suối',
+                      TIENG_MUA: 'Tiếng mưa',
+                      TIENG_CHUONG: 'Tiếng chuông',
+                      TUNG_KINH: 'Tụng kinh',
+                    };
+                    const categoryName = categoryLabels[track.category] || track.category;
+                    const rawFileName = track.fileUrl ? track.fileUrl.split('/').pop() : '';
+
+                    return (
+                      <div
+                        key={track.id}
+                        className="py-2.5 px-1.5 rounded-lg hover:bg-white/[0.02] flex items-center justify-between gap-3 text-xs transition-colors"
+                      >
+                        {/* Cột trái: Tên bài & Metadata thu gọn trên 1 khối gọn gàng */}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p
+                              className="font-semibold text-[#fff6dc] font-serif truncate max-w-[180px] sm:max-w-[280px]"
+                              title={track.title}
+                            >
+                              {track.title}
+                            </p>
+                            {track.isAmbientBg && (
+                              <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#d9a75a]/25 text-[#ffd074] border border-[#d9a75a]/40">
+                                ★ Nhạc nền
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-[11px] text-[#8ea885] mt-0.5 flex-wrap">
+                            <span className="px-1.5 py-0.5 rounded bg-black/40 border border-white/5 text-[10px] text-[#c2d4bf]">
+                              {categoryName}
                             </span>
-                          )}
+                            <span>•</span>
+                            <span>{durationStr} ({track.durationSeconds}s)</span>
+                            {rawFileName && (
+                              <>
+                                <span>•</span>
+                                <a
+                                  href={track.fileUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-[#d9a75a]/75 hover:text-[#ffd074] hover:underline truncate max-w-[150px] text-[10px] font-mono"
+                                  title={`Tải / Nghe thử: ${rawFileName}`}
+                                >
+                                  {rawFileName}
+                                </a>
+                              </>
+                            )}
+                          </div>
                         </div>
-                        <p className="text-[11px] text-[#8ea885] mt-0.5">
-                          Phân loại: {track.category} • {track.durationSeconds} giây
-                          {track.fileUrl ? ` • File URL: ${track.fileUrl}` : ''}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {!track.isAmbientBg && (
+
+                        {/* Cột phải: Các nút thao tác thẳng hàng trên 1 dòng duy nhất */}
+                        <div className="shrink-0 flex items-center gap-1.5">
+                          {/* Nút Nhạc nền (Toggle) */}
                           <button
                             type="button"
                             onClick={() => handleToggleTrackAmbient(track)}
-                            className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#0a140d] border border-[#d9a75a]/30 text-[#ffe3a3] hover:bg-[#d9a75a]/15 transition-colors cursor-pointer"
+                            title={track.isAmbientBg ? 'Đang là nhạc nền chính (nhấp để hủy)' : 'Nhấp để đặt làm nhạc nền chính'}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer flex items-center gap-1 ${
+                              track.isAmbientBg
+                                ? 'bg-[#d9a75a]/30 border border-[#d9a75a] text-[#ffe3a3] shadow-[0_0_8px_rgba(217,167,90,0.3)] font-semibold'
+                                : 'bg-[#0a140d] border border-[#d9a75a]/30 text-[#c2d4bf] hover:bg-[#d9a75a]/20 hover:text-[#ffe3a3]'
+                            }`}
                           >
-                            Đặt làm nhạc nền
+                            <span>★</span>
+                            <span className="hidden sm:inline">{track.isAmbientBg ? 'Nhạc nền' : 'Đặt nền'}</span>
                           </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleToggleTrackEnabled(track)}
-                          className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${
-                            track.isEnabled
-                              ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-300'
-                              : 'bg-stone-900 border border-stone-700 text-stone-400'
-                          }`}
-                        >
-                          {track.isEnabled ? 'Đang bật' : 'Đã tắt'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteTrack(track.id)}
-                          className="p-1.5 rounded-full text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+
+                          {/* Nút Trạng thái Bật/Tắt */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleTrackEnabled(track)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${
+                              track.isEnabled
+                                ? 'bg-emerald-950/70 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-900/80'
+                                : 'bg-stone-900 border border-stone-700 text-stone-400 hover:bg-stone-800'
+                            }`}
+                          >
+                            {track.isEnabled ? 'Đang bật' : 'Đã tắt'}
+                          </button>
+
+                          {/* Nút Xóa */}
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteTrack(track.id)}
+                            title="Xóa bài nhạc"
+                            className="p-1.5 rounded-full text-red-400/80 hover:text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
