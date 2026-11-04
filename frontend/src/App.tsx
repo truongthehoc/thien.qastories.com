@@ -84,7 +84,7 @@ const SanctuaryMainView: React.FC = () => {
             } catch {}
           }
           // Sync with backend to reconnect user and restore up-to-date points & status
-          apiRequest<{ user: UserProfile }>('/api/sessions/enter', {
+          apiRequest<{ user: UserProfile; allocatedSeat?: SanctuarySeat }>('/api/sessions/enter', {
             method: 'POST',
             body: JSON.stringify({
               displayName: saved.displayName,
@@ -97,6 +97,9 @@ const SanctuaryMainView: React.FC = () => {
                 setUser(res.user);
                 localStorage.setItem('thien_vien_user_data', JSON.stringify(res.user));
                 refreshUserProfile(res.user.id);
+              }
+              if (res.allocatedSeat) {
+                updateSingleSeat(res.allocatedSeat);
               }
             })
             .catch(() => {
@@ -161,6 +164,27 @@ const SanctuaryMainView: React.FC = () => {
     };
   }, [user?.id]);
 
+  // Real-time synchronization polling backup (guarantees presence even across proxy drops)
+  useEffect(() => {
+    const syncInterval = setInterval(async () => {
+      try {
+        const stateRes = await apiRequest<{
+          seats: SanctuarySeat[];
+          stats: any;
+        }>('/api/sanctuary/state');
+        if (stateRes?.seats) {
+          setSeats(stateRes.seats);
+        }
+        if (stateRes?.stats) {
+          setStats(stateRes.stats);
+        }
+      } catch {
+        // network silent
+      }
+    }, 4000);
+    return () => clearInterval(syncInterval);
+  }, []);
+
   // Bowing Cooldown Timer
   useEffect(() => {
     const timer = setInterval(() => {
@@ -207,7 +231,7 @@ const SanctuaryMainView: React.FC = () => {
 
   // Handle Enter Sanctuary (Welcome Screen)
   const handleEnterSanctuary = async (displayName: string, avatarStyle: string) => {
-    const res = await apiRequest<{ user: UserProfile }>('/api/sessions/enter', {
+    const res = await apiRequest<{ user: UserProfile; allocatedSeat?: SanctuarySeat }>('/api/sessions/enter', {
       method: 'POST',
       body: JSON.stringify({
         displayName,
@@ -216,6 +240,9 @@ const SanctuaryMainView: React.FC = () => {
       }),
     });
     setUser(res.user);
+    if (res.allocatedSeat) {
+      updateSingleSeat(res.allocatedSeat);
+    }
     localStorage.setItem('thien_vien_user_data', JSON.stringify(res.user));
     soundEngine.playMindfulnessBell(0.35);
     showNotification(

@@ -21,6 +21,11 @@ class SanctuarySocketService {
     this.socket = io('/', {
       query: userId ? { userId } : {},
       transports: ['websocket', 'polling'],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 10000,
     });
 
     this.socket.on('sanctuary:init', (payload) => {

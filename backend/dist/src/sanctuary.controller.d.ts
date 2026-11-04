@@ -63,6 +63,7 @@ export declare class SanctuaryController {
         existingUserId?: string;
     }): Promise<{
         user: import("./sanctuary.service").UserRecord;
+        allocatedSeat: import("./sanctuary.service").SeatRecord;
     }>;
     getUserProfile(userId: string): {
         user: import("./sanctuary.service").UserRecord;

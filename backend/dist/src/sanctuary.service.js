@@ -512,9 +512,40 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
                 catch {
                 }
             }
+            const seatAllocation = this.autoPlaceUserOnSeat(user);
             this.saveToDisk();
-            return user;
+            return { user, allocatedSeat: seatAllocation.seat };
         });
+    }
+    autoPlaceUserOnSeat(user) {
+        const existing = this.state.seats.find((s) => s.isEnabled && s.occupant?.userId === user.id);
+        if (existing) {
+            if (existing.occupant) {
+                existing.occupant.displayName = user.displayName;
+                existing.occupant.avatarStyle = user.avatarStyle || existing.occupant.avatarStyle;
+            }
+            return { seat: existing, isNew: false };
+        }
+        const emptySeats = this.state.seats.filter((s) => s.isEnabled && (s.status === 'EMPTY' || !s.occupant));
+        if (emptySeats.length === 0) {
+            return { seat: this.state.seats[0], isNew: false };
+        }
+        const seat = emptySeats[Math.floor(Math.random() * emptySeats.length)];
+        const now = Date.now();
+        const nowIso = new Date(now).toISOString();
+        const sessionId = (0, uuid_1.v4)();
+        seat.status = 'MEDITATING';
+        seat.occupant = {
+            userId: user.id,
+            displayName: user.displayName,
+            avatarStyle: user.avatarStyle,
+            activityType: 'MEDITATING',
+            targetMinutes: 15,
+            startedAt: nowIso,
+            expectedEndAt: new Date(now + 15 * 60 * 1000).toISOString(),
+            sessionId,
+        };
+        return { seat, isNew: true };
     }
     async occupySeatForActivity(params) {
         return this.runInTransaction(async () => {

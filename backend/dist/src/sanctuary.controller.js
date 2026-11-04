@@ -167,9 +167,12 @@ let SanctuaryController = class SanctuaryController {
         return { announcements: this.sanctuaryService.getActiveAnnouncements() };
     }
     async enterSanctuary(body) {
-        const user = await this.sanctuaryService.enterSanctuary(body.displayName, body.avatarStyle || 'monastic_brown', body.existingUserId);
+        const result = await this.sanctuaryService.enterSanctuary(body.displayName, body.avatarStyle || 'monastic_brown', body.existingUserId);
+        if (result.allocatedSeat) {
+            this.gateway.broadcastSeatUpdate(result.allocatedSeat);
+        }
         this.gateway.broadcastStats();
-        return { user };
+        return result;
     }
     getUserProfile(userId) {
         return this.sanctuaryService.getUserDetails(userId);

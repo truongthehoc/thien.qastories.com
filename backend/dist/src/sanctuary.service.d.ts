@@ -181,7 +181,14 @@ export declare class SanctuaryService implements OnModuleInit {
     private loadFromDisk;
     saveToDisk(): void;
     private logActivity;
-    enterSanctuary(displayName: string, avatarStyle: string, existingUserId?: string): Promise<UserRecord>;
+    enterSanctuary(displayName: string, avatarStyle: string, existingUserId?: string): Promise<{
+        user: UserRecord;
+        allocatedSeat: SeatRecord;
+    }>;
+    autoPlaceUserOnSeat(user: UserRecord): {
+        seat: SeatRecord;
+        isNew: boolean;
+    };
     occupySeatForActivity(params: {
         userId: string;
         seatId?: number;
