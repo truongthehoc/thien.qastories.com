@@ -12,7 +12,7 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 3005;
-  await app.listen(port);
-  logger.log(`THIỀN VIÊN Backend & Socket.IO Server running on http://localhost:${port}`);
+  await app.listen(port, '0.0.0.0');
+  logger.log(`THIỀN VIÊN Backend & Socket.IO Server running on http://0.0.0.0:${port}`);
 }
 bootstrap();

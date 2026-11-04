@@ -2,29 +2,38 @@ const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-console.log('[ThienVien] Initializing Digital Sanctuary Server...');
+console.log('====================================================');
+console.log('[ThienVien] Starting Digital Sanctuary Production App');
+console.log('Node version:', process.version);
+console.log('Working directory:', __dirname);
+console.log('====================================================');
 
-// 1. Ensure Prisma client is generated
+// 1. Attempt Prisma generation if schema exists
 try {
   const schemaPath = path.join(__dirname, 'backend', 'prisma', 'schema.prisma');
   if (fs.existsSync(schemaPath)) {
-    console.log('[ThienVien] Generating Prisma client...');
-    execSync(`npx --yes prisma@5.22.0 generate --schema="${schemaPath}"`, {
-      stdio: 'inherit',
-      cwd: __dirname,
-    });
-    console.log('[ThienVien] Prisma client generated successfully.');
+    console.log('[ThienVien] Attempting Prisma client generation...');
+    const prismaCliLocal = path.join(__dirname, 'node_modules', 'prisma', 'build', 'index.js');
+    if (fs.existsSync(prismaCliLocal)) {
+      execSync(`"${process.execPath}" "${prismaCliLocal}" generate --schema="${schemaPath}"`, {
+        stdio: 'inherit',
+        cwd: __dirname,
+      });
+      console.log('[ThienVien] Local Prisma client generated successfully.');
+    } else {
+      console.log('[ThienVien] Prisma binary not in root node_modules, falling back to safe JSON mirror.');
+    }
   }
 } catch (err) {
-  console.warn('[ThienVien] Prisma generation notice (fallback to JSON mirror):', err.message);
+  console.warn('[ThienVien] Prisma generator notice (safe fallback to JSON mirror active):', err.message);
 }
 
-// 2. Launch production server
-console.log('[ThienVien] Starting NestJS production application...');
+// 2. Launch application
+console.log('[ThienVien] Launching NestJS backend on port 3005...');
 const mainPath = path.join(__dirname, 'backend', 'dist', 'src', 'main.js');
 if (fs.existsSync(mainPath)) {
   require(mainPath);
 } else {
-  console.error('[ThienVien] ERROR: backend/dist/src/main.js not found!');
+  console.error('[ThienVien] FATAL: backend/dist/src/main.js not found!');
   process.exit(1);
 }
