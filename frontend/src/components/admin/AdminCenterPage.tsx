@@ -41,6 +41,7 @@ import {
   UserCheck,
   ShieldCheck,
   UserCog,
+  Loader2,
 } from 'lucide-react';
 
 interface AdminDashboardData {
@@ -160,6 +161,18 @@ export const AdminCenterPage: React.FC = () => {
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+
+  // Audio Upload Progress State
+  const [audioUploadProgress, setAudioUploadProgress] = useState<number | null>(null);
+  const [isUploadingAudio, setIsUploadingAudio] = useState(false);
+  const [uploadBytesInfo, setUploadBytesInfo] = useState<{ loaded: number; total: number } | null>(null);
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
 
   // Admin Authentication State
   const [adminToken, setAdminToken] = useState<string | null>(() =>
@@ -374,6 +387,7 @@ export const AdminCenterPage: React.FC = () => {
       showToast('Vui lòng chọn file MP3 hoặc nhập tên bài nhạc');
       return;
     }
+    if (isUploadingAudio) return;
 
     const formData = new FormData();
     if (selectedMp3File) {
@@ -385,16 +399,61 @@ export const AdminCenterPage: React.FC = () => {
     formData.append('durationSeconds', trackDuration);
     formData.append('isAmbientBg', String(trackIsAmbient));
 
-    const res = await fetch('/api/admin/audio/upload', {
-      method: 'POST',
-      body: formData,
-    });
-    if (res.ok) {
+    setIsUploadingAudio(true);
+    setAudioUploadProgress(0);
+    setUploadBytesInfo(null);
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/admin/audio/upload');
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+            setAudioUploadProgress(percent);
+            setUploadBytesInfo({ loaded: event.loaded, total: event.total });
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve();
+          } else {
+            let errorMsg = 'Tải file âm thanh thất bại';
+            try {
+              const resJson = JSON.parse(xhr.responseText);
+              if (resJson.message) {
+                errorMsg = Array.isArray(resJson.message) ? resJson.message.join(', ') : resJson.message;
+              }
+            } catch {
+              if (xhr.responseText) errorMsg = xhr.responseText;
+            }
+            reject(new Error(errorMsg));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error('Lỗi kết nối mạng khi tải file âm thanh lên máy chủ'));
+        };
+
+        xhr.send(formData);
+      });
+
       setTrackTitle('');
       setTrackDesc('');
       setSelectedMp3File(null);
-      showToast('Đã lưu âm thanh vào thư viện Thiền Viên');
+      setAudioUploadProgress(100);
+      showToast('Đã lưu âm thanh vào thư viện Thiền Viện!');
       fetchDashboard();
+    } catch (err: any) {
+      showToast(err.message || 'Lỗi tải âm thanh');
+    } finally {
+      setTimeout(() => {
+        setIsUploadingAudio(false);
+        setAudioUploadProgress(null);
+        setUploadBytesInfo(null);
+      }, 1500);
     }
   };
 
@@ -1272,10 +1331,45 @@ export const AdminCenterPage: React.FC = () => {
                     <input
                       type="file"
                       accept="audio/mp3,audio/*"
+                      disabled={isUploadingAudio}
                       onChange={(e) => handleMp3FileSelected(e.target.files?.[0] || null)}
-                      className="w-full text-xs text-[#c2d4bf] file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#d9a75a]/20 file:text-[#ffe3a3] hover:file:bg-[#d9a75a]/30 transition-all cursor-pointer"
+                      className="w-full text-xs text-[#c2d4bf] file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#d9a75a]/20 file:text-[#ffe3a3] hover:file:bg-[#d9a75a]/30 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
+
+                  {/* Thanh tiến độ Upload thời gian thực */}
+                  {isUploadingAudio && audioUploadProgress !== null && (
+                    <div className="p-3.5 rounded-xl bg-[#09170e] border border-[#d9a75a]/40 space-y-2 shadow-inner">
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 text-[#d9a75a] animate-spin shrink-0" />
+                          <span className="font-semibold text-[#ffe3a3]">
+                            {audioUploadProgress < 100
+                              ? 'Đang truyền file âm thanh lên máy chủ...'
+                              : 'Đã truyền xong 100%! Đang xử lý & lưu trữ...'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-[11px] font-mono">
+                          {uploadBytesInfo && (
+                            <span className="text-[#a8c2a3]">
+                              {formatFileSize(uploadBytesInfo.loaded)} / {formatFileSize(uploadBytesInfo.total)}
+                            </span>
+                          )}
+                          <span className="font-bold text-[#ffd074] px-2 py-0.5 rounded bg-[#d9a75a]/25 border border-[#d9a75a]/35">
+                            {audioUploadProgress}%
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Animated Progress Bar */}
+                      <div className="w-full h-2.5 bg-[#040805] rounded-full overflow-hidden border border-[#d9a75a]/30 p-0.5">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-[#b8863b] via-[#f59e0b] to-[#ffe3a3] transition-all duration-200 ease-out shadow-[0_0_12px_rgba(245,158,11,0.6)]"
+                          style={{ width: `${Math.max(4, audioUploadProgress)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
@@ -1332,10 +1426,20 @@ export const AdminCenterPage: React.FC = () => {
                   <div className="flex items-center justify-end pt-1">
                     <button
                       type="submit"
-                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#b8863b] via-[#d9a75a] to-[#b8863b] text-[#111d13] font-bold text-xs shadow-[0_4px_16px_rgba(217,167,90,0.35)] hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer"
+                      disabled={isUploadingAudio}
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#b8863b] via-[#d9a75a] to-[#b8863b] text-[#111d13] font-bold text-xs shadow-[0_4px_16px_rgba(217,167,90,0.35)] hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>Lưu bài nhạc vào thư viện</span>
+                      {isUploadingAudio ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Đang tải lên ({audioUploadProgress ?? 0}%)...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Lưu bài nhạc vào thư viện</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>
