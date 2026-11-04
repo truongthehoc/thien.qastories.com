@@ -50,11 +50,14 @@ let SanctuaryGateway = class SanctuaryGateway {
     async handleDisconnect(client) {
         const disconnectedUserId = this.sanctuaryService.removeSocket(client.id);
         if (disconnectedUserId && !disconnectedUserId.startsWith('guest-')) {
-            const released = await this.sanctuaryService.releaseSeatByUser(disconnectedUserId, 'SOCKET_DISCONNECT');
-            if (released.length > 0) {
-                this.broadcastFullSync();
-                return;
-            }
+            setTimeout(async () => {
+                if (!this.sanctuaryService.isUserOnline(disconnectedUserId)) {
+                    const released = await this.sanctuaryService.releaseSeatByUser(disconnectedUserId, 'SOCKET_DISCONNECT');
+                    if (released.length > 0) {
+                        this.broadcastFullSync();
+                    }
+                }
+            }, 15000);
         }
         this.broadcastStats();
     }

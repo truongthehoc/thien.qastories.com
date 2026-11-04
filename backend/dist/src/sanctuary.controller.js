@@ -255,6 +255,11 @@ let SanctuaryController = class SanctuaryController {
         const profile = this.sanctuaryService.updateAdminProfile(body);
         return { ok: true, profile };
     }
+    async purgeTestData() {
+        const result = await this.sanctuaryService.purgeTestDataForOfficialLaunch();
+        this.gateway.broadcastFullSync();
+        return result;
+    }
     uploadAudioFile(file, body) {
         let fileUrl = '';
         if (file) {
@@ -549,6 +554,12 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SanctuaryController.prototype, "updateAdminProfile", null);
+__decorate([
+    (0, common_1.Post)('admin/system/purge-test-data'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SanctuaryController.prototype, "purgeTestData", null);
 __decorate([
     (0, common_1.Post)('admin/audio/upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {

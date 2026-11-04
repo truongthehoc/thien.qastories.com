@@ -98,11 +98,18 @@ export declare class SanctuaryController {
         alreadyProcessed: boolean;
         seat?: undefined;
         transaction?: undefined;
+        nextActivity?: undefined;
     } | {
         user: import("./sanctuary.service").UserRecord;
         seat: import("./sanctuary.service").SeatRecord;
         pointsAwarded: number;
         transaction: import("./sanctuary.service").PointTxRecord;
+        nextActivity: {
+            sessionId: string;
+            seatId: number;
+            targetMinutes: number;
+            type: "MEDITATING";
+        };
         alreadyProcessed?: undefined;
     }>;
     leaveSeat(body: {
@@ -253,6 +260,10 @@ export declare class SanctuaryController {
             lastLoginAt?: string;
         };
     };
+    purgeTestData(): Promise<{
+        success: boolean;
+        message: string;
+    }>;
     uploadAudioFile(file: Express.Multer.File, body: {
         title?: string;
         description?: string;

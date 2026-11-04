@@ -16,7 +16,7 @@ interface ActiveActivityState {
   seatCode: string;
   type: 'MEDITATING' | 'BOWING';
   sessionId?: string;
-  targetMinutes?: 5 | 10 | 15 | 30;
+  targetMinutes?: number;
   startedAtMs: number;
   remainingSeconds: number;
   bowingPose?: BowingPose;
@@ -85,7 +85,9 @@ const buildInitialSeats = (): SanctuarySeat[] =>
 
 const loadPersistedUser = (): UserProfile | null => {
   try {
-    const raw = localStorage.getItem('thien_vien_user');
+    const raw =
+      localStorage.getItem('thien_vien_user_data') ||
+      localStorage.getItem('thien_vien_user');
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -132,8 +134,10 @@ export const useSanctuaryStore = create<SanctuaryStore>((set) => ({
     try {
       if (user) {
         localStorage.setItem('thien_vien_user', JSON.stringify(user));
+        localStorage.setItem('thien_vien_user_data', JSON.stringify(user));
       } else {
         localStorage.removeItem('thien_vien_user');
+        localStorage.removeItem('thien_vien_user_data');
       }
     } catch {
       // ignore storage errors

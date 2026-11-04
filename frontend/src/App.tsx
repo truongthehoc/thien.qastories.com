@@ -306,12 +306,18 @@ const SanctuaryMainView: React.FC = () => {
         soundEngine.playMindfulnessBell(0.35);
       }, 4000);
 
-      // Complete Ceremony & Award Verified Points at 6.5s
+      // Complete Ceremony & Award Verified Points at 6.5s -> Tự động chuyển sang ngồi thiền
       setTimeout(async () => {
         try {
           const completeRes = await apiRequest<{
             user: UserProfile;
             pointsAwarded: number;
+            nextActivity?: {
+              sessionId: string;
+              seatId: number;
+              targetMinutes: number;
+              type: 'MEDITATING';
+            };
           }>('/api/activities/complete', {
             method: 'POST',
             body: JSON.stringify({
@@ -322,12 +328,24 @@ const SanctuaryMainView: React.FC = () => {
             }),
           });
           setUser(completeRes.user);
-          setActiveActivity(null);
           setLastBowCompletedAtMs(Date.now());
+          soundEngine.playMindfulnessBell(0.4);
           showNotification(
-            `Đã viên mãn nghi thức đảnh lễ Thiền sư (+${completeRes.pointsAwarded} điểm an trú).`,
+            `Đã viên mãn nghi thức đảnh lễ Thiền sư (+${completeRes.pointsAwarded} điểm an trú). Tự động an vị tĩnh tâm thiền định.`,
             'points'
           );
+
+          // Tự động chuyển sang ngồi thiền trên cùng tọa cụ
+          setActiveActivity({
+            seatId: allocatedSeat.id,
+            seatCode: allocatedSeat.code,
+            type: 'MEDITATING',
+            sessionId: completeRes.nextActivity?.sessionId || `med_${Date.now()}`,
+            targetMinutes: 15,
+            startedAtMs: Date.now(),
+            remainingSeconds: 15 * 60,
+          });
+
           refreshUserProfile(user.id);
         } catch (err) {
           setActiveActivity(null);
@@ -407,7 +425,15 @@ const SanctuaryMainView: React.FC = () => {
         clearInterval(interval);
         soundEngine.playMindfulnessBell(0.6);
 
-        apiRequest<{ user: UserProfile; pointsAwarded: number }>(
+        apiRequest<{
+          user: UserProfile;
+          pointsAwarded: number;
+          nextActivity?: {
+            sessionId: string;
+            seatId: number;
+            targetMinutes: number;
+          };
+        }>(
           '/api/activities/complete',
           {
             method: 'POST',
@@ -421,15 +447,27 @@ const SanctuaryMainView: React.FC = () => {
         )
           .then((res) => {
             setUser(res.user);
-            setActiveActivity(null);
+            const prevMinutes = activeActivity.targetMinutes || 10;
+            const newTargetMinutes = res.nextActivity?.targetMinutes || (prevMinutes + 10);
+            const additionalSec = (newTargetMinutes - prevMinutes) * 60;
+
             showNotification(
-              `Hoàn mãn ${activeActivity.targetMinutes} phút thiền định (+${res.pointsAwarded} điểm an trú).`,
+              `Hoàn mãn ${prevMinutes} phút thiền định (+${res.pointsAwarded} điểm). Tiếp tục an trú thiền định (Mốc tiếp theo: ${newTargetMinutes} phút).`,
               'points'
             );
+
+            // Tiếp tục an tọa thiền định và cộng dồn thời gian mà không bị đẩy ra ngoài
+            setActiveActivity({
+              ...activeActivity,
+              sessionId: res.nextActivity?.sessionId || `med_${Date.now()}`,
+              startedAtMs: Date.now(),
+              targetMinutes: newTargetMinutes,
+              remainingSeconds: additionalSec,
+            });
+
             refreshUserProfile(user.id);
           })
           .catch((err) => {
-            setActiveActivity(null);
             showNotification((err as Error).message, 'warning');
           });
       }

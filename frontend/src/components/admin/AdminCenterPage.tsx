@@ -42,6 +42,7 @@ import {
   ShieldCheck,
   UserCog,
   Loader2,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface AdminDashboardData {
@@ -172,6 +173,29 @@ export const AdminCenterPage: React.FC = () => {
       return `${(bytes / 1024).toFixed(1)} KB`;
     }
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  // System Purge / Launch Reset State
+  const [isPurging, setIsPurging] = useState(false);
+
+  const handlePurgeTestData = async () => {
+    const confirmed = window.confirm(
+      'CẢNH BÁO XÓA DỮ LIỆU THỬ NGHIỆM:\n\nBạn có chắc chắn muốn xóa toàn bộ tài khoản thử nghiệm, lịch sử thiền định, đảnh lễ, điểm số và nhật ký hoạt động để đưa Thiền Viện về trạng thái thanh tịnh ban đầu sẵn sàng ra mắt không?\n\n(Lưu ý: Tài khoản Admin, bài nhạc MP3, hình ảnh và cài đặt sẽ được bảo lưu an toàn 100%).'
+    );
+    if (!confirmed) return;
+
+    setIsPurging(true);
+    try {
+      const res = await apiRequest<{ success: boolean; message: string }>('/api/admin/system/purge-test-data', {
+        method: 'POST',
+      });
+      showToast(res.message || 'Đã dọn sạch dữ liệu thử nghiệm!');
+      fetchDashboard();
+    } catch (err: any) {
+      showToast(err.message || 'Lỗi khi xóa dữ liệu thử nghiệm');
+    } finally {
+      setIsPurging(false);
+    }
   };
 
   // Admin Authentication State
@@ -2310,6 +2334,36 @@ export const AdminCenterPage: React.FC = () => {
                 <span>Lưu & Áp dụng cấu hình ngay lập tức</span>
               </button>
             </form>
+          )}
+
+          {/* VÙNG KHỞI TẠO HỆ THỐNG: RESET & XÓA DỮ LIỆU THỬ NGHIỆM ĐỂ TRIỂN KHAI CHÍNH THỨC */}
+          {activeTab === 'SETTINGS' && (
+            <div className="bg-[#18090a]/90 p-6 rounded-xl border border-red-500/35 shadow-xl max-w-3xl space-y-4 text-xs">
+              <div className="flex items-center gap-2.5 text-red-400">
+                <AlertTriangle className="w-5 h-5 shrink-0" />
+                <h3 className="text-sm font-bold font-serif text-red-200">
+                  Dọn Sạch Lịch Sử Thử Nghiệm & Sẵn Sàng Vận Hành Chính Thức
+                </h3>
+              </div>
+              <p className="text-[11px] text-[#fca5a5]/80 leading-relaxed">
+                Khi chuẩn bị bàn giao hoặc mở cửa Thiền Viện cho đại chúng, bạn có thể bấm nút dưới đây để xóa toàn bộ các tài khoản tạo thử, lịch sử ngồi thiền, đảnh lễ, lịch sử tích lũy điểm và lượt truy cập thử nghiệm.
+                <br />
+                <span className="font-semibold text-amber-200/90 mt-1 block">
+                  ✨ An toàn tuyệt đối: Toàn bộ kho nhạc MP3, lịch phát nhạc, hình ảnh Thiền sư/Thiền sinh và tài khoản Admin sẽ được bảo lưu nguyên vẹn.
+                </span>
+              </p>
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={handlePurgeTestData}
+                  disabled={isPurging}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-red-800 via-red-600 to-red-800 text-white font-bold text-xs shadow-[0_4px_16px_rgba(239,68,68,0.35)] hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>{isPurging ? 'Đang dọn dẹp hệ thống...' : 'Xóa sạch dữ liệu thử nghiệm (Reset hệ thống về 0)'}</span>
+                </button>
+              </div>
+            </div>
           )}
 
           {/* TAB 8: ACCOUNT PROFILE MANAGEMENT */}

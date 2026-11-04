@@ -62,14 +62,18 @@ export class SanctuaryGateway
   async handleDisconnect(client: Socket) {
     const disconnectedUserId = this.sanctuaryService.removeSocket(client.id);
     if (disconnectedUserId && !disconnectedUserId.startsWith('guest-')) {
-      const released = await this.sanctuaryService.releaseSeatByUser(
-        disconnectedUserId,
-        'SOCKET_DISCONNECT'
-      );
-      if (released.length > 0) {
-        this.broadcastFullSync();
-        return;
-      }
+      // Cho phép thời gian chờ 15s để khi F5 / refresh trang không bị mất nhân vật
+      setTimeout(async () => {
+        if (!this.sanctuaryService.isUserOnline(disconnectedUserId)) {
+          const released = await this.sanctuaryService.releaseSeatByUser(
+            disconnectedUserId,
+            'SOCKET_DISCONNECT'
+          );
+          if (released.length > 0) {
+            this.broadcastFullSync();
+          }
+        }
+      }, 15000);
     }
     this.broadcastStats();
   }

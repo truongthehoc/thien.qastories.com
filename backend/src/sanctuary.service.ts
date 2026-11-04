@@ -1011,11 +1011,64 @@ export class SanctuaryService implements OnModuleInit {
       };
       this.state.pointTransactions.unshift(txRecord);
 
-      // Release seat after completion
+      // Xử lý chuyển trạng thái an tọa:
+      // - Khi đảnh lễ xong: Tự động chuyển ngay sang ngồi thiền (không giải phóng tọa cụ)
+      // - Khi thiền hết giờ: Vẫn tiếp tục ngồi thiền và tăng thời gian tích lũy
       const seat = this.state.seats.find((s) => s.id === params.seatId);
+      let nextSessionId = uuidv4();
+      let nextTargetMinutes = 15;
+
       if (seat && seat.occupant?.userId === user.id) {
-        seat.status = 'EMPTY';
-        seat.occupant = null;
+        const now = Date.now();
+        const nowIso = new Date(now).toISOString();
+
+        if (params.activityType === 'BOWING') {
+          // 1. Đảnh lễ xong -> Tự động chuyển sang ngồi thiền
+          nextTargetMinutes = 15;
+          seat.status = 'MEDITATING';
+          seat.occupant = {
+            ...seat.occupant,
+            activityType: 'MEDITATING',
+            bowingPose: undefined,
+            targetMinutes: nextTargetMinutes,
+            startedAt: nowIso,
+            expectedEndAt: new Date(now + nextTargetMinutes * 60 * 1000).toISOString(),
+            sessionId: nextSessionId,
+          };
+
+          this.state.meditationSessions.push({
+            id: nextSessionId,
+            userId: user.id,
+            seatId: seat.id,
+            targetMinutes: nextTargetMinutes,
+            status: 'IN_PROGRESS',
+            startedAtMs: now,
+            pointsAwarded: 0,
+          });
+        } else {
+          // 2. Hết giờ thiền -> Vẫn tiếp tục thiền và nâng mốc thời gian tiếp theo
+          const prevTarget = seat.occupant.targetMinutes || 10;
+          nextTargetMinutes = prevTarget + 10; // Tăng thêm 10 phút thiền tiếp
+          seat.status = 'MEDITATING';
+          seat.occupant = {
+            ...seat.occupant,
+            activityType: 'MEDITATING',
+            targetMinutes: nextTargetMinutes,
+            startedAt: nowIso,
+            expectedEndAt: new Date(now + (nextTargetMinutes - prevTarget) * 60 * 1000).toISOString(),
+            sessionId: nextSessionId,
+          };
+
+          this.state.meditationSessions.push({
+            id: nextSessionId,
+            userId: user.id,
+            seatId: seat.id,
+            targetMinutes: nextTargetMinutes,
+            status: 'IN_PROGRESS',
+            startedAtMs: now,
+            pointsAwarded: 0,
+          });
+        }
       }
 
       this.logActivity(
@@ -1030,6 +1083,12 @@ export class SanctuaryService implements OnModuleInit {
         seat,
         pointsAwarded: pointsToAward,
         transaction: txRecord,
+        nextActivity: {
+          sessionId: nextSessionId,
+          seatId: params.seatId,
+          targetMinutes: nextTargetMinutes,
+          type: 'MEDITATING' as const,
+        },
       };
     });
   }
@@ -1065,6 +1124,13 @@ export class SanctuaryService implements OnModuleInit {
     const info = this.onlineConnections.get(socketId);
     this.onlineConnections.delete(socketId);
     return info?.userId;
+  }
+
+  public isUserOnline(userId: string): boolean {
+    for (const conn of this.onlineConnections.values()) {
+      if (conn.userId === userId) return true;
+    }
+    return false;
   }
 
   public cleanupExpiredHeartbeats(): SeatRecord[] {
@@ -1311,6 +1377,34 @@ export class SanctuaryService implements OnModuleInit {
   public getAdminProfile() {
     const { password, ...safeProfile } = this.state.adminAccount;
     return safeProfile;
+  }
+
+  public async purgeTestDataForOfficialLaunch() {
+    return this.runInTransaction(async () => {
+      // 1. Giải phóng toàn bộ 50 tọa cụ về trạng thái EMPTY
+      for (const seat of this.state.seats) {
+        seat.status = 'EMPTY';
+        seat.occupant = null;
+      }
+
+      // 2. Xóa sạch lịch sử thiền định, đảnh lễ và điểm giao dịch
+      this.state.meditationSessions = [];
+      this.state.bowingActivities = [];
+      this.state.pointTransactions = [];
+      this.state.activityLogs = [];
+
+      // 3. Xóa toàn bộ danh sách người dùng thử nghiệm
+      this.state.users = [];
+
+      // 4. Reset số lượt viếng thăm
+      this.state.visitsToday = 0;
+
+      // 5. Lưu vào bộ lưu trữ đĩa
+      this.saveToDisk();
+
+      this.logActivity('SYSTEM_RESET', 'Quản trị viên đã xóa sạch toàn bộ dữ liệu thử nghiệm để Triển khai chính thức.');
+      return { success: true, message: 'Đã xóa toàn bộ dữ liệu thử nghiệm thành công.' };
+    });
   }
 
   public recordAdminLogin(username: string) {

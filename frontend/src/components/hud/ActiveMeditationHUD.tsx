@@ -7,7 +7,7 @@ import { soundEngine } from '../../services/soundEngine';
 interface ActiveMeditationHUDProps {
   seatCode: string;
   activityType: 'MEDITATING' | 'BOWING';
-  targetMinutes?: 5 | 10 | 15 | 30;
+  targetMinutes?: number;
   remainingSeconds: number;
   bowingPose?: BowingPose;
   bowStep?: number;

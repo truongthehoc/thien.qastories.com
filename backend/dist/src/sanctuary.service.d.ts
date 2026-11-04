@@ -211,16 +211,24 @@ export declare class SanctuaryService implements OnModuleInit {
         alreadyProcessed: boolean;
         seat?: undefined;
         transaction?: undefined;
+        nextActivity?: undefined;
     } | {
         user: UserRecord;
         seat: SeatRecord;
         pointsAwarded: number;
         transaction: PointTxRecord;
+        nextActivity: {
+            sessionId: string;
+            seatId: number;
+            targetMinutes: number;
+            type: "MEDITATING";
+        };
         alreadyProcessed?: undefined;
     }>;
     releaseSeatByUser(userId: string, reason?: string): Promise<SeatRecord[]>;
     registerSocketHeartbeat(socketId: string, userId?: string): void;
     removeSocket(socketId: string): string;
+    isUserOnline(userId: string): boolean;
     cleanupExpiredHeartbeats(): SeatRecord[];
     getLiveStats(): {
         totalOnline: number;
@@ -331,6 +339,10 @@ export declare class SanctuaryService implements OnModuleInit {
         updatedAt: string;
         lastLoginAt?: string;
     };
+    purgeTestDataForOfficialLaunch(): Promise<{
+        success: boolean;
+        message: string;
+    }>;
     recordAdminLogin(username: string): void;
     updateAdminProfile(data: {
         displayName?: string;

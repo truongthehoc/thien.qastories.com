@@ -711,9 +711,55 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
             };
             this.state.pointTransactions.unshift(txRecord);
             const seat = this.state.seats.find((s) => s.id === params.seatId);
+            let nextSessionId = (0, uuid_1.v4)();
+            let nextTargetMinutes = 15;
             if (seat && seat.occupant?.userId === user.id) {
-                seat.status = 'EMPTY';
-                seat.occupant = null;
+                const now = Date.now();
+                const nowIso = new Date(now).toISOString();
+                if (params.activityType === 'BOWING') {
+                    nextTargetMinutes = 15;
+                    seat.status = 'MEDITATING';
+                    seat.occupant = {
+                        ...seat.occupant,
+                        activityType: 'MEDITATING',
+                        bowingPose: undefined,
+                        targetMinutes: nextTargetMinutes,
+                        startedAt: nowIso,
+                        expectedEndAt: new Date(now + nextTargetMinutes * 60 * 1000).toISOString(),
+                        sessionId: nextSessionId,
+                    };
+                    this.state.meditationSessions.push({
+                        id: nextSessionId,
+                        userId: user.id,
+                        seatId: seat.id,
+                        targetMinutes: nextTargetMinutes,
+                        status: 'IN_PROGRESS',
+                        startedAtMs: now,
+                        pointsAwarded: 0,
+                    });
+                }
+                else {
+                    const prevTarget = seat.occupant.targetMinutes || 10;
+                    nextTargetMinutes = prevTarget + 10;
+                    seat.status = 'MEDITATING';
+                    seat.occupant = {
+                        ...seat.occupant,
+                        activityType: 'MEDITATING',
+                        targetMinutes: nextTargetMinutes,
+                        startedAt: nowIso,
+                        expectedEndAt: new Date(now + (nextTargetMinutes - prevTarget) * 60 * 1000).toISOString(),
+                        sessionId: nextSessionId,
+                    };
+                    this.state.meditationSessions.push({
+                        id: nextSessionId,
+                        userId: user.id,
+                        seatId: seat.id,
+                        targetMinutes: nextTargetMinutes,
+                        status: 'IN_PROGRESS',
+                        startedAtMs: now,
+                        pointsAwarded: 0,
+                    });
+                }
             }
             this.logActivity(params.activityType === 'BOWING' ? 'BOWING_COMPLETE' : 'MEDITATION_COMPLETE', `${user.displayName}: ${description} (+${pointsToAward} điểm)`, user);
             this.saveToDisk();
@@ -722,6 +768,12 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
                 seat,
                 pointsAwarded: pointsToAward,
                 transaction: txRecord,
+                nextActivity: {
+                    sessionId: nextSessionId,
+                    seatId: params.seatId,
+                    targetMinutes: nextTargetMinutes,
+                    type: 'MEDITATING',
+                },
             };
         });
     }
@@ -751,6 +803,13 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
         const info = this.onlineConnections.get(socketId);
         this.onlineConnections.delete(socketId);
         return info?.userId;
+    }
+    isUserOnline(userId) {
+        for (const conn of this.onlineConnections.values()) {
+            if (conn.userId === userId)
+                return true;
+        }
+        return false;
     }
     cleanupExpiredHeartbeats() {
         const now = Date.now();
@@ -949,6 +1008,23 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
     getAdminProfile() {
         const { password, ...safeProfile } = this.state.adminAccount;
         return safeProfile;
+    }
+    async purgeTestDataForOfficialLaunch() {
+        return this.runInTransaction(async () => {
+            for (const seat of this.state.seats) {
+                seat.status = 'EMPTY';
+                seat.occupant = null;
+            }
+            this.state.meditationSessions = [];
+            this.state.bowingActivities = [];
+            this.state.pointTransactions = [];
+            this.state.activityLogs = [];
+            this.state.users = [];
+            this.state.visitsToday = 0;
+            this.saveToDisk();
+            this.logActivity('SYSTEM_RESET', 'Quản trị viên đã xóa sạch toàn bộ dữ liệu thử nghiệm để Triển khai chính thức.');
+            return { success: true, message: 'Đã xóa toàn bộ dữ liệu thử nghiệm thành công.' };
+        });
     }
     recordAdminLogin(username) {
         if (this.state.adminAccount) {

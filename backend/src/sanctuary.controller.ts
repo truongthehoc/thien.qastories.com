@@ -354,6 +354,13 @@ export class SanctuaryController {
     return { ok: true, profile };
   }
 
+  @Post('admin/system/purge-test-data')
+  async purgeTestData() {
+    const result = await this.sanctuaryService.purgeTestDataForOfficialLaunch();
+    this.gateway.broadcastFullSync();
+    return result;
+  }
+
   @Post('admin/audio/upload')
   @UseInterceptors(
     FileInterceptor('file', {

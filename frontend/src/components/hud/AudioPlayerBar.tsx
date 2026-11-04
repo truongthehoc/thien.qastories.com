@@ -70,7 +70,7 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
     }
   }, [volume, isMuted]);
 
-  // Synchronize with server track & offset in realtime lockstep
+  // 1. Quản lý tải và phát bài nhạc (Chỉ khởi tạo lại khi đổi bài hoặc đổi trạng thái Mute/Play)
   useEffect(() => {
     if (!isPlayingLocal || isMuted) {
       if (audioRef.current) {
@@ -100,27 +100,24 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
         0,
         Math.floor((Date.now() - syncedAudio.serverTimestamp) / 1000)
       );
-      const targetOffset =
-        ((syncedAudio.offsetSeconds || 0) + elapsedSinceSync) %
-        Math.max(1, currentTrack?.durationSeconds || 300);
+      const duration = Math.max(1, currentTrack?.durationSeconds || 300);
+      const targetOffset = ((syncedAudio.offsetSeconds || 0) + elapsedSinceSync) % duration;
 
-      const applyOffsetAndPlay = () => {
+      const applyInitialOffsetAndPlay = () => {
         try {
           if (Math.abs(audio.currentTime - targetOffset) > 2) {
             audio.currentTime = targetOffset;
           }
-        } catch {
-          // ignore
-        }
+        } catch {}
         audio.play().catch(() => {
           soundEngine.startForestAmbience(currentTrack?.category || 'TIENG_SUOI');
         });
       };
 
       if (audio.readyState >= 1) {
-        applyOffsetAndPlay();
+        applyInitialOffsetAndPlay();
       } else {
-        audio.onloadedmetadata = applyOffsetAndPlay;
+        audio.onloadedmetadata = applyInitialOffsetAndPlay;
         audio.onerror = () => {
           soundEngine.startForestAmbience(currentTrack?.category || 'TIENG_SUOI');
         };
@@ -137,7 +134,25 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
         audioRef.current.pause();
       }
     };
-  }, [isPlayingLocal, isMuted, currentTrack?.id, currentTrack?.fileUrl, syncedAudio.offsetSeconds, syncedAudio.serverTimestamp]);
+  }, [isPlayingLocal, isMuted, currentTrack?.id, currentTrack?.fileUrl]);
+
+  // 2. Tinh chỉnh đồng bộ âm thanh liên thiết bị ngầm (Lockstep Sync mà không ngắt quãng nhạc)
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || audio.paused || !currentTrack?.fileUrl || isMuted || !isPlayingLocal) return;
+
+    const duration = Math.max(1, currentTrack?.durationSeconds || audio.duration || 300);
+    const elapsedSinceSync = Math.max(0, (Date.now() - syncedAudio.serverTimestamp) / 1000);
+    const targetOffset = ((syncedAudio.offsetSeconds || 0) + elapsedSinceSync) % duration;
+
+    // Chỉ hiệu chỉnh nếu lệch quá 2.5 giây để tránh giật âm thanh
+    const drift = Math.abs(audio.currentTime - targetOffset);
+    if (drift > 2.5) {
+      try {
+        audio.currentTime = targetOffset;
+      } catch {}
+    }
+  }, [syncedAudio.offsetSeconds, syncedAudio.serverTimestamp]);
 
   const handleToggleMute = () => {
     const next = !isMuted;
