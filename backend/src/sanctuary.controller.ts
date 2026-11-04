@@ -414,6 +414,111 @@ export class SanctuaryController {
     return { track };
   }
 
+  @Post('admin/audio/upload/chunk')
+  @UseInterceptors(
+    FileInterceptor('chunk', {
+      limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB per chunk
+    })
+  )
+  async uploadAudioChunk(
+    @UploadedFile() file: Express.Multer.File,
+    @Body()
+    body: {
+      uploadId: string;
+      chunkIndex: string;
+      totalChunks: string;
+      fileName: string;
+      title?: string;
+      description?: string;
+      category?: 'NHAC_THIEN' | 'TIENG_SUOI' | 'TIENG_MUA' | 'TIENG_CHUONG' | 'TUNG_KINH';
+      durationSeconds?: string;
+      isAmbientBg?: string;
+    }
+  ) {
+    if (!file || !body.uploadId) {
+      throw new BadRequestException('Dữ liệu phân mảnh không hợp lệ.');
+    }
+
+    const uploadId = (body.uploadId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    const chunkIndex = parseInt(body.chunkIndex, 10);
+    const totalChunks = parseInt(body.totalChunks, 10);
+    const root = getProjectRoot();
+
+    // Temp folder for chunks
+    const tempDir = path.join(root, 'uploads', 'chunks', uploadId);
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    // Save this chunk
+    const chunkPath = path.join(tempDir, `chunk_${chunkIndex}`);
+    fs.writeFileSync(chunkPath, file.buffer);
+
+    // If not the last chunk, acknowledge receipt
+    if (chunkIndex < totalChunks - 1) {
+      return { ok: true, chunkIndex, totalChunks };
+    }
+
+    // Last chunk received -> Concatenate and assemble final MP3 file
+    const safeName = cleanVietnameseFilename(body.fileName || 'audio.mp3');
+
+    // Ensure target directories exist
+    const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
+    if (!fs.existsSync(distAssetDir)) fs.mkdirSync(distAssetDir, { recursive: true });
+    const distFilePath = path.join(distAssetDir, safeName);
+
+    const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
+    const isDevDirPresent = fs.existsSync(path.dirname(devAssetDir));
+    if (isDevDirPresent && !fs.existsSync(devAssetDir)) fs.mkdirSync(devAssetDir, { recursive: true });
+    const devFilePath = path.join(devAssetDir, safeName);
+
+    const backendUploadDir = path.join(root, 'uploads', 'audio');
+    if (!fs.existsSync(backendUploadDir)) fs.mkdirSync(backendUploadDir, { recursive: true });
+    const backupFilePath = path.join(backendUploadDir, safeName);
+
+    // Stream-concatenate chunks directly to avoid huge memory spike
+    const writeStream = fs.createWriteStream(backupFilePath);
+    for (let i = 0; i < totalChunks; i++) {
+      const p = path.join(tempDir, `chunk_${i}`);
+      if (fs.existsSync(p)) {
+        const chunkBuf = fs.readFileSync(p);
+        writeStream.write(chunkBuf);
+      }
+    }
+    await new Promise<void>((resolve, reject) => {
+      writeStream.end(() => resolve());
+      writeStream.on('error', reject);
+    });
+
+    // Copy to dist and dev locations
+    try {
+      fs.copyFileSync(backupFilePath, distFilePath);
+      if (isDevDirPresent) {
+        fs.copyFileSync(backupFilePath, devFilePath);
+      }
+    } catch (_) {}
+
+    // Clean up temporary chunks directory
+    try {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+
+    const fileUrl = `/assets/audio/${safeName}`;
+
+    const track = this.sanctuaryService.adminUpsertAudioTrack({
+      title: body.title || body.fileName || 'Bài nhạc Thiền',
+      description: body.description || '',
+      category: body.category || 'NHAC_THIEN',
+      fileUrl,
+      durationSeconds: Number(body.durationSeconds) || 300,
+      isAmbientBg: body.isAmbientBg === 'true',
+      isEnabled: true,
+    });
+
+    this.gateway.broadcastFullSync();
+    return { ok: true, track, fileUrl };
+  }
+
   @Post('admin/audio/tracks')
   upsertAudioTrack(@Body() body: Record<string, unknown>) {
     const track = this.sanctuaryService.adminUpsertAudioTrack(body);

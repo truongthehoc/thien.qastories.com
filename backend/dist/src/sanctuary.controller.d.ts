@@ -261,6 +261,29 @@ export declare class SanctuaryController {
     }): {
         track: import("./sanctuary.service").AudioTrackRecord;
     };
+    uploadAudioChunk(file: Express.Multer.File, body: {
+        uploadId: string;
+        chunkIndex: string;
+        totalChunks: string;
+        fileName: string;
+        title?: string;
+        description?: string;
+        category?: 'NHAC_THIEN' | 'TIENG_SUOI' | 'TIENG_MUA' | 'TIENG_CHUONG' | 'TUNG_KINH';
+        durationSeconds?: string;
+        isAmbientBg?: string;
+    }): Promise<{
+        ok: boolean;
+        chunkIndex: number;
+        totalChunks: number;
+        track?: undefined;
+        fileUrl?: undefined;
+    } | {
+        ok: boolean;
+        track: import("./sanctuary.service").AudioTrackRecord;
+        fileUrl: string;
+        chunkIndex?: undefined;
+        totalChunks?: undefined;
+    }>;
     upsertAudioTrack(body: Record<string, unknown>): {
         track: import("./sanctuary.service").AudioTrackRecord;
     };

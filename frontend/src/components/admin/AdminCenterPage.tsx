@@ -389,56 +389,115 @@ export const AdminCenterPage: React.FC = () => {
     }
     if (isUploadingAudio) return;
 
-    const formData = new FormData();
-    if (selectedMp3File) {
-      formData.append('file', selectedMp3File);
-    }
-    formData.append('title', trackTitle.trim());
-    formData.append('description', trackDesc.trim());
-    formData.append('category', trackCategory);
-    formData.append('durationSeconds', trackDuration);
-    formData.append('isAmbientBg', String(trackIsAmbient));
-
     setIsUploadingAudio(true);
     setAudioUploadProgress(0);
     setUploadBytesInfo(null);
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/admin/audio/upload');
+      if (selectedMp3File && selectedMp3File.size > 15 * 1024 * 1024) {
+        // Tải lên phân mảnh (Chunked Upload) cho file lớn để vượt qua giới hạn 100MB của Cloudflare & Nginx
+        const CHUNK_SIZE = 8 * 1024 * 1024; // 8 MB mỗi mảnh
+        const totalChunks = Math.ceil(selectedMp3File.size / CHUNK_SIZE);
+        const uploadId = `up_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+        let uploadedBytesSoFar = 0;
 
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
-            setAudioUploadProgress(percent);
-            setUploadBytesInfo({ loaded: event.loaded, total: event.total });
-          }
-        };
+        for (let i = 0; i < totalChunks; i++) {
+          const start = i * CHUNK_SIZE;
+          const end = Math.min(selectedMp3File.size, start + CHUNK_SIZE);
+          const chunkBlob = selectedMp3File.slice(start, end);
 
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-          } else {
-            let errorMsg = 'Tải file âm thanh thất bại';
-            try {
-              const resJson = JSON.parse(xhr.responseText);
-              if (resJson.message) {
-                errorMsg = Array.isArray(resJson.message) ? resJson.message.join(', ') : resJson.message;
+          const formData = new FormData();
+          formData.append('chunk', chunkBlob);
+          formData.append('uploadId', uploadId);
+          formData.append('chunkIndex', String(i));
+          formData.append('totalChunks', String(totalChunks));
+          formData.append('fileName', selectedMp3File.name);
+          formData.append('title', trackTitle.trim());
+          formData.append('description', trackDesc.trim());
+          formData.append('category', trackCategory);
+          formData.append('durationSeconds', trackDuration);
+          formData.append('isAmbientBg', String(trackIsAmbient));
+
+          await new Promise<void>((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/admin/audio/upload/chunk');
+
+            xhr.upload.onprogress = (event) => {
+              if (event.lengthComputable && selectedMp3File) {
+                const totalLoaded = uploadedBytesSoFar + event.loaded;
+                const percent = Math.min(99, Math.round((totalLoaded / selectedMp3File.size) * 100));
+                setAudioUploadProgress(percent);
+                setUploadBytesInfo({ loaded: totalLoaded, total: selectedMp3File.size });
               }
-            } catch {
-              if (xhr.responseText) errorMsg = xhr.responseText;
+            };
+
+            xhr.onload = () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                uploadedBytesSoFar += chunkBlob.size;
+                resolve();
+              } else {
+                let errorMsg = 'Lỗi truyền phân mảnh file';
+                try {
+                  const resJson = JSON.parse(xhr.responseText);
+                  if (resJson.message) {
+                    errorMsg = Array.isArray(resJson.message) ? resJson.message.join(', ') : resJson.message;
+                  }
+                } catch {
+                  if (xhr.responseText) errorMsg = xhr.responseText;
+                }
+                reject(new Error(errorMsg));
+              }
+            };
+
+            xhr.onerror = () => reject(new Error('Lỗi kết nối khi gửi mảnh file lên máy chủ'));
+            xhr.send(formData);
+          });
+        }
+      } else {
+        // Tải lên trực tiếp cho file vừa và nhỏ
+        const formData = new FormData();
+        if (selectedMp3File) {
+          formData.append('file', selectedMp3File);
+        }
+        formData.append('title', trackTitle.trim());
+        formData.append('description', trackDesc.trim());
+        formData.append('category', trackCategory);
+        formData.append('durationSeconds', trackDuration);
+        formData.append('isAmbientBg', String(trackIsAmbient));
+
+        await new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/api/admin/audio/upload');
+
+          xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+              setAudioUploadProgress(percent);
+              setUploadBytesInfo({ loaded: event.loaded, total: event.total });
             }
-            reject(new Error(errorMsg));
-          }
-        };
+          };
 
-        xhr.onerror = () => {
-          reject(new Error('Lỗi kết nối mạng khi tải file âm thanh lên máy chủ'));
-        };
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve();
+            } else {
+              let errorMsg = 'Tải file âm thanh thất bại';
+              try {
+                const resJson = JSON.parse(xhr.responseText);
+                if (resJson.message) {
+                  errorMsg = Array.isArray(resJson.message) ? resJson.message.join(', ') : resJson.message;
+                }
+              } catch {
+                if (xhr.responseText) errorMsg = xhr.responseText;
+              }
+              reject(new Error(errorMsg));
+            }
+          };
 
-        xhr.send(formData);
-      });
+          xhr.onerror = () => reject(new Error('Lỗi kết nối mạng khi tải file âm thanh lên máy chủ'));
+          xhr.send(formData);
+        });
+      }
 
       setTrackTitle('');
       setTrackDesc('');

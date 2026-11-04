@@ -290,6 +290,73 @@ let SanctuaryController = class SanctuaryController {
         this.gateway.broadcastFullSync();
         return { track };
     }
+    async uploadAudioChunk(file, body) {
+        if (!file || !body.uploadId) {
+            throw new common_1.BadRequestException('Dữ liệu phân mảnh không hợp lệ.');
+        }
+        const uploadId = (body.uploadId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+        const chunkIndex = parseInt(body.chunkIndex, 10);
+        const totalChunks = parseInt(body.totalChunks, 10);
+        const root = getProjectRoot();
+        const tempDir = path.join(root, 'uploads', 'chunks', uploadId);
+        if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+        }
+        const chunkPath = path.join(tempDir, `chunk_${chunkIndex}`);
+        fs.writeFileSync(chunkPath, file.buffer);
+        if (chunkIndex < totalChunks - 1) {
+            return { ok: true, chunkIndex, totalChunks };
+        }
+        const safeName = cleanVietnameseFilename(body.fileName || 'audio.mp3');
+        const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
+        if (!fs.existsSync(distAssetDir))
+            fs.mkdirSync(distAssetDir, { recursive: true });
+        const distFilePath = path.join(distAssetDir, safeName);
+        const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
+        const isDevDirPresent = fs.existsSync(path.dirname(devAssetDir));
+        if (isDevDirPresent && !fs.existsSync(devAssetDir))
+            fs.mkdirSync(devAssetDir, { recursive: true });
+        const devFilePath = path.join(devAssetDir, safeName);
+        const backendUploadDir = path.join(root, 'uploads', 'audio');
+        if (!fs.existsSync(backendUploadDir))
+            fs.mkdirSync(backendUploadDir, { recursive: true });
+        const backupFilePath = path.join(backendUploadDir, safeName);
+        const writeStream = fs.createWriteStream(backupFilePath);
+        for (let i = 0; i < totalChunks; i++) {
+            const p = path.join(tempDir, `chunk_${i}`);
+            if (fs.existsSync(p)) {
+                const chunkBuf = fs.readFileSync(p);
+                writeStream.write(chunkBuf);
+            }
+        }
+        await new Promise((resolve, reject) => {
+            writeStream.end(() => resolve());
+            writeStream.on('error', reject);
+        });
+        try {
+            fs.copyFileSync(backupFilePath, distFilePath);
+            if (isDevDirPresent) {
+                fs.copyFileSync(backupFilePath, devFilePath);
+            }
+        }
+        catch (_) { }
+        try {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+        }
+        catch (_) { }
+        const fileUrl = `/assets/audio/${safeName}`;
+        const track = this.sanctuaryService.adminUpsertAudioTrack({
+            title: body.title || body.fileName || 'Bài nhạc Thiền',
+            description: body.description || '',
+            category: body.category || 'NHAC_THIEN',
+            fileUrl,
+            durationSeconds: Number(body.durationSeconds) || 300,
+            isAmbientBg: body.isAmbientBg === 'true',
+            isEnabled: true,
+        });
+        this.gateway.broadcastFullSync();
+        return { ok: true, track, fileUrl };
+    }
     upsertAudioTrack(body) {
         const track = this.sanctuaryService.adminUpsertAudioTrack(body);
         this.gateway.broadcastFullSync();
@@ -490,6 +557,17 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], SanctuaryController.prototype, "uploadAudioFile", null);
+__decorate([
+    (0, common_1.Post)('admin/audio/upload/chunk'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('chunk', {
+        limits: { fileSize: 50 * 1024 * 1024 },
+    })),
+    __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], SanctuaryController.prototype, "uploadAudioChunk", null);
 __decorate([
     (0, common_1.Post)('admin/audio/tracks'),
     __param(0, (0, common_1.Body)()),
