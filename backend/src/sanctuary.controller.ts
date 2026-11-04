@@ -19,6 +19,18 @@ import * as path from 'path';
 import { PNG } from 'pngjs';
 import * as jpeg from 'jpeg-js';
 
+function getProjectRoot(): string {
+  // 1. If running from repository root (e.g. /www/wwwroot/thien.qastories.com)
+  if (fs.existsSync(path.join(process.cwd(), 'frontend')) || fs.existsSync(path.join(process.cwd(), 'start.js'))) {
+    return process.cwd();
+  }
+  // 2. If running inside backend directory
+  if (fs.existsSync(path.join(process.cwd(), '..', 'frontend'))) {
+    return path.resolve(process.cwd(), '..');
+  }
+  return process.cwd();
+}
+
 function autoMatteImageBuffer(buffer: Buffer, originalExt: string): { buffer: Buffer; ext: string } {
   try {
     const isJpg = originalExt.toLowerCase() === '.jpg' || originalExt.toLowerCase() === '.jpeg';
@@ -340,15 +352,24 @@ export class SanctuaryController {
     if (file) {
       const safeName = `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
-      // 1. Đồng bộ lưu trực tiếp vào thư mục mã nguồn dự án: frontend/public/assets/audio/
-      const projectAssetDir = path.join(process.cwd(), '..', 'frontend', 'public', 'assets', 'audio');
-      if (!fs.existsSync(projectAssetDir)) {
-        fs.mkdirSync(projectAssetDir, { recursive: true });
-      }
-      fs.writeFileSync(path.join(projectAssetDir, safeName), file.buffer);
+      const root = getProjectRoot();
 
-      // 2. Lưu dự phòng tại backend uploads
-      const backendUploadDir = path.join(process.cwd(), 'uploads', 'audio');
+      // 1. Save to frontend dist (production static serve)
+      const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
+      if (!fs.existsSync(distAssetDir)) {
+        fs.mkdirSync(distAssetDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(distAssetDir, safeName), file.buffer);
+
+      // 2. Save to frontend public (dev static serve if folder exists)
+      const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
+      if (fs.existsSync(path.dirname(devAssetDir))) {
+        if (!fs.existsSync(devAssetDir)) fs.mkdirSync(devAssetDir, { recursive: true });
+        fs.writeFileSync(path.join(devAssetDir, safeName), file.buffer);
+      }
+
+      // 3. Save backup in uploads
+      const backendUploadDir = path.join(root, 'uploads', 'audio');
       if (!fs.existsSync(backendUploadDir)) {
         fs.mkdirSync(backendUploadDir, { recursive: true });
       }
@@ -426,18 +447,31 @@ export class SanctuaryController {
       throw new BadRequestException('Loại nhân vật không hợp lệ.');
     }
 
-    // Save directly to frontend public sanctuary assets so Vite serves it instantly
-    const targetDir = path.join(process.cwd(), '..', 'frontend', 'public', 'assets', 'sanctuary');
-    if (!fs.existsSync(targetDir)) {
-      fs.mkdirSync(targetDir, { recursive: true });
-    }
-
+    const root = getProjectRoot();
     const origExt = path.extname(file.originalname) || '.png';
     const processed = autoMatteImageBuffer(file.buffer, origExt);
-
     const filename = `custom-${type}-${Date.now()}${processed.ext}`;
-    const targetPath = path.join(targetDir, filename);
-    fs.writeFileSync(targetPath, processed.buffer);
+
+    // 1. Save directly to frontend dist (production static serve)
+    const distTargetDir = path.join(root, 'frontend', 'dist', 'assets', 'sanctuary');
+    if (!fs.existsSync(distTargetDir)) {
+      fs.mkdirSync(distTargetDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(distTargetDir, filename), processed.buffer);
+
+    // 2. Save directly to frontend public (dev static serve if directory exists)
+    const devTargetDir = path.join(root, 'frontend', 'public', 'assets', 'sanctuary');
+    if (fs.existsSync(path.dirname(devTargetDir))) {
+      if (!fs.existsSync(devTargetDir)) fs.mkdirSync(devTargetDir, { recursive: true });
+      fs.writeFileSync(path.join(devTargetDir, filename), processed.buffer);
+    }
+
+    // 3. Save backup to uploads
+    const uploadBackupDir = path.join(root, 'uploads', 'sanctuary');
+    if (!fs.existsSync(uploadBackupDir)) {
+      fs.mkdirSync(uploadBackupDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(uploadBackupDir, filename), processed.buffer);
 
     const fileUrl = `/assets/sanctuary/${filename}`;
 

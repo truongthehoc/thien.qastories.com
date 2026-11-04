@@ -387,8 +387,15 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
-            if (fs.existsSync(this.dbFilePath)) {
-                const raw = fs.readFileSync(this.dbFilePath, 'utf-8');
+            let readPath = this.dbFilePath;
+            if (!fs.existsSync(readPath)) {
+                const altPath = path.join(process.cwd(), 'backend', 'data', 'sanctuary-db.json');
+                if (fs.existsSync(altPath)) {
+                    readPath = altPath;
+                }
+            }
+            if (fs.existsSync(readPath)) {
+                const raw = fs.readFileSync(readPath, 'utf-8');
                 const parsed = JSON.parse(raw);
                 if (parsed && Array.isArray(parsed.seats) && parsed.seats.length === 50) {
                     const updatedSeats = parsed.seats.map((seat) => {

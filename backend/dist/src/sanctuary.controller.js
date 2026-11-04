@@ -21,6 +21,15 @@ const fs = require("fs");
 const path = require("path");
 const pngjs_1 = require("pngjs");
 const jpeg = require("jpeg-js");
+function getProjectRoot() {
+    if (fs.existsSync(path.join(process.cwd(), 'frontend')) || fs.existsSync(path.join(process.cwd(), 'start.js'))) {
+        return process.cwd();
+    }
+    if (fs.existsSync(path.join(process.cwd(), '..', 'frontend'))) {
+        return path.resolve(process.cwd(), '..');
+    }
+    return process.cwd();
+}
 function autoMatteImageBuffer(buffer, originalExt) {
     try {
         const isJpg = originalExt.toLowerCase() === '.jpg' || originalExt.toLowerCase() === '.jpeg';
@@ -234,12 +243,19 @@ let SanctuaryController = class SanctuaryController {
         let fileUrl = '';
         if (file) {
             const safeName = `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-            const projectAssetDir = path.join(process.cwd(), '..', 'frontend', 'public', 'assets', 'audio');
-            if (!fs.existsSync(projectAssetDir)) {
-                fs.mkdirSync(projectAssetDir, { recursive: true });
+            const root = getProjectRoot();
+            const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
+            if (!fs.existsSync(distAssetDir)) {
+                fs.mkdirSync(distAssetDir, { recursive: true });
             }
-            fs.writeFileSync(path.join(projectAssetDir, safeName), file.buffer);
-            const backendUploadDir = path.join(process.cwd(), 'uploads', 'audio');
+            fs.writeFileSync(path.join(distAssetDir, safeName), file.buffer);
+            const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
+            if (fs.existsSync(path.dirname(devAssetDir))) {
+                if (!fs.existsSync(devAssetDir))
+                    fs.mkdirSync(devAssetDir, { recursive: true });
+                fs.writeFileSync(path.join(devAssetDir, safeName), file.buffer);
+            }
+            const backendUploadDir = path.join(root, 'uploads', 'audio');
             if (!fs.existsSync(backendUploadDir)) {
                 fs.mkdirSync(backendUploadDir, { recursive: true });
             }
@@ -294,15 +310,26 @@ let SanctuaryController = class SanctuaryController {
         if (!['zenMaster', 'practitionerRight', 'practitionerLeft', 'practitionerCenter'].includes(type)) {
             throw new common_1.BadRequestException('Loại nhân vật không hợp lệ.');
         }
-        const targetDir = path.join(process.cwd(), '..', 'frontend', 'public', 'assets', 'sanctuary');
-        if (!fs.existsSync(targetDir)) {
-            fs.mkdirSync(targetDir, { recursive: true });
-        }
+        const root = getProjectRoot();
         const origExt = path.extname(file.originalname) || '.png';
         const processed = autoMatteImageBuffer(file.buffer, origExt);
         const filename = `custom-${type}-${Date.now()}${processed.ext}`;
-        const targetPath = path.join(targetDir, filename);
-        fs.writeFileSync(targetPath, processed.buffer);
+        const distTargetDir = path.join(root, 'frontend', 'dist', 'assets', 'sanctuary');
+        if (!fs.existsSync(distTargetDir)) {
+            fs.mkdirSync(distTargetDir, { recursive: true });
+        }
+        fs.writeFileSync(path.join(distTargetDir, filename), processed.buffer);
+        const devTargetDir = path.join(root, 'frontend', 'public', 'assets', 'sanctuary');
+        if (fs.existsSync(path.dirname(devTargetDir))) {
+            if (!fs.existsSync(devTargetDir))
+                fs.mkdirSync(devTargetDir, { recursive: true });
+            fs.writeFileSync(path.join(devTargetDir, filename), processed.buffer);
+        }
+        const uploadBackupDir = path.join(root, 'uploads', 'sanctuary');
+        if (!fs.existsSync(uploadBackupDir)) {
+            fs.mkdirSync(uploadBackupDir, { recursive: true });
+        }
+        fs.writeFileSync(path.join(uploadBackupDir, filename), processed.buffer);
         const fileUrl = `/assets/sanctuary/${filename}`;
         const updateObj = {};
         if (type === 'zenMaster')
