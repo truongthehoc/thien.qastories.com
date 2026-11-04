@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SanctuarySeat } from '../../types/sanctuary';
 import { ZenMasterCenter } from './ZenMasterCenter';
 import { MeditationSeatNode } from './MeditationSeatNode';
-import { Sparkles, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { Sparkles, ZoomIn, ZoomOut, RotateCcw, Users } from 'lucide-react';
 
 interface ForestEnvironmentProps {
   seats: SanctuarySeat[];
@@ -37,15 +37,163 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Mobile/Tablet Pan & Ring Focus State
-  const [activeRingFilter, setActiveRingFilter] = useState<number | 'ALL'>('ALL');
-  const [zoomLevel, setZoomLevel] = useState<number>(1);
-  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const dragRef = useRef<{ isDragging: boolean; startX: number; startY: number }>({
-    isDragging: false,
-    startX: 0,
-    startY: 0,
+  // Mobile / Screen Viewport Detection
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 768 || window.innerWidth < window.innerHeight;
   });
+
+  // Mobile/Tablet Camera & Pan State
+  type CameraViewMode = 'OVERVIEW' | 'MASTER' | 'LEFT' | 'RIGHT' | 'MY_SEAT';
+  const [cameraMode, setCameraMode] = useState<CameraViewMode>('OVERVIEW');
+  const [zoomLevel, setZoomLevel] = useState<number>(() => (isMobile ? 0.60 : 1.0));
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>(() => ({
+    x: 0,
+    y: isMobile ? -25 : 0,
+  }));
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Multi-touch & Drag Tracking Refs
+  const activePointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const pinchStartDistRef = useRef<number | null>(null);
+  const pinchStartZoomRef = useRef<number>(1);
+  const dragStartRef = useRef<{ x: number; y: number; startPanX: number; startPanY: number }>({
+    x: 0,
+    y: 0,
+    startPanX: 0,
+    startPanY: 0,
+  });
+  const hasMovedRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768 || window.innerWidth < window.innerHeight;
+      setIsMobile(mobile);
+    };
+    window.addEventListener('resize', checkMobile);
+    window.addEventListener('orientationchange', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('orientationchange', checkMobile);
+    };
+  }, []);
+
+  // Preset Camera Transitions
+  const setCameraPreset = useCallback(
+    (mode: CameraViewMode) => {
+      setCameraMode(mode);
+      const stageW = Math.max(window.innerWidth, (window.innerHeight * 16) / 9);
+      const stageH = window.innerHeight;
+
+      if (mode === 'OVERVIEW') {
+        setZoomLevel(isMobile ? 0.60 : 0.95);
+        setPanOffset({ x: 0, y: isMobile ? -25 : 0 });
+      } else if (mode === 'MASTER') {
+        setZoomLevel(isMobile ? 1.25 : 1.35);
+        setPanOffset({ x: 0, y: isMobile ? 45 : 25 });
+      } else if (mode === 'LEFT') {
+        setZoomLevel(isMobile ? 1.05 : 1.20);
+        // Stage center is 50%, Left Wing is at ~28% -> diff is +22%
+        setPanOffset({ x: stageW * 0.22, y: isMobile ? -10 : 0 });
+      } else if (mode === 'RIGHT') {
+        setZoomLevel(isMobile ? 1.05 : 1.20);
+        // Stage center is 50%, Right Wing is at ~72% -> diff is -22%
+        setPanOffset({ x: -stageW * 0.22, y: isMobile ? -10 : 0 });
+      } else if (mode === 'MY_SEAT') {
+        const mySeat = seats.find((s) => s.occupant?.userId === currentUserId);
+        if (mySeat) {
+          const diffX = ((50 - mySeat.posX) / 100) * stageW;
+          const diffY = ((65 - mySeat.posY) / 100) * stageH;
+          setZoomLevel(isMobile ? 1.20 : 1.30);
+          setPanOffset({ x: diffX, y: diffY });
+        }
+      }
+    },
+    [isMobile, seats, currentUserId]
+  );
+
+  // Active zone occupant counts
+  const leftOccupants = seats.filter(
+    (s) => s.zoneName === 'Cánh Tả' && s.status !== 'EMPTY' && s.occupant
+  );
+  const centerOccupants = seats.filter(
+    (s) => s.zoneName === 'Trục Trung Tâm' && s.status !== 'EMPTY' && s.occupant
+  );
+  const rightOccupants = seats.filter(
+    (s) => s.zoneName === 'Cánh Hữu' && s.status !== 'EMPTY' && s.occupant
+  );
+  const mySeat = seats.find((s) => s.occupant?.userId === currentUserId);
+
+  // Distance helper for pinch gesture
+  const getDistance = (p1: { x: number; y: number }, p2: { x: number; y: number }) => {
+    return Math.hypot(p2.x - p1.x, p2.y - p1.y);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (activePointersRef.current.size === 1) {
+      dragStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        startPanX: panOffset.x,
+        startPanY: panOffset.y,
+      };
+      hasMovedRef.current = false;
+    } else if (activePointersRef.current.size === 2) {
+      const pts = Array.from(activePointersRef.current.values());
+      pinchStartDistRef.current = getDistance(pts[0], pts[1]);
+      pinchStartZoomRef.current = zoomLevel;
+      setIsDragging(true);
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!activePointersRef.current.has(e.pointerId)) return;
+    activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    // 2-finger Pinch to Zoom
+    if (activePointersRef.current.size === 2 && pinchStartDistRef.current) {
+      const pts = Array.from(activePointersRef.current.values());
+      const currentDist = getDistance(pts[0], pts[1]);
+      const factor = currentDist / pinchStartDistRef.current;
+      const minZoom = isMobile ? 0.48 : 0.65;
+      const maxZoom = isMobile ? 1.60 : 1.85;
+      const nextZoom = Math.min(maxZoom, Math.max(minZoom, pinchStartZoomRef.current * factor));
+      setZoomLevel(nextZoom);
+      return;
+    }
+
+    // 1-finger or Mouse Pan
+    if (activePointersRef.current.size === 1) {
+      const deltaX = e.clientX - dragStartRef.current.x;
+      const deltaY = e.clientY - dragStartRef.current.y;
+
+      if (Math.hypot(deltaX, deltaY) > 6) {
+        hasMovedRef.current = true;
+        if (!isDragging) setIsDragging(true);
+      }
+
+      if (hasMovedRef.current) {
+        const stageW = Math.max(window.innerWidth, (window.innerHeight * 16) / 9);
+        const maxPanX = Math.max(180, ((stageW * zoomLevel) - window.innerWidth) / 2 + 120);
+        const maxPanY = Math.max(100, (zoomLevel - 1) * 220 + 90);
+        const nextX = Math.max(-maxPanX, Math.min(maxPanX, dragStartRef.current.startPanX + deltaX));
+        const nextY = Math.max(-maxPanY, Math.min(maxPanY, dragStartRef.current.startPanY + deltaY));
+        setPanOffset({ x: nextX, y: nextY });
+      }
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    activePointersRef.current.delete(e.pointerId);
+    if (activePointersRef.current.size < 2) {
+      pinchStartDistRef.current = null;
+    }
+    if (activePointersRef.current.size === 0) {
+      setIsDragging(false);
+    }
+  };
 
   // ============================================================================
   // ORGANIC NATURE PARTICLES (Falling Canopy Leaves & Golden Sunlight Motes)
@@ -144,60 +292,6 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
     };
   }, [enableNatureAnimations]);
 
-  const [activeZoneFilter, setActiveZoneFilter] = useState<'ALL' | 'Cánh Tả' | 'Trục Trung Tâm' | 'Cánh Hữu'>('ALL');
-
-  const handleSelectZone = (zone: 'ALL' | 'Cánh Tả' | 'Trục Trung Tâm' | 'Cánh Hữu') => {
-    setActiveZoneFilter(zone);
-    if (zone === 'ALL') {
-      setZoomLevel(1);
-      setPanOffset({ x: 0, y: 0 });
-    } else if (zone === 'Cánh Tả') {
-      setZoomLevel(1.15);
-      setPanOffset({ x: 120, y: -20 });
-    } else if (zone === 'Cánh Hữu') {
-      setZoomLevel(1.15);
-      setPanOffset({ x: -120, y: -20 });
-    } else if (zone === 'Trục Trung Tâm') {
-      setZoomLevel(1.2);
-      setPanOffset({ x: 0, y: -30 });
-    }
-  };
-
-  const handleQuickFindEmptySeat = () => {
-    const emptySeats = seats.filter((s) => s.isEnabled && s.status === 'EMPTY');
-    if (emptySeats.length > 0) {
-      const chosen = emptySeats[Math.floor(Math.random() * emptySeats.length)];
-      onSelectSeat(chosen);
-    }
-  };
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    dragRef.current = {
-      isDragging: true,
-      startX: e.clientX - panOffset.x,
-      startY: e.clientY - panOffset.y,
-    };
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.isDragging) return;
-    const stageW = Math.max(window.innerWidth, (window.innerHeight * 16) / 9);
-    const maxPanX = Math.max(120, (stageW - window.innerWidth) / 2);
-    const maxPanY = Math.max(60, (zoomLevel - 1) * 200 + 40);
-    const nextX = Math.max(-maxPanX, Math.min(maxPanX, e.clientX - dragRef.current.startX));
-    const nextY = Math.max(-maxPanY, Math.min(maxPanY, e.clientY - dragRef.current.startY));
-    setPanOffset({ x: nextX, y: nextY });
-  };
-
-  const handlePointerUp = () => {
-    dragRef.current.isDragging = false;
-  };
-
-  const filteredSeats =
-    activeZoneFilter === 'ALL'
-      ? seats
-      : seats.filter((s) => s.zoneName === activeZoneFilter);
-
   return (
     <div
       className="relative w-screen h-screen overflow-hidden bg-[#0c160e] select-none touch-none"
@@ -207,14 +301,16 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
       onPointerLeave={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      {/* Interactive Sanctuary Stage Container (Giữ nguyên tỉ lệ 16:9 tự nhiên, không bị méo/kéo dài trên Mobile) */}
+      {/* Interactive Sanctuary Stage Container (Giữ nguyên tỉ lệ 16:9 tự nhiên, điều hướng mượt mà, tối ưu Mobile) */}
       <div
-        className="absolute top-0 h-full transition-transform duration-300 ease-out"
+        className={`absolute top-0 h-full ${
+          isDragging ? 'transition-none' : 'transition-transform duration-500 ease-out'
+        }`}
         style={{
           width: 'max(100vw, calc(100vh * 16 / 9))',
           left: '50%',
           transform: `translateX(-50%) translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoomLevel})`,
-          transformOrigin: '50% 50%',
+          transformOrigin: isMobile ? '50% 62%' : '50% 50%',
         }}
       >
         {/* 1. Base High-Resolution 2.5D Ancient Forest Sanctuary Painting (Khoảng đất bằng phẳng thanh tịnh) */}
@@ -298,13 +394,18 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
 
         {/* 6. 50 Natural Meditation Cushions (Tọa cụ Bồ đoàn #01 - #50) */}
         <div className="absolute inset-0 z-20">
-          {filteredSeats.map((seat) => (
+          {seats.map((seat) => (
             <MeditationSeatNode
               key={seat.id}
               seat={seat}
               currentUserId={currentUserId}
               isSelected={selectedSeatId === seat.id}
-              onSelectSeat={onSelectSeat}
+              onSelectSeat={(s) => {
+                // If the pointer dragged, do not open seat modal
+                if (!hasMovedRef.current) {
+                  onSelectSeat(s);
+                }
+              }}
             />
           ))}
         </div>
@@ -314,9 +415,174 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
       {enableNatureAnimations && (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 pointer-events-none z-30"
+          className="absolute inset-0 pointer-events-none z-25"
         />
       )}
+
+      {/* 8. Mobile Edge Indicators: Báo hiệu khi có người chơi ở Cánh Tả hoặc Cánh Hữu */}
+      {isMobile && leftOccupants.length > 0 && cameraMode !== 'LEFT' && (
+        <button
+          type="button"
+          onClick={() => setCameraPreset('LEFT')}
+          className="fixed left-2 top-[44%] -translate-y-1/2 z-30 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/50 text-[#ffe3a3] text-[10px] shadow-2xl transition-all cursor-pointer pointer-events-auto"
+          title="Nhấn để xem các đạo hữu đang ngồi bên Cánh Tả"
+        >
+          <span className="text-[#d9a75a] font-bold">‹</span>
+          <Users className="w-3 h-3 text-[#d9a75a]" />
+          <span>{leftOccupants.length} Cánh Tả</span>
+        </button>
+      )}
+
+      {isMobile && rightOccupants.length > 0 && cameraMode !== 'RIGHT' && (
+        <button
+          type="button"
+          onClick={() => setCameraPreset('RIGHT')}
+          className="fixed right-2 top-[44%] -translate-y-1/2 z-30 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/50 text-[#ffe3a3] text-[10px] shadow-2xl transition-all cursor-pointer pointer-events-auto"
+          title="Nhấn để xem các đạo hữu đang ngồi bên Cánh Hữu"
+        >
+          <Users className="w-3 h-3 text-[#d9a75a]" />
+          <span>{rightOccupants.length} Cánh Hữu</span>
+          <span className="text-[#d9a75a] font-bold">›</span>
+        </button>
+      )}
+
+      {/* 9. Floating Sanctuary Camera Control Bar (Đài Quan Sát Góc Nhìn Thiền Sư & Người Chơi) */}
+      <div className="fixed bottom-16 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[94vw]">
+        <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/30 shadow-2xl text-xs">
+          {/* Toàn Cảnh (Bao quát cả Thiền Sư và toàn bộ hành giả) */}
+          <button
+            type="button"
+            onClick={() => setCameraPreset('OVERVIEW')}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+              cameraMode === 'OVERVIEW'
+                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
+                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
+            }`}
+            title="Góc nhìn toàn cảnh (hiển thị đầy đủ Thiền Sư và toàn thể đạo hữu)"
+          >
+            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+            <span>Toàn cảnh</span>
+          </button>
+
+          {/* Thiền Sư An Trú */}
+          <button
+            type="button"
+            onClick={() => setCameraPreset('MASTER')}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+              cameraMode === 'MASTER'
+                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
+                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
+            }`}
+            title="Tiến gần chiêm bái Thiền Sư An Trú dưới cội Bồ đề"
+          >
+            <span>🧘</span>
+            <span>Thiền Sư</span>
+          </button>
+
+          {/* Cánh Tả */}
+          <button
+            type="button"
+            onClick={() => setCameraPreset('LEFT')}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+              cameraMode === 'LEFT'
+                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
+                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
+            }`}
+            title="Quan sát khu vực Cánh Tả"
+          >
+            <span className="hidden sm:inline">👈</span>
+            <span>Cánh Tả</span>
+            {leftOccupants.length > 0 && (
+              <span
+                className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
+                  cameraMode === 'LEFT'
+                    ? 'bg-[#121f14] text-[#d9a75a]'
+                    : 'bg-[#d9a75a]/35 text-[#ffe3a3]'
+                }`}
+              >
+                {leftOccupants.length}
+              </span>
+            )}
+          </button>
+
+          {/* Cánh Hữu */}
+          <button
+            type="button"
+            onClick={() => setCameraPreset('RIGHT')}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+              cameraMode === 'RIGHT'
+                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
+                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
+            }`}
+            title="Quan sát khu vực Cánh Hữu"
+          >
+            <span>Cánh Hữu</span>
+            <span className="hidden sm:inline">👉</span>
+            {rightOccupants.length > 0 && (
+              <span
+                className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
+                  cameraMode === 'RIGHT'
+                    ? 'bg-[#121f14] text-[#d9a75a]'
+                    : 'bg-[#d9a75a]/35 text-[#ffe3a3]'
+                }`}
+              >
+                {rightOccupants.length}
+              </span>
+            )}
+          </button>
+
+          {/* Tọa Vị Của Tôi (Nếu đang ngồi) */}
+          {mySeat && (
+            <button
+              type="button"
+              onClick={() => setCameraPreset('MY_SEAT')}
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+                cameraMode === 'MY_SEAT'
+                  ? 'bg-[#2a452a] text-[#ffe7b3] border border-[#d9a75a] shadow-md font-semibold'
+                  : 'text-[#ffe7b3] bg-[#2a452a]/60 hover:bg-[#2a452a]/90'
+              }`}
+              title={`Trở về tọa cụ của tôi (#${mySeat.code})`}
+            >
+              <span>📍</span>
+              <span className="hidden xs:inline">Chỗ tôi</span>
+              <span className="font-mono text-[10px]">#{mySeat.code}</span>
+            </button>
+          )}
+
+          {/* Divider */}
+          <div className="h-3.5 w-[1px] bg-white/15 mx-0.5 hidden sm:block" />
+
+          {/* Manual Zoom Controls (Desktop & Quick Zoom) */}
+          <div className="hidden sm:flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setZoomLevel((z) => Math.max(0.55, z - 0.15))}
+              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
+              title="Thu nhỏ góc nhìn"
+            >
+              <ZoomOut className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setZoomLevel((z) => Math.min(1.8, z + 0.15))}
+              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
+              title="Phóng to góc nhìn"
+            >
+              <ZoomIn className="w-3.5 h-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCameraPreset('OVERVIEW');
+              }}
+              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
+              title="Đặt lại góc nhìn mặc định"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

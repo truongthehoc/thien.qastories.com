@@ -109,7 +109,7 @@ export const ZenMasterCenter: React.FC<ZenMasterCenterProps> = ({
             <img
               src={zenMasterUrl}
               alt="Thiền Sư An Trú tĩnh tọa dưới cội Bồ đề"
-              className="w-32 h-auto md:w-40 lg:w-44 object-contain pointer-events-none select-none drop-shadow-[0_12px_22px_rgba(0,0,0,0.85)] filter transition-all duration-300 group-hover:drop-shadow-[0_0_24px_rgba(255,230,150,0.65)] group-hover:brightness-105"
+              className="w-36 sm:w-40 md:w-44 lg:w-48 h-auto object-contain pointer-events-none select-none drop-shadow-[0_12px_22px_rgba(0,0,0,0.85)] filter transition-all duration-300 group-hover:drop-shadow-[0_0_24px_rgba(255,230,150,0.65)] group-hover:brightness-105"
               draggable={false}
             />
           </motion.div>

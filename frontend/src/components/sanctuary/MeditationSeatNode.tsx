@@ -82,10 +82,10 @@ export const MeditationSeatNode: React.FC<MeditationSeatNodeProps> = ({
         {/* Name Label above character when occupied */}
         {isOccupied && seat.occupant && (
           <div
-            className={`mb-0.5 px-2 py-[1px] rounded-full text-[9px] md:text-[10px] font-medium whitespace-nowrap shadow-md transition-all ${
+            className={`mb-0.5 px-2.5 py-[1.5px] rounded-full text-[10px] md:text-[11px] font-medium whitespace-nowrap shadow-lg backdrop-blur-sm transition-all ${
               isCurrentUser
-                ? 'bg-[#2a3f28]/95 text-[#ffe7b3] border border-[#d9a75a]/75 ring-1 ring-[#d9a75a]/30'
-                : 'bg-[#101c12]/85 text-[#e9ece6] border border-[#8ea885]/35'
+                ? 'bg-[#2a3f28]/95 text-[#ffe7b3] border border-[#d9a75a]/85 ring-1 ring-[#d9a75a]/40 scale-105'
+                : 'bg-[#101c12]/90 text-[#f0f4ef] border border-[#8ea885]/45'
             }`}
           >
             <span>{seat.occupant.displayName}</span>

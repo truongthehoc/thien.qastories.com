@@ -109,7 +109,7 @@ export const PractitionerAvatar: React.FC<PractitionerAvatarProps> = ({
                 (e.target as HTMLImageElement).src = fallbackImageSrc;
               }}
               alt={isBackView ? 'Hành giả quay lưng tọa thiền' : 'Hành giả tọa thiền hướng vào trung tâm'}
-              className="w-16 h-auto md:w-20 lg:w-22 object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
               draggable={false}
             />
           </motion.div>
@@ -148,7 +148,7 @@ export const PractitionerAvatar: React.FC<PractitionerAvatarProps> = ({
                 (e.target as HTMLImageElement).src = fallbackImageSrc;
               }}
               alt="Hành giả đảnh lễ Thiền sư"
-              className="w-16 h-auto md:w-20 lg:w-22 object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
               draggable={false}
             />
           </motion.div>
@@ -179,7 +179,7 @@ export const PractitionerAvatar: React.FC<PractitionerAvatarProps> = ({
                 (e.target as HTMLImageElement).src = fallbackImageSrc;
               }}
               alt="Hành giả quỳ chắp tay"
-              className="w-16 h-auto md:w-20 lg:w-22 object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
               draggable={false}
             />
           </motion.div>
@@ -209,7 +209,7 @@ export const PractitionerAvatar: React.FC<PractitionerAvatarProps> = ({
                 (e.target as HTMLImageElement).src = fallbackImageSrc;
               }}
               alt="Hành giả đứng trang nghiêm"
-              className="w-16 h-auto md:w-20 lg:w-22 object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
               draggable={false}
             />
           </motion.div>
