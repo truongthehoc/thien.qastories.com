@@ -83,138 +83,136 @@ export const PractitionerAvatar: React.FC<PractitionerAvatarProps> = ({
         }}
       />
 
-      <AnimatePresence mode="wait">
-        {/* 1. NGỒI KIẾT GIÀ CHÂN THỰC (Full Lotus - Inward Facing or Rear View) */}
-        {(currentPose === 'FULL_LOTUS' || currentPose === 'HALF_LOTUS') && (
-          <motion.div
-            key={`photorealistic_lotus_${facingDirection}`}
-            style={{
-              transformOrigin: '50% 90%',
-              scaleX: flipFactor,
+      {/* 1. NGỒI KIẾT GIÀ CHÂN THỰC (Full Lotus - Inward Facing or Rear View) */}
+      {(currentPose === 'FULL_LOTUS' || currentPose === 'HALF_LOTUS') && (
+        <motion.div
+          key={`photorealistic_lotus_${facingDirection}`}
+          style={{
+            transformOrigin: '50% 90%',
+            scaleX: flipFactor,
+          }}
+          animate={{
+            y: [0, -1.5, 0],
+            scaleY: [1, 1.018, 1],
+          }}
+          transition={{
+            duration: 5.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="relative flex items-center justify-center"
+        >
+          <img
+            src={avatarImageSrc}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = fallbackImageSrc;
             }}
-            animate={{
-              y: [0, -1.5, 0],
-              scaleY: [1, 1.018, 1],
-            }}
-            transition={{
-              duration: 5.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative flex items-center justify-center"
-          >
-            <img
-              src={avatarImageSrc}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = fallbackImageSrc;
-              }}
-              alt={isBackView ? 'Hành giả quay lưng tọa thiền' : 'Hành giả tọa thiền hướng vào trung tâm'}
-              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
-              draggable={false}
-            />
-          </motion.div>
-        )}
+            alt={isBackView ? 'Hành giả quay lưng tọa thiền' : 'Hành giả tọa thiền hướng vào trung tâm'}
+            className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+            draggable={false}
+          />
+        </motion.div>
+      )}
 
-        {/* 2. ĐẢNH LỄ HƯỚNG VỀ THIỀN SƯ (Bowing - Smooth Prostration) */}
-        {currentPose === 'BOWING' && (
-          <motion.div
-            key={`photorealistic_bowing_${facingDirection}`}
-            style={{
-              transformOrigin: '50% 90%',
-              scaleX: flipFactor,
+      {/* 2. ĐẢNH LỄ HƯỚNG VỀ THIỀN SƯ (Bowing - Smooth Prostration) */}
+      {currentPose === 'BOWING' && (
+        <motion.div
+          key={`photorealistic_bowing_${facingDirection}`}
+          style={{
+            transformOrigin: '50% 90%',
+            scaleX: flipFactor,
+          }}
+          animate={
+            isBackView
+              ? {
+                  y: [0, 8, 11, 8, 0],
+                  scaleY: [1, 0.90, 0.85, 0.90, 1],
+                }
+              : {
+                  rotate: [0, 38, 42, 38, 0],
+                  y: [0, 8, 10, 8, 0],
+                  scaleY: [1, 0.92, 0.88, 0.92, 1],
+                }
+          }
+          transition={{
+            duration: 4.2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="relative flex items-center justify-center"
+        >
+          <img
+            src={avatarImageSrc}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = fallbackImageSrc;
             }}
-            animate={
-              isBackView
-                ? {
-                    y: [0, 8, 11, 8, 0],
-                    scaleY: [1, 0.90, 0.85, 0.90, 1],
-                  }
-                : {
-                    rotate: [0, 38, 42, 38, 0],
-                    y: [0, 8, 10, 8, 0],
-                    scaleY: [1, 0.92, 0.88, 0.92, 1],
-                  }
-            }
-            transition={{
-              duration: 4.2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative flex items-center justify-center"
-          >
-            <img
-              src={avatarImageSrc}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = fallbackImageSrc;
-              }}
-              alt="Hành giả đảnh lễ Thiền sư"
-              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
-              draggable={false}
-            />
-          </motion.div>
-        )}
+            alt="Hành giả đảnh lễ Thiền sư"
+            className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+            draggable={false}
+          />
+        </motion.div>
+      )}
 
-        {/* 3. QUỲ CHẮP TAY (Kneeling Anjali) */}
-        {currentPose === 'KNEELING_ANJALI' && (
-          <motion.div
-            key={`photorealistic_kneeling_${facingDirection}`}
-            style={{
-              transformOrigin: '50% 90%',
-              scaleX: flipFactor,
+      {/* 3. QUỲ CHẮP TAY (Kneeling Anjali) */}
+      {currentPose === 'KNEELING_ANJALI' && (
+        <motion.div
+          key={`photorealistic_kneeling_${facingDirection}`}
+          style={{
+            transformOrigin: '50% 90%',
+            scaleX: flipFactor,
+          }}
+          animate={{
+            y: [0, -1, 0],
+            scaleY: [0.98, 1, 0.98],
+          }}
+          transition={{
+            duration: 4.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="relative flex items-center justify-center"
+        >
+          <img
+            src={avatarImageSrc}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = fallbackImageSrc;
             }}
-            animate={{
-              y: [0, -1, 0],
-              scaleY: [0.98, 1, 0.98],
-            }}
-            transition={{
-              duration: 4.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative flex items-center justify-center"
-          >
-            <img
-              src={avatarImageSrc}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = fallbackImageSrc;
-              }}
-              alt="Hành giả quỳ chắp tay"
-              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
-              draggable={false}
-            />
-          </motion.div>
-        )}
+            alt="Hành giả quỳ chắp tay"
+            className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+            draggable={false}
+          />
+        </motion.div>
+      )}
 
-        {/* 4. ĐỨNG TRANG NGHIÊM (Standing Anjali) */}
-        {currentPose === 'STANDING_ANJALI' && (
-          <motion.div
-            key={`photorealistic_standing_${facingDirection}`}
-            style={{
-              transformOrigin: '50% 90%',
-              scaleX: flipFactor,
+      {/* 4. ĐỨNG TRANG NGHIÊM (Standing Anjali) */}
+      {currentPose === 'STANDING_ANJALI' && (
+        <motion.div
+          key={`photorealistic_standing_${facingDirection}`}
+          style={{
+            transformOrigin: '50% 90%',
+            scaleX: flipFactor,
+          }}
+          animate={{
+            y: [0, -1, 0],
+          }}
+          transition={{
+            duration: 4.0,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="relative flex items-center justify-center -translate-y-2"
+        >
+          <img
+            src={avatarImageSrc}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = fallbackImageSrc;
             }}
-            animate={{
-              y: [0, -1, 0],
-            }}
-            transition={{
-              duration: 4.0,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative flex items-center justify-center -translate-y-2"
-          >
-            <img
-              src={avatarImageSrc}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = fallbackImageSrc;
-              }}
-              alt="Hành giả đứng trang nghiêm"
-              className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
-              draggable={false}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            alt="Hành giả đứng trang nghiêm"
+            className="w-[70px] sm:w-[74px] md:w-20 lg:w-22 h-auto object-contain pointer-events-none select-none drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
+            draggable={false}
+          />
+        </motion.div>
+      )}
     </div>
   );
 };

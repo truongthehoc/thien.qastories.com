@@ -47,7 +47,7 @@ export const ActiveMeditationHUD: React.FC<ActiveMeditationHUDProps> = ({
       initial={{ opacity: 0, y: -8, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -8, scale: 0.95 }}
-      className="fixed top-14 sm:top-16 right-2 sm:right-6 z-30 pointer-events-auto select-none opacity-40 hover:opacity-100 transition-all duration-300"
+      className="fixed top-14 sm:top-16 right-2 sm:right-6 z-30 pointer-events-auto select-none opacity-90 sm:opacity-75 sm:hover:opacity-100 transition-all duration-300"
     >
       {/* Mobile: dạng dọc (flex-col) bên phải | Tablet/Desktop: dạng ngang gọn (sm:flex-row) */}
       <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 p-2 sm:px-3 sm:py-1.5 rounded-2xl bg-black/45 hover:bg-black/80 backdrop-blur-md border border-white/10 hover:border-[#d9a75a]/40 shadow-xl text-xs text-[#fff6dc]">

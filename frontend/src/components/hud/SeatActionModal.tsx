@@ -51,7 +51,7 @@ export const SeatActionModal: React.FC<SeatActionModalProps> = ({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 10, scale: 0.95 }}
         transition={{ duration: 0.25 }}
-        className="relative w-full max-w-md rounded-3xl sanctuary-glass p-6 shadow-[0_20px_60px_rgba(0,0,0,0.85)]"
+        className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl sanctuary-glass p-5 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.85)]"
       >
         <button
           type="button"

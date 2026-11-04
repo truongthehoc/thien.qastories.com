@@ -11,6 +11,7 @@ export interface SeatOccupant {
   targetMinutes?: number;
   startedAt: string;
   expectedEndAt?: string;
+  sessionId?: string;
 }
 
 export interface SanctuarySeat {

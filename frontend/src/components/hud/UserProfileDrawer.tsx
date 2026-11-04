@@ -46,12 +46,13 @@ export const UserProfileDrawer: React.FC<UserProfileDrawerProps> = ({
         <button
           type="button"
           onClick={handleOpen}
-          className="flex items-center gap-3 px-4 py-2 rounded-2xl sanctuary-glass hover:border-[#d9a75a]/55 shadow-xl transition-all"
+          className="flex items-center gap-1.5 sm:gap-3 p-1.5 sm:px-4 sm:py-2 rounded-2xl sanctuary-glass hover:border-[#d9a75a]/55 shadow-xl transition-all cursor-pointer"
+          title={`${user.displayName} • ${user.totalPoints} điểm an trú`}
         >
-          <div className="w-8 h-8 rounded-xl bg-[#d9a75a]/20 border border-[#d9a75a]/45 flex items-center justify-center text-[#ffe3a3] font-serif font-bold text-sm">
+          <div className="w-8 h-8 rounded-xl bg-[#d9a75a]/25 border border-[#d9a75a]/50 flex items-center justify-center text-[#ffe3a3] font-serif font-bold text-sm shrink-0">
             {user.displayName.charAt(0).toUpperCase()}
           </div>
-          <div className="text-left">
+          <div className="text-left hidden sm:block">
             <p className="text-xs font-semibold text-[#fff6dc] leading-tight">
               {user.displayName}
             </p>

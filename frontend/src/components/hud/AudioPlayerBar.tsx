@@ -271,11 +271,11 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
       </div>
 
       {/* Mobile: Nút bấm Lịch phát nhỏ gọn bên trái để không che khuất cội cây và thiền sư */}
-      <div className="block sm:hidden fixed left-2.5 top-1/2 -translate-y-1/2 z-30 pointer-events-auto select-none opacity-40 hover:opacity-100 transition-all duration-300">
+      <div className="block sm:hidden fixed left-2 top-1/2 -translate-y-1/2 z-30 pointer-events-auto select-none opacity-75 hover:opacity-100 transition-all duration-300">
         <button
           type="button"
           onClick={() => setShowScheduleModal(true)}
-          className="flex flex-col items-center gap-1 p-2 rounded-2xl bg-black/45 hover:bg-black/75 backdrop-blur-md border border-white/10 text-[#ffe3a3] text-[10px] shadow-xl"
+          className="flex flex-col items-center gap-1 p-2 rounded-2xl bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/15 text-[#ffe3a3] text-[10px] shadow-xl cursor-pointer"
           title="Xem Lịch phát thời khóa"
         >
           <Clock className="w-4 h-4 text-[#d9a75a]" />
@@ -286,14 +286,14 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
         </button>
       </div>
 
-      {/* 2. GÓC DƯỚI BÊN TRÁI: Thanh điều chỉnh âm lượng mờ chỉ sáng khi chọn vào */}
-      <div className="fixed bottom-4 left-4 z-30 pointer-events-auto select-none opacity-40 hover:opacity-100 transition-all duration-300">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 hover:bg-black/75 backdrop-blur-md border border-white/10 shadow-lg text-[#fff6dc]">
+      {/* 2. GÓC DƯỚI BÊN TRÁI: Thanh điều chỉnh âm lượng */}
+      <div className="fixed bottom-3 left-3 z-30 pointer-events-auto select-none opacity-80 sm:opacity-45 sm:hover:opacity-100 transition-all duration-300">
+        <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/15 shadow-lg text-[#fff6dc]">
           {/* Mute/Unmute Icon Button */}
           <button
             type="button"
             onClick={handleToggleMute}
-            className="p-1 rounded-full text-[#ffe3a3] hover:text-white transition-colors"
+            className="p-1 rounded-full text-[#ffe3a3] hover:text-white transition-colors cursor-pointer"
             title={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
             aria-label={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
           >
@@ -317,7 +317,7 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
             }}
             aria-label="Âm lượng"
             title={`Âm lượng: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
-            className="w-16 sm:w-20 h-1 accent-[#d9a75a] bg-white/25 rounded-full cursor-pointer hover:bg-white/40 transition-all"
+            className="w-12 sm:w-20 h-1 accent-[#d9a75a] bg-white/25 rounded-full cursor-pointer hover:bg-white/40 transition-all"
           />
         </div>
       </div>

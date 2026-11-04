@@ -447,13 +447,13 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
       )}
 
       {/* 9. Floating Sanctuary Camera Control Bar (Đài Quan Sát Góc Nhìn Thiền Sư & Người Chơi) */}
-      <div className="fixed bottom-16 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[94vw]">
-        <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/30 shadow-2xl text-xs">
+      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[96vw]">
+        <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/35 shadow-2xl text-xs">
           {/* Toàn Cảnh (Bao quát cả Thiền Sư và toàn bộ hành giả) */}
           <button
             type="button"
             onClick={() => setCameraPreset('OVERVIEW')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
               cameraMode === 'OVERVIEW'
                 ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
                 : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
@@ -468,7 +468,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
           <button
             type="button"
             onClick={() => setCameraPreset('MASTER')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
               cameraMode === 'MASTER'
                 ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
                 : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
@@ -483,15 +483,16 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
           <button
             type="button"
             onClick={() => setCameraPreset('LEFT')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
               cameraMode === 'LEFT'
                 ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
                 : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
             }`}
             title="Quan sát khu vực Cánh Tả"
           >
-            <span className="hidden sm:inline">👈</span>
-            <span>Cánh Tả</span>
+            <span>👈</span>
+            <span className="hidden sm:inline">Cánh </span>
+            <span>Tả</span>
             {leftOccupants.length > 0 && (
               <span
                 className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
@@ -509,15 +510,16 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
           <button
             type="button"
             onClick={() => setCameraPreset('RIGHT')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
               cameraMode === 'RIGHT'
                 ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
                 : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
             }`}
             title="Quan sát khu vực Cánh Hữu"
           >
-            <span>Cánh Hữu</span>
-            <span className="hidden sm:inline">👉</span>
+            <span className="hidden sm:inline">Cánh </span>
+            <span>Hữu</span>
+            <span>👉</span>
             {rightOccupants.length > 0 && (
               <span
                 className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
@@ -536,7 +538,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
             <button
               type="button"
               onClick={() => setCameraPreset('MY_SEAT')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full transition-all text-[11px] sm:text-xs font-medium cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
                 cameraMode === 'MY_SEAT'
                   ? 'bg-[#2a452a] text-[#ffe7b3] border border-[#d9a75a] shadow-md font-semibold'
                   : 'text-[#ffe7b3] bg-[#2a452a]/60 hover:bg-[#2a452a]/90'
@@ -544,8 +546,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
               title={`Trở về tọa cụ của tôi (#${mySeat.code})`}
             >
               <span>📍</span>
-              <span className="hidden xs:inline">Chỗ tôi</span>
-              <span className="font-mono text-[10px]">#{mySeat.code}</span>
+              <span className="font-mono text-[9px] sm:text-[10px]">#{mySeat.code}</span>
             </button>
           )}
 

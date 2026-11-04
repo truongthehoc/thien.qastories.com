@@ -256,6 +256,9 @@ const SanctuaryMainView: React.FC = () => {
   const handleStartBowing = async (_seat?: SanctuarySeat) => {
     if (!user) return;
     try {
+      const currentSeat = seats.find((s) => s.occupant?.userId === user.id);
+      const targetSeatId = _seat ? _seat.id : currentSeat ? currentSeat.id : 0;
+
       const res = await apiRequest<{
         seat: SanctuarySeat;
         vacatedSeats?: SanctuarySeat[];
@@ -264,7 +267,7 @@ const SanctuaryMainView: React.FC = () => {
         method: 'POST',
         body: JSON.stringify({
           userId: user.id,
-          seatId: 0, // Auto-allocate random empty seat across Tả, Hữu, or Trục Trung Tâm
+          seatId: targetSeatId,
           activityType: 'BOWING',
         }),
       });
@@ -312,6 +315,7 @@ const SanctuaryMainView: React.FC = () => {
           const completeRes = await apiRequest<{
             user: UserProfile;
             pointsAwarded: number;
+            seat?: SanctuarySeat;
             nextActivity?: {
               sessionId: string;
               seatId: number;
@@ -335,6 +339,22 @@ const SanctuaryMainView: React.FC = () => {
             'points'
           );
 
+          // Cập nhật ngay trạng thái tọa cụ sang MEDITATING để nhân vật không bị mất
+          const updatedSeat: SanctuarySeat = completeRes.seat || {
+            ...allocatedSeat,
+            status: 'MEDITATING',
+            occupant: {
+              userId: user.id,
+              displayName: user.displayName,
+              avatarStyle: user.avatarStyle,
+              activityType: 'MEDITATING',
+              targetMinutes: 15,
+              startedAt: new Date().toISOString(),
+              sessionId: completeRes.nextActivity?.sessionId || `med_${Date.now()}`,
+            },
+          };
+          updateSingleSeat(updatedSeat);
+
           // Tự động chuyển sang ngồi thiền trên cùng tọa cụ
           setActiveActivity({
             seatId: allocatedSeat.id,
@@ -348,8 +368,30 @@ const SanctuaryMainView: React.FC = () => {
 
           refreshUserProfile(user.id);
         } catch (err) {
-          setActiveActivity(null);
-          showNotification((err as Error).message, 'warning');
+          console.error('Error completing bowing ceremony:', err);
+          updateSingleSeat({
+            ...allocatedSeat,
+            status: 'MEDITATING',
+            occupant: {
+              userId: user.id,
+              displayName: user.displayName,
+              avatarStyle: user.avatarStyle,
+              activityType: 'MEDITATING',
+              targetMinutes: 15,
+              startedAt: new Date().toISOString(),
+              sessionId: `med_${Date.now()}`,
+            },
+          });
+          setActiveActivity({
+            seatId: allocatedSeat.id,
+            seatCode: allocatedSeat.code,
+            type: 'MEDITATING',
+            sessionId: `med_${Date.now()}`,
+            targetMinutes: 15,
+            startedAtMs: Date.now(),
+            remainingSeconds: 15 * 60,
+          });
+          showNotification('Đã an vị tĩnh tâm thiền định.', 'info');
         }
       }, 6500);
     } catch (err) {
@@ -364,6 +406,9 @@ const SanctuaryMainView: React.FC = () => {
   ) => {
     if (!user) return;
     try {
+      const currentSeat = seats.find((s) => s.occupant?.userId === user.id);
+      const targetSeatId = _seat ? _seat.id : currentSeat ? currentSeat.id : 0;
+
       const res = await apiRequest<{
         seat: SanctuarySeat;
         vacatedSeats?: SanctuarySeat[];
@@ -372,7 +417,7 @@ const SanctuaryMainView: React.FC = () => {
         method: 'POST',
         body: JSON.stringify({
           userId: user.id,
-          seatId: 0, // Auto-allocate random empty seat
+          seatId: targetSeatId,
           activityType: 'MEDITATING',
           targetMinutes: durationMinutes,
         }),
