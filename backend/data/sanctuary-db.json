@@ -1,0 +1,2156 @@
+{
+  "seats": [
+    {
+      "id": 1,
+      "code": "01",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 1,
+      "posX": 39.5,
+      "posY": 61.5,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 2,
+      "code": "02",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 1,
+      "posX": 32,
+      "posY": 62,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 3,
+      "code": "03",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 1,
+      "posX": 24.5,
+      "posY": 62.8,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 4,
+      "code": "04",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 1,
+      "posX": 17,
+      "posY": 63.5,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 5,
+      "code": "05",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 2,
+      "posX": 42,
+      "posY": 67.2,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 6,
+      "code": "06",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 2,
+      "posX": 34,
+      "posY": 68,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 7,
+      "code": "07",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 2,
+      "posX": 26,
+      "posY": 69,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 8,
+      "code": "08",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 2,
+      "posX": 17.5,
+      "posY": 70,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 9,
+      "code": "09",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 3,
+      "posX": 43.5,
+      "posY": 73.5,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 10,
+      "code": "10",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 3,
+      "posX": 36,
+      "posY": 74.2,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 11,
+      "code": "11",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 3,
+      "posX": 28.5,
+      "posY": 75,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 12,
+      "code": "12",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 3,
+      "posX": 21,
+      "posY": 76,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 13,
+      "code": "13",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 3,
+      "posX": 13.5,
+      "posY": 77,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 14,
+      "code": "14",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 41.5,
+      "posY": 80.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 15,
+      "code": "15",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 33.5,
+      "posY": 81.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 16,
+      "code": "16",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 25,
+      "posY": 82.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 17,
+      "code": "17",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 16,
+      "posY": 83.8,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 18,
+      "code": "18",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 38,
+      "posY": 87.2,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 19,
+      "code": "19",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 29.5,
+      "posY": 88,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 20,
+      "code": "20",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 20.5,
+      "posY": 89,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 21,
+      "code": "21",
+      "zoneName": "Cánh Tả",
+      "ringIndex": 4,
+      "posX": 11.5,
+      "posY": 89.8,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 22,
+      "code": "22",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 1,
+      "posX": 48.2,
+      "posY": 63.8,
+      "scale": 0.84,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 23,
+      "code": "23",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 1,
+      "posX": 52.2,
+      "posY": 63.8,
+      "scale": 0.84,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 24,
+      "code": "24",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 2,
+      "posX": 48,
+      "posY": 70.8,
+      "scale": 0.92,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 25,
+      "code": "25",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 2,
+      "posX": 52.4,
+      "posY": 70.8,
+      "scale": 0.92,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 26,
+      "code": "26",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 3,
+      "posX": 47.8,
+      "posY": 78.5,
+      "scale": 1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 27,
+      "code": "27",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 3,
+      "posX": 52.6,
+      "posY": 78.5,
+      "scale": 1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 28,
+      "code": "28",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 4,
+      "posX": 47.6,
+      "posY": 86.8,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 29,
+      "code": "29",
+      "zoneName": "Trục Trung Tâm",
+      "ringIndex": 4,
+      "posX": 52.8,
+      "posY": 86.8,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 30,
+      "code": "30",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 1,
+      "posX": 60.5,
+      "posY": 61.5,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 31,
+      "code": "31",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 1,
+      "posX": 68,
+      "posY": 62,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 32,
+      "code": "32",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 1,
+      "posX": 75.5,
+      "posY": 62.8,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 33,
+      "code": "33",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 1,
+      "posX": 83,
+      "posY": 63.5,
+      "scale": 0.82,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 34,
+      "code": "34",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 2,
+      "posX": 58,
+      "posY": 67.2,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 35,
+      "code": "35",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 2,
+      "posX": 66,
+      "posY": 68,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 36,
+      "code": "36",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 2,
+      "posX": 74,
+      "posY": 69,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 37,
+      "code": "37",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 2,
+      "posX": 82.5,
+      "posY": 70,
+      "scale": 0.88,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 38,
+      "code": "38",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 3,
+      "posX": 56.5,
+      "posY": 73.5,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 39,
+      "code": "39",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 3,
+      "posX": 64,
+      "posY": 74.2,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 40,
+      "code": "40",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 3,
+      "posX": 71.5,
+      "posY": 75,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 41,
+      "code": "41",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 3,
+      "posX": 79,
+      "posY": 76,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 42,
+      "code": "42",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 3,
+      "posX": 86.5,
+      "posY": 77,
+      "scale": 0.95,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 43,
+      "code": "43",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 58.5,
+      "posY": 80.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 44,
+      "code": "44",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 66.5,
+      "posY": 81.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 45,
+      "code": "45",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 75,
+      "posY": 82.5,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 46,
+      "code": "46",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 84,
+      "posY": 83.8,
+      "scale": 1.02,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 47,
+      "code": "47",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 62,
+      "posY": 87.2,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 48,
+      "code": "48",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 70.5,
+      "posY": 88,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 49,
+      "code": "49",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 79.5,
+      "posY": 89,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    },
+    {
+      "id": 50,
+      "code": "50",
+      "zoneName": "Cánh Hữu",
+      "ringIndex": 4,
+      "posX": 88.5,
+      "posY": 89.8,
+      "scale": 1.1,
+      "isEnabled": true,
+      "status": "EMPTY",
+      "occupant": null
+    }
+  ],
+  "users": [
+    {
+      "id": "fellow-minh-tam",
+      "displayName": "Minh Tâm",
+      "avatarStyle": "ochre_gold",
+      "sessionToken": "seed-token-1",
+      "status": "ACTIVE",
+      "totalPoints": 145,
+      "totalMeditationMinutes": 120,
+      "totalMeditationCount": 9,
+      "totalBowingCount": 5,
+      "streakDays": 7,
+      "createdAt": "2026-11-04T01:35:48.975Z",
+      "lastSeenAt": "2026-11-04T01:35:48.975Z"
+    },
+    {
+      "id": "fellow-tinh-hai",
+      "displayName": "Tịnh Hải",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "seed-token-2",
+      "status": "ACTIVE",
+      "totalPoints": 95,
+      "totalMeditationMinutes": 80,
+      "totalMeditationCount": 6,
+      "totalBowingCount": 3,
+      "streakDays": 4,
+      "createdAt": "2026-11-04T01:35:48.975Z",
+      "lastSeenAt": "2026-11-04T01:35:48.975Z"
+    },
+    {
+      "id": "fellow-an-nhien",
+      "displayName": "An Nhiên",
+      "avatarStyle": "lam_grey",
+      "sessionToken": "seed-token-3",
+      "status": "ACTIVE",
+      "totalPoints": 65,
+      "totalMeditationMinutes": 50,
+      "totalMeditationCount": 4,
+      "totalBowingCount": 3,
+      "streakDays": 3,
+      "createdAt": "2026-11-04T01:35:48.975Z",
+      "lastSeenAt": "2026-11-04T01:35:48.975Z"
+    },
+    {
+      "id": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "90ccb83b-7ab7-4448-a179-817e092654b1",
+      "status": "ACTIVE",
+      "totalPoints": 20,
+      "totalMeditationMinutes": 10,
+      "totalMeditationCount": 1,
+      "totalBowingCount": 2,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T01:40:17.086Z",
+      "lastSeenAt": "2026-11-04T01:40:17.086Z"
+    },
+    {
+      "id": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "1aead4bb-4baf-433f-b72f-b5a0e2b6f2c0",
+      "status": "ACTIVE",
+      "totalPoints": 40,
+      "totalMeditationMinutes": 30,
+      "totalMeditationCount": 3,
+      "totalBowingCount": 2,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T02:43:42.204Z",
+      "lastSeenAt": "2026-11-04T06:35:46.407Z"
+    },
+    {
+      "id": "e73f06ab-e823-4cc7-8c21-8bfffa6ab9de",
+      "displayName": "Người Thử Nghiệm",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "9cd34617-8bba-4187-8175-4eef1e49158e",
+      "status": "ACTIVE",
+      "totalPoints": 0,
+      "totalMeditationMinutes": 0,
+      "totalMeditationCount": 0,
+      "totalBowingCount": 0,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T03:10:39.637Z",
+      "lastSeenAt": "2026-11-04T03:10:39.637Z"
+    },
+    {
+      "id": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "displayName": "Min",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "110cf81a-ddc4-4d13-aa1c-d133a7f7ebbf",
+      "status": "ACTIVE",
+      "totalPoints": 0,
+      "totalMeditationMinutes": 0,
+      "totalMeditationCount": 0,
+      "totalBowingCount": 0,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T03:12:14.519Z",
+      "lastSeenAt": "2026-11-04T03:47:47.359Z"
+    },
+    {
+      "id": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "a6b3dbb3-72d4-4698-9cb8-9a60bb35c75a",
+      "status": "ACTIVE",
+      "totalPoints": 20,
+      "totalMeditationMinutes": 20,
+      "totalMeditationCount": 2,
+      "totalBowingCount": 0,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T03:54:27.051Z",
+      "lastSeenAt": "2026-11-04T04:17:34.110Z"
+    },
+    {
+      "id": "b4787aab-b578-48fc-8feb-2080cda9690b",
+      "displayName": "Minh Tuệ",
+      "avatarStyle": "monastic_brown",
+      "sessionToken": "1de29f06-3f1b-4ff7-bc3e-7e38da33612e",
+      "status": "ACTIVE",
+      "totalPoints": 0,
+      "totalMeditationMinutes": 0,
+      "totalMeditationCount": 0,
+      "totalBowingCount": 0,
+      "streakDays": 1,
+      "createdAt": "2026-11-04T04:18:30.945Z",
+      "lastSeenAt": "2026-11-04T04:18:30.952Z"
+    }
+  ],
+  "pointTransactions": [
+    {
+      "id": "b6b9ae5c-140b-4f87-897a-e63dd10046fc",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "activityType": "MEDITATING",
+      "referenceId": "a1af043b-3dc3-4208-b8c8-af76135a0b34",
+      "idempotencyKey": "MEDITATING:a1af043b-3dc3-4208-b8c8-af76135a0b34",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #28",
+      "createdAt": "2026-11-04T06:09:44.034Z"
+    },
+    {
+      "id": "2501bbe8-e3b8-49c0-a708-4f945d4ca361",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "activityType": "MEDITATING",
+      "referenceId": "239315ec-43c6-44fd-9384-e50adfdd3fb6",
+      "idempotencyKey": "MEDITATING:239315ec-43c6-44fd-9384-e50adfdd3fb6",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #33",
+      "createdAt": "2026-11-04T05:49:47.074Z"
+    },
+    {
+      "id": "d5fe16f9-6fb6-402a-8c7c-10a15d84655f",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "activityType": "BOWING",
+      "referenceId": "20e7f8e0-7cb5-4cd5-b54c-4f55d23d6a43",
+      "idempotencyKey": "BOWING:20e7f8e0-7cb5-4cd5-b54c-4f55d23d6a43",
+      "points": 5,
+      "description": "Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #10",
+      "createdAt": "2026-11-04T05:39:43.636Z"
+    },
+    {
+      "id": "25d071d7-53ca-434c-a2d3-63fa6a99ce2f",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "activityType": "MEDITATING",
+      "referenceId": "a6db74e3-83c7-48e1-bb9f-f2c9be0de972",
+      "idempotencyKey": "MEDITATING:a6db74e3-83c7-48e1-bb9f-f2c9be0de972",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #05",
+      "createdAt": "2026-11-04T04:19:03.126Z"
+    },
+    {
+      "id": "42558b18-f03a-4536-b9ea-27218fca07f5",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "activityType": "MEDITATING",
+      "referenceId": "44271659-2067-4fb6-a4a2-a9f4399b4d52",
+      "idempotencyKey": "MEDITATING:44271659-2067-4fb6-a4a2-a9f4399b4d52",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #06",
+      "createdAt": "2026-11-04T04:04:35.147Z"
+    },
+    {
+      "id": "9ff9a606-491a-4406-a5b1-7f357d22d469",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "activityType": "BOWING",
+      "referenceId": "4d3c14d9-0aab-471d-916a-aaaa6459cb19",
+      "idempotencyKey": "BOWING:4d3c14d9-0aab-471d-916a-aaaa6459cb19",
+      "points": 5,
+      "description": "Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #24",
+      "createdAt": "2026-11-04T03:21:31.867Z"
+    },
+    {
+      "id": "0ff21a71-9e2c-4068-a656-52250ca4a1e4",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "activityType": "MEDITATING",
+      "referenceId": "e7489ec2-ff42-408d-8b47-aa110014072d",
+      "idempotencyKey": "MEDITATING:e7489ec2-ff42-408d-8b47-aa110014072d",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #24",
+      "createdAt": "2026-11-04T02:56:13.212Z"
+    },
+    {
+      "id": "64aa2a59-56a1-42be-a1c3-ec504ba83067",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "activityType": "BOWING",
+      "referenceId": "5f50760c-40d4-446a-9fe4-be169e93f199",
+      "idempotencyKey": "BOWING:5f50760c-40d4-446a-9fe4-be169e93f199",
+      "points": 5,
+      "description": "Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #22",
+      "createdAt": "2026-11-04T02:42:19.965Z"
+    },
+    {
+      "id": "46f76873-ac93-4465-b7e3-313239c3531e",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "activityType": "MEDITATING",
+      "referenceId": "26007bb6-9f73-4b5c-bab4-0fa163ccb914",
+      "idempotencyKey": "MEDITATING:26007bb6-9f73-4b5c-bab4-0fa163ccb914",
+      "points": 10,
+      "description": "Hoàn thành ngồi thiền 10 phút tại Tọa cụ #11",
+      "createdAt": "2026-11-04T02:25:16.171Z"
+    },
+    {
+      "id": "87878566-a62f-4f0e-a09d-40f0a6fed0ad",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "activityType": "BOWING",
+      "referenceId": "604020d5-4ad9-42cd-9527-391a1259e701",
+      "idempotencyKey": "BOWING:604020d5-4ad9-42cd-9527-391a1259e701",
+      "points": 5,
+      "description": "Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #31",
+      "createdAt": "2026-11-04T01:40:25.966Z"
+    }
+  ],
+  "meditationSessions": [
+    {
+      "id": "9417abc0-2cac-4659-ac33-3942d9776a74",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 9,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793758449042,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "26007bb6-9f73-4b5c-bab4-0fa163ccb914",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 11,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793758465317,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T02:25:16.171Z"
+    },
+    {
+      "id": "9a115235-acd1-468d-9930-39989538ae51",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 13,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760127303,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "4f848191-6712-40cf-9728-ce811984b98f",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 19,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760138949,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "29977b8c-bc25-4d61-b5bd-261ce00e66ef",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 23,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760145505,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "bb7cb52d-f2a7-48e6-bf76-ed7f0ed7a757",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 30,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760147293,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "c5b65a61-5175-4f2d-8ca6-664cb381688e",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 19,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760149825,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "73b06ffd-7696-4ae7-8b95-d5e8d8d25d75",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 19,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760163671,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "a4e3839d-3e10-4ced-b354-84f2aa070a0d",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 29,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760209135,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "eea1d03e-9705-4a23-8736-4d3f81c468c5",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 29,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760224781,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "40f8b17f-4688-4fa5-9a86-5ee8c8140252",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 12,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760227579,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "dc9fc2f6-210f-49c6-b2e4-94906eb9c57e",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 20,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760230563,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "903bf355-6cae-4b18-9086-581207b92cbd",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 29,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760235021,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "3bedd534-fd29-4550-99a7-0561c0f4169b",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 23,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760249613,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "0e94ce9f-09af-48bc-8378-a6c13bf29de0",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 20,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760330615,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "e7489ec2-ff42-408d-8b47-aa110014072d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 24,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793760351542,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T02:56:13.212Z"
+    },
+    {
+      "id": "7a03fff9-0de8-4391-ab11-97ad880f028b",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 19,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760975531,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "00405f91-ab69-4967-b5b6-661856b9c9b3",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 25,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760977604,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "9af27507-c117-41b8-abca-87b1a1dcb96f",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 29,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793760979966,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "ca75f999-8423-4de7-8bb8-1aa0104b373b",
+      "userId": "e73f06ab-e823-4cc7-8c21-8bfffa6ab9de",
+      "seatId": 22,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793761839640,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "de716eb2-83bd-4030-a34d-217ef45077ae",
+      "userId": "fellow-minh-tam",
+      "seatId": 1,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793761855428,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "81bf7ece-f079-4758-864d-90e81ee4d194",
+      "userId": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "seatId": 10,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793761938550,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "ae6feb58-0ed4-4249-8429-ceff3c3fc495",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 20,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793762497807,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "d04a13c0-5da0-4d3c-8917-009ec1e43029",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 27,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793762506718,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "c0177ec0-65a7-455f-a4b9-3042c61cb2ba",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 45,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793762562761,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "5a4ce298-73ef-44a4-8b50-73fcdf5e9ee5",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 45,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793762779561,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "3157257a-22fc-4ca5-b3e9-0236654f039e",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 31,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793763469510,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "4e92887e-f0d9-4cec-82bb-cc9fa089baf2",
+      "userId": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "seatId": 8,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793764109927,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "44271659-2067-4fb6-a4a2-a9f4399b4d52",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "seatId": 6,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793764475113,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T04:04:35.147Z"
+    },
+    {
+      "id": "7e1a96d3-b0f8-4c36-a05e-71d9ed98b783",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "seatId": 27,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793765093460,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "a6db74e3-83c7-48e1-bb9f-f2c9be0de972",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "seatId": 5,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793765342216,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T04:19:03.126Z"
+    },
+    {
+      "id": "5fdcbedc-bef3-4308-a397-7443bc29b815",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 12,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793770716855,
+      "pointsAwarded": 0
+    },
+    {
+      "id": "239315ec-43c6-44fd-9384-e50adfdd3fb6",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 33,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793770787038,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T05:49:47.074Z"
+    },
+    {
+      "id": "a1af043b-3dc3-4208-b8c8-af76135a0b34",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 28,
+      "targetMinutes": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793771983995,
+      "pointsAwarded": 10,
+      "completedAt": "2026-11-04T06:09:44.034Z"
+    },
+    {
+      "id": "385e48fe-f2c8-4152-860b-1f744eff165d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 5,
+      "targetMinutes": 10,
+      "status": "IN_PROGRESS",
+      "startedAtMs": 1793776706269,
+      "pointsAwarded": 0
+    }
+  ],
+  "bowingActivities": [
+    {
+      "id": "604020d5-4ad9-42cd-9527-391a1259e701",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 31,
+      "status": "COMPLETED",
+      "startedAtMs": 1793756419449,
+      "pointsAwarded": 5,
+      "completedAt": "2026-11-04T01:40:25.966Z"
+    },
+    {
+      "id": "5f50760c-40d4-446a-9fe4-be169e93f199",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "seatId": 22,
+      "status": "COMPLETED",
+      "startedAtMs": 1793760133433,
+      "pointsAwarded": 5,
+      "completedAt": "2026-11-04T02:42:19.965Z"
+    },
+    {
+      "id": "4d3c14d9-0aab-471d-916a-aaaa6459cb19",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 24,
+      "status": "COMPLETED",
+      "startedAtMs": 1793762485348,
+      "pointsAwarded": 5,
+      "completedAt": "2026-11-04T03:21:31.867Z"
+    },
+    {
+      "id": "20e7f8e0-7cb5-4cd5-b54c-4f55d23d6a43",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "seatId": 10,
+      "status": "COMPLETED",
+      "startedAtMs": 1793770777106,
+      "pointsAwarded": 5,
+      "completedAt": "2026-11-04T05:39:43.636Z"
+    }
+  ],
+  "audioTracks": [
+    {
+      "id": "e5f67670-6a1e-42ee-a666-4795b59d8dc3",
+      "title": "Lời Phật Dạy Thân Tâm Tự Tại Sống Biết Đủ Thì Cuộc Sống Mới An Lạc Và Hạnh Phúc [ZDPVpeEulXs]",
+      "description": "",
+      "category": "NHAC_THIEN",
+      "fileUrl": "/uploads/audio/1793763243424-L___i_Ph___t_D___y__Th__n_T__m_T____T___i_-_S___ng_Bi___t_______-_Th___Cu___c_S___ng_M___i_An_L___c_V___H___nh_Ph__c__ZDPVpeEulXs_.mp3",
+      "durationSeconds": 3157,
+      "sortOrder": 1,
+      "isEnabled": true,
+      "isAmbientBg": true
+    }
+  ],
+  "audioPlaylists": [
+    {
+      "id": "playlist-buoi-sang",
+      "name": "Playlist Thiền Buổi Sáng",
+      "description": "Chuỗi âm thanh suối chảy, chuông chùa và nhạc thiền",
+      "isLoop": true,
+      "gapSeconds": 5,
+      "ambientTrackId": "track-suoi-rung",
+      "isEnabled": true,
+      "trackIds": [
+        "track-suoi-rung",
+        "track-nhac-thien",
+        "track-tieng-chuong"
+      ]
+    }
+  ],
+  "audioSchedules": [
+    {
+      "id": "744d2d64-48ea-42ba-9c7c-0cb00eae8a0a",
+      "name": "Giảng",
+      "trackId": "90f74c5d-3fec-4e20-bf97-c5ca17405635",
+      "playlistId": null,
+      "startTime": "05:00",
+      "endTime": "07:00",
+      "durationMinutes": 120,
+      "sortOrder": 1,
+      "isRepeatDaily": true,
+      "gapSeconds": 5,
+      "isEnabled": true
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-default-1",
+      "title": "Lời nhắn an trú",
+      "content": "Chào mừng quý đạo hữu đến với Không gian Thiền Viện. Kính chúc quý vị thân tâm thường an lạc, an trú trong phút giây hiện tại nhiệm màu.",
+      "type": "INFO",
+      "startTime": "2026-11-04T05:10",
+      "endTime": "2027-11-04T06:10",
+      "isMarquee": true,
+      "scrollSpeed": "NORMAL",
+      "repeatIntervalMinutes": 0,
+      "durationDisplaySeconds": 30,
+      "isEnabled": true,
+      "createdAt": "2026-11-04T06:10:20.609Z"
+    }
+  ],
+  "adminAccount": {
+    "username": "admin",
+    "password": "thienvien@2026",
+    "displayName": "Ban Qu?n Tr? Thi?n Vi?n D?i Th?",
+    "email": "quantri@thienvien.org",
+    "role": "Tổng Quản Trị Viên (Super Admin)",
+    "avatarUrl": "",
+    "createdAt": "2026-11-04T06:44:46.355Z",
+    "updatedAt": "2026-11-04T06:45:12.423Z",
+    "lastLoginAt": "2026-11-04T06:44:59.430Z"
+  },
+  "settings": {
+    "sanctuaryName": "THIỀN VIÊN – Không gian an trú",
+    "adminPortalTitle": "THIỀN VIÊN - Trung Tâm Quản Trị",
+    "adminPortalSubtitle": "Không gian an trú • Ban Điều Hành",
+    "welcomeTitle": "Chào mừng bạn đến với Thiền Viên",
+    "welcomeMessage": "Giữa cuộc sống bộn bề, hãy dành một chút thời gian để trở về với sự bình an trong tâm.",
+    "backgroundUrl": "/assets/sanctuary/forest-sanctuary-bg.jpg",
+    "zenMasterUrl": "/assets/sanctuary/custom-zenMaster-1793757723912.png",
+    "practitionerLeftUrl": "/assets/sanctuary/custom-practitionerLeft-1793760157333.png",
+    "practitionerRightUrl": "/assets/sanctuary/custom-practitionerRight-1793760120168.png",
+    "practitionerCenterUrl": "/assets/sanctuary/custom-practitionerCenter-1793760122391.png",
+    "practitionerLeftFlip": false,
+    "practitionerRightFlip": false,
+    "activeSeatCount": 50,
+    "seatTimeoutSeconds": 90,
+    "bowingPoints": 5,
+    "meditation5Points": 5,
+    "meditation10Points": 10,
+    "meditation15Points": 15,
+    "meditation30Points": 30,
+    "bowCooldownSeconds": 15,
+    "enableNatureAnimations": true
+  },
+  "activityLogs": [
+    {
+      "id": "d18879ea-74e0-41b3-a6bd-e0008c2685dd",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #05",
+      "createdAt": "2026-11-04T07:18:26.269Z"
+    },
+    {
+      "id": "803f2746-dff8-4ca8-a787-98394631bf6a",
+      "action": "ADMIN_UPDATE_PROFILE",
+      "detail": "Tài khoản quản trị viên (admin) đã cập nhật thông tin thành công",
+      "createdAt": "2026-11-04T06:45:12.423Z"
+    },
+    {
+      "id": "3b41b51c-a2af-4983-b203-99356a8be730",
+      "action": "ADMIN_ANNOUNCEMENT_DELETE",
+      "detail": "Admin xóa thông báo #a268aeeb-6aa1-4fae-a18d-e0415655d754",
+      "createdAt": "2026-11-04T06:10:46.849Z"
+    },
+    {
+      "id": "04c788ab-0cc3-4258-94ca-db6b58df9ffa",
+      "action": "ADMIN_ANNOUNCEMENT_ADD",
+      "detail": "Admin thêm thông báo: Th? v�o t�m tinh l?ng, th? ra mi?ng...",
+      "createdAt": "2026-11-04T06:10:40.266Z"
+    },
+    {
+      "id": "dcb22ef3-b891-4948-a629-b981a737fb2e",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "Thích ngồi thiền: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #28 (+10 điểm)",
+      "createdAt": "2026-11-04T06:09:44.034Z"
+    },
+    {
+      "id": "7cfca180-1fe6-4550-8e71-1b32416680ae",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #28",
+      "createdAt": "2026-11-04T05:59:43.995Z"
+    },
+    {
+      "id": "053691a3-a341-4e7e-8ced-ad166c288c9d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "Thích ngồi thiền: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #33 (+10 điểm)",
+      "createdAt": "2026-11-04T05:49:47.074Z"
+    },
+    {
+      "id": "c14967ea-433a-4991-9bb5-48bc09ef550e",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T05:48:04.468Z"
+    },
+    {
+      "id": "4c9111a8-cad5-4f08-9f43-1ae860056d14",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #33",
+      "createdAt": "2026-11-04T05:39:47.038Z"
+    },
+    {
+      "id": "b553415e-b38f-4463-81c8-91b18a473d7d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "BOWING_COMPLETE",
+      "detail": "Thích ngồi thiền: Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #10 (+5 điểm)",
+      "createdAt": "2026-11-04T05:39:43.636Z"
+    },
+    {
+      "id": "673d87d7-5656-415a-90b8-7c4cd6296ed3",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "BOWING_START",
+      "detail": "Thích ngồi thiền thực hiện nghi thức đảnh lễ Thiền sư tại Tọa cụ #10",
+      "createdAt": "2026-11-04T05:39:37.106Z"
+    },
+    {
+      "id": "3e7389ce-a19a-4315-a12c-59190c94797e",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #12",
+      "createdAt": "2026-11-04T05:38:36.855Z"
+    },
+    {
+      "id": "69901569-30bc-45bb-a1a3-0407cc9f5506",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "12345: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #05 (+10 điểm)",
+      "createdAt": "2026-11-04T04:19:03.126Z"
+    },
+    {
+      "id": "ed24171e-3ecf-47d5-a844-273fd04b7d31",
+      "userId": "b4787aab-b578-48fc-8feb-2080cda9690b",
+      "displayName": "Minh Tuệ",
+      "action": "USER_JOIN",
+      "detail": "Minh Tuệ bước vào Thiền Viên",
+      "createdAt": "2026-11-04T04:18:30.945Z"
+    },
+    {
+      "id": "db520c95-9e9f-4ac0-afd2-3a3d3eee36b0",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "MEDITATION_START",
+      "detail": "12345 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #05",
+      "createdAt": "2026-11-04T04:09:02.216Z"
+    },
+    {
+      "id": "21812f53-0fe1-4428-b50f-f753b36a6f75",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "MEDITATION_START",
+      "detail": "12345 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #27",
+      "createdAt": "2026-11-04T04:04:53.460Z"
+    },
+    {
+      "id": "4b95cd25-8b08-48d6-be47-5f0aacb90ec0",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "12345: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #06 (+10 điểm)",
+      "createdAt": "2026-11-04T04:04:35.147Z"
+    },
+    {
+      "id": "7c7fd3b4-100b-4983-86ea-fcfae1a5d504",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "MEDITATION_START",
+      "detail": "12345 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #06",
+      "createdAt": "2026-11-04T03:54:35.113Z"
+    },
+    {
+      "id": "e8964a3e-d3dd-4eaf-ae0b-63b50cf21ef1",
+      "userId": "7e613ce6-b6fe-44af-9f7f-4e1ac10aa5ff",
+      "displayName": "12345",
+      "action": "USER_JOIN",
+      "detail": "12345 bước vào Thiền Viên",
+      "createdAt": "2026-11-04T03:54:27.051Z"
+    },
+    {
+      "id": "94e3620b-78ae-4d2f-8e32-9fa1fef2b7e5",
+      "userId": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "displayName": "Min",
+      "action": "MEDITATION_START",
+      "detail": "Min bắt đầu ngồi thiền (10 phút) tại Tọa cụ #08",
+      "createdAt": "2026-11-04T03:48:29.927Z"
+    },
+    {
+      "id": "25f250fc-49c1-42a0-b994-52a7a143f4aa",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #31",
+      "createdAt": "2026-11-04T03:37:49.510Z"
+    },
+    {
+      "id": "1dd26ed0-e31c-4a1c-b627-a3c7f507be50",
+      "action": "ADMIN_RELEASE_SEAT",
+      "detail": "Admin đã giải phóng Tọa cụ #01 (đạo hữu Minh Tâm)",
+      "createdAt": "2026-11-04T03:35:55.229Z"
+    },
+    {
+      "id": "a1ef7938-1d8e-422a-86de-d184d433e89f",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #23",
+      "createdAt": "2026-11-04T03:35:53.583Z"
+    },
+    {
+      "id": "0995ccb9-f340-43c3-b6e0-1755c6876c1b",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #22",
+      "createdAt": "2026-11-04T03:35:52.463Z"
+    },
+    {
+      "id": "fcafe375-4881-43ae-94df-169796cb3b6a",
+      "action": "ADMIN_SCHEDULE_ADD",
+      "detail": "Admin cập nhật lịch phát: 05:00 -> 07:00 (Giảng)",
+      "createdAt": "2026-11-04T03:34:21.868Z"
+    },
+    {
+      "id": "bbe4740c-0594-4f63-86e4-3d0f90dfb618",
+      "action": "ADMIN_AUDIO_ADD",
+      "detail": "Admin thêm bài nhạc: Lời Phật Dạy Thân Tâm Tự Tại Sống Biết Đủ Thì Cuộc Sống Mới An Lạc Và Hạnh Phúc [ZDPVpeEulXs]",
+      "createdAt": "2026-11-04T03:34:03.551Z"
+    },
+    {
+      "id": "7f135326-1621-4982-a5e4-d81f3d6c1b3b",
+      "action": "ADMIN_SCHEDULE_ADD",
+      "detail": "Admin cập nhật lịch phát: 10:00 -> 11:00 (Thời khóa Tĩnh Tâm Buổi Sáng)",
+      "createdAt": "2026-11-04T03:33:18.046Z"
+    },
+    {
+      "id": "1ff225d7-d0a5-4920-8813-5e12e65994a5",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #45",
+      "createdAt": "2026-11-04T03:26:19.561Z"
+    },
+    {
+      "id": "cf76634d-e7e0-4f91-9c0a-857584ef7e64",
+      "action": "ADMIN_AUDIO_ADD",
+      "detail": "Admin thêm bài nhạc: lời phật dạy",
+      "createdAt": "2026-11-04T03:25:21.881Z"
+    },
+    {
+      "id": "d7fb9805-b3a4-4c1c-b97c-00906ba43dbb",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #23",
+      "createdAt": "2026-11-04T03:23:04.648Z"
+    },
+    {
+      "id": "3f93fa3f-cc2a-4bb4-bab4-33b67689f656",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #22",
+      "createdAt": "2026-11-04T03:23:03.940Z"
+    },
+    {
+      "id": "83f2f6bf-2d1c-45db-b8b0-96f09defd904",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #45",
+      "createdAt": "2026-11-04T03:22:42.761Z"
+    },
+    {
+      "id": "ba3619bd-c500-4fd1-b213-0401bfb79ef2",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #43",
+      "createdAt": "2026-11-04T03:22:28.046Z"
+    },
+    {
+      "id": "49da9cf1-03e5-4b28-a1f7-b4984c130212",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #45",
+      "createdAt": "2026-11-04T03:22:27.138Z"
+    },
+    {
+      "id": "9b3c7133-3bc3-401a-b03e-5b2a04333279",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #46",
+      "createdAt": "2026-11-04T03:22:26.664Z"
+    },
+    {
+      "id": "a370b714-f06a-43eb-aefb-817b1b053f3d",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #47",
+      "createdAt": "2026-11-04T03:22:25.862Z"
+    },
+    {
+      "id": "b9412baa-b3a3-40ce-bcba-e072317026b5",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #48",
+      "createdAt": "2026-11-04T03:22:24.520Z"
+    },
+    {
+      "id": "42186b32-af6e-4b31-bd6d-1b758d8fe8d1",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #50",
+      "createdAt": "2026-11-04T03:22:23.737Z"
+    },
+    {
+      "id": "35eff52d-1dd1-43ee-af79-11b8ba6a5831",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #49",
+      "createdAt": "2026-11-04T03:22:23.237Z"
+    },
+    {
+      "id": "5031025b-05a1-40c5-a43a-ed949a460baf",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #40",
+      "createdAt": "2026-11-04T03:22:22.144Z"
+    },
+    {
+      "id": "e431d4c0-946d-448e-bbdc-e46e93ad583e",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #39",
+      "createdAt": "2026-11-04T03:22:21.592Z"
+    },
+    {
+      "id": "bf5f0466-da7d-4f6f-807e-210aa0ed3774",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #38",
+      "createdAt": "2026-11-04T03:22:21.040Z"
+    },
+    {
+      "id": "680fc645-765b-483a-ad7a-3032eb4a48f3",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #37",
+      "createdAt": "2026-11-04T03:22:20.574Z"
+    },
+    {
+      "id": "19eeac09-41be-413f-ae16-7dda5e88313e",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #36",
+      "createdAt": "2026-11-04T03:22:19.900Z"
+    },
+    {
+      "id": "87c61cd9-d26b-4b86-ae81-726ab844dd7a",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #35",
+      "createdAt": "2026-11-04T03:22:19.323Z"
+    },
+    {
+      "id": "d6f4d36c-fee3-4d7b-a055-ea72de8371b9",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #34",
+      "createdAt": "2026-11-04T03:22:18.702Z"
+    },
+    {
+      "id": "9a15a9c5-d3a5-4aa8-b852-2a579db4a189",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #41",
+      "createdAt": "2026-11-04T03:22:17.686Z"
+    },
+    {
+      "id": "0c55e1b7-4ed7-4e57-bb64-74d76d929330",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #42",
+      "createdAt": "2026-11-04T03:22:16.676Z"
+    },
+    {
+      "id": "7c9a7645-cb97-4f9a-b603-2c46714c552d",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #44",
+      "createdAt": "2026-11-04T03:22:14.874Z"
+    },
+    {
+      "id": "31f361b4-ee24-4f48-be22-14ee8c8e85e9",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #33",
+      "createdAt": "2026-11-04T03:22:13.304Z"
+    },
+    {
+      "id": "80ff1a93-b50b-4106-8439-2e437b43d428",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #31",
+      "createdAt": "2026-11-04T03:22:12.590Z"
+    },
+    {
+      "id": "da47cd5f-f2d6-45f7-9621-417c4b33a150",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #32",
+      "createdAt": "2026-11-04T03:22:12.041Z"
+    },
+    {
+      "id": "26fd542b-4919-42d4-a632-31f655405a1e",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #27",
+      "createdAt": "2026-11-04T03:21:46.718Z"
+    },
+    {
+      "id": "8e6f2a0b-2ee8-408a-95ca-5f32b828eb0a",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #20",
+      "createdAt": "2026-11-04T03:21:37.807Z"
+    },
+    {
+      "id": "e25bf08b-7198-4c45-8c5d-06fd9f011bbb",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "BOWING_COMPLETE",
+      "detail": "Thích ngồi thiền: Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #24 (+5 điểm)",
+      "createdAt": "2026-11-04T03:21:31.868Z"
+    },
+    {
+      "id": "0ee85e6f-4340-48d3-a118-80c7e69befe5",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "BOWING_START",
+      "detail": "Thích ngồi thiền thực hiện nghi thức đảnh lễ Thiền sư tại Tọa cụ #24",
+      "createdAt": "2026-11-04T03:21:25.348Z"
+    },
+    {
+      "id": "31747fd6-7d21-4c65-a247-28792ce24a21",
+      "action": "ADMIN_SCHEDULE_ADD",
+      "detail": "Admin cập nhật lịch phát: 05:00 - Thiền",
+      "createdAt": "2026-11-04T03:16:57.281Z"
+    },
+    {
+      "id": "dc4c313c-8f5e-4afc-a65c-1ee5f547ecfb",
+      "userId": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "displayName": "Min",
+      "action": "MEDITATION_START",
+      "detail": "Min bắt đầu ngồi thiền (10 phút) tại Tọa cụ #10",
+      "createdAt": "2026-11-04T03:12:18.550Z"
+    },
+    {
+      "id": "254acf62-5d07-444a-9ef3-fdc198e9374d",
+      "userId": "9ab17cbf-67b4-47ec-be90-faaa49e966e1",
+      "displayName": "Min",
+      "action": "USER_JOIN",
+      "detail": "Min bước vào Thiền Viên",
+      "createdAt": "2026-11-04T03:12:14.519Z"
+    },
+    {
+      "id": "c1f5ba51-41c1-4595-8432-93211acbcb76",
+      "userId": "fellow-minh-tam",
+      "displayName": "Minh Tâm",
+      "action": "MEDITATION_START",
+      "detail": "Minh Tâm bắt đầu ngồi thiền (10 phút) tại Tọa cụ #01",
+      "createdAt": "2026-11-04T03:10:55.428Z"
+    },
+    {
+      "id": "1e78ce20-dde5-4973-a512-782ff39901de",
+      "userId": "e73f06ab-e823-4cc7-8c21-8bfffa6ab9de",
+      "displayName": "Người Thử Nghiệm",
+      "action": "MEDITATION_START",
+      "detail": "Người Thử Nghiệm bắt đầu ngồi thiền (10 phút) tại Tọa cụ #22",
+      "createdAt": "2026-11-04T03:10:39.640Z"
+    },
+    {
+      "id": "3785b690-6144-423e-bdc8-a0fa567213e0",
+      "userId": "e73f06ab-e823-4cc7-8c21-8bfffa6ab9de",
+      "displayName": "Người Thử Nghiệm",
+      "action": "USER_JOIN",
+      "detail": "Người Thử Nghiệm bước vào Thiền Viên",
+      "createdAt": "2026-11-04T03:10:39.637Z"
+    },
+    {
+      "id": "d40d9a87-7f7c-4001-944e-147e11de0b6d",
+      "action": "ADMIN_AUDIO_ADD",
+      "detail": "Admin thêm bài nhạc: Tĩnh tâm",
+      "createdAt": "2026-11-04T03:00:11.846Z"
+    },
+    {
+      "id": "c59a984e-b187-4720-8c68-9e4fdcaf62ab",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #29",
+      "createdAt": "2026-11-04T02:56:19.966Z"
+    },
+    {
+      "id": "8951c976-3d3c-45a7-9c8e-e090a0c03202",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #25",
+      "createdAt": "2026-11-04T02:56:17.604Z"
+    },
+    {
+      "id": "2a433129-0871-4858-a6f9-67e3f2af2afd",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #19",
+      "createdAt": "2026-11-04T02:56:15.531Z"
+    },
+    {
+      "id": "6ad0127d-a23a-435b-9a82-5066572c4a55",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "Thích ngồi thiền: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #24 (+10 điểm)",
+      "createdAt": "2026-11-04T02:56:13.213Z"
+    },
+    {
+      "id": "d32f12d4-600a-495a-a165-656760902272",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #24",
+      "createdAt": "2026-11-04T02:45:51.542Z"
+    },
+    {
+      "id": "cdb8d941-69f6-4aa1-8a36-1e6224425d96",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #20",
+      "createdAt": "2026-11-04T02:45:30.615Z"
+    },
+    {
+      "id": "3dda5795-eb12-4d61-87c7-c11f0b1d48ee",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #23",
+      "createdAt": "2026-11-04T02:44:09.613Z"
+    },
+    {
+      "id": "b0d25e2c-a2e1-4355-9206-ebb10a73086b",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #29",
+      "createdAt": "2026-11-04T02:43:55.021Z"
+    },
+    {
+      "id": "710fe4be-5d38-4497-9efd-97d95155614d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #20",
+      "createdAt": "2026-11-04T02:43:50.563Z"
+    },
+    {
+      "id": "0951c2c1-accb-4a50-b654-1d4db23a4e4a",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #12",
+      "createdAt": "2026-11-04T02:43:47.579Z"
+    },
+    {
+      "id": "9ad45fb1-467f-4f89-ab72-4e41ec2bbc8d",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "MEDITATION_START",
+      "detail": "Thích ngồi thiền bắt đầu ngồi thiền (10 phút) tại Tọa cụ #29",
+      "createdAt": "2026-11-04T02:43:44.781Z"
+    },
+    {
+      "id": "566fc5d6-9a15-4231-ac56-a94269099a6a",
+      "userId": "a8663313-d4a3-4a49-bf05-6bad8d7570ff",
+      "displayName": "Thích ngồi thiền",
+      "action": "USER_JOIN",
+      "detail": "Thích ngồi thiền bước vào Thiền Viên",
+      "createdAt": "2026-11-04T02:43:42.204Z"
+    },
+    {
+      "id": "69932b9c-0b9e-45db-95a0-ac552038c133",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #29",
+      "createdAt": "2026-11-04T02:43:29.135Z"
+    },
+    {
+      "id": "faf62a93-64cd-41fe-972e-b4660262d048",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #19",
+      "createdAt": "2026-11-04T02:42:43.671Z"
+    },
+    {
+      "id": "cf49aad0-b39f-493a-af1e-6c6e3ab012e4",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:42:37.334Z"
+    },
+    {
+      "id": "b5c42afb-9be2-4b9e-8324-62cafcd74d60",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #19",
+      "createdAt": "2026-11-04T02:42:29.825Z"
+    },
+    {
+      "id": "1dc37819-8b39-4f46-ac82-b58b67362f42",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #30",
+      "createdAt": "2026-11-04T02:42:27.293Z"
+    },
+    {
+      "id": "c52cc9a1-c62a-4fe4-8585-7ede5f257cba",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #23",
+      "createdAt": "2026-11-04T02:42:25.505Z"
+    },
+    {
+      "id": "5c8e508d-e9b0-455b-b7e6-fa2d90440683",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "BOWING_COMPLETE",
+      "detail": "2124: Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #22 (+5 điểm)",
+      "createdAt": "2026-11-04T02:42:19.965Z"
+    },
+    {
+      "id": "d6788d28-1f97-4a7c-9466-60650fa368cf",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #19",
+      "createdAt": "2026-11-04T02:42:18.949Z"
+    },
+    {
+      "id": "99faf71a-d270-491a-af10-5c4c841819d0",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "BOWING_START",
+      "detail": "2124 thực hiện nghi thức đảnh lễ Thiền sư tại Tọa cụ #22",
+      "createdAt": "2026-11-04T02:42:13.433Z"
+    },
+    {
+      "id": "f2ad2dae-fa82-4456-aeb7-08347759b2dc",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #13",
+      "createdAt": "2026-11-04T02:42:07.303Z"
+    },
+    {
+      "id": "bcce7ae9-ba05-4fb5-a1ec-3bf00b5d6a0b",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:42:02.392Z"
+    },
+    {
+      "id": "a8469749-4284-4e33-901e-80bb04338d75",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:42:00.170Z"
+    },
+    {
+      "id": "650d848c-9969-4044-916f-cd045d6b9e64",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:41:55.637Z"
+    },
+    {
+      "id": "a8f9113a-6263-45ec-bdc9-f2d1701ace40",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_COMPLETE",
+      "detail": "2124: Hoàn thành ngồi thiền 10 phút tại Tọa cụ #11 (+10 điểm)",
+      "createdAt": "2026-11-04T02:25:16.171Z"
+    },
+    {
+      "id": "e25ec3b3-fb28-4f8d-a89c-ab5b22ec95eb",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #11",
+      "createdAt": "2026-11-04T02:14:25.318Z"
+    },
+    {
+      "id": "56e0d04b-7d1d-4d19-89d4-1985d0ba2987",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "MEDITATION_START",
+      "detail": "2124 bắt đầu ngồi thiền (10 phút) tại Tọa cụ #09",
+      "createdAt": "2026-11-04T02:14:09.042Z"
+    },
+    {
+      "id": "80707614-e80d-4146-93f7-88bba3004b88",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:07:31.334Z"
+    },
+    {
+      "id": "1a222ab1-2906-4306-b358-f71faec8028c",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:04:52.582Z"
+    },
+    {
+      "id": "94588160-3e9b-4e3f-ad5c-8d43f2ad6abb",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin bật Tọa cụ #21",
+      "createdAt": "2026-11-04T02:04:23.682Z"
+    },
+    {
+      "id": "724b0ccb-b56a-460f-8204-18ef2d91e33c",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #36",
+      "createdAt": "2026-11-04T02:04:20.940Z"
+    },
+    {
+      "id": "4c37152c-7c7a-46b9-88c3-976baf61bc0f",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #37",
+      "createdAt": "2026-11-04T02:04:20.281Z"
+    },
+    {
+      "id": "ce5c6961-4c21-4f1a-bd51-6e07220933c1",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #38",
+      "createdAt": "2026-11-04T02:04:19.559Z"
+    },
+    {
+      "id": "23b612ee-3359-4121-b6cf-9d744fbbd6a0",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #39",
+      "createdAt": "2026-11-04T02:04:18.835Z"
+    },
+    {
+      "id": "5963c54e-0572-4440-844f-d920d22e482b",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #40",
+      "createdAt": "2026-11-04T02:04:18.075Z"
+    },
+    {
+      "id": "6fe2308b-c7b0-4022-8dc3-e2b675104892",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #50",
+      "createdAt": "2026-11-04T02:04:17.110Z"
+    },
+    {
+      "id": "b9a05367-64e6-4447-b23d-a30e115f4a79",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #49",
+      "createdAt": "2026-11-04T02:04:16.349Z"
+    },
+    {
+      "id": "9a220ea0-bf2b-417e-bf13-aa0b4ca814d9",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #48",
+      "createdAt": "2026-11-04T02:04:15.588Z"
+    },
+    {
+      "id": "655834b7-81ed-4d6f-8319-f27eff3b314d",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #47",
+      "createdAt": "2026-11-04T02:04:14.983Z"
+    },
+    {
+      "id": "b60d0850-32bb-4b18-ac19-324646e42550",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #46",
+      "createdAt": "2026-11-04T02:04:14.477Z"
+    },
+    {
+      "id": "44330fb4-5113-4add-9497-e17c880e0f70",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #45",
+      "createdAt": "2026-11-04T02:04:13.849Z"
+    },
+    {
+      "id": "16569f71-a1b3-4ea9-ba76-837b8827dcba",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #44",
+      "createdAt": "2026-11-04T02:04:12.427Z"
+    },
+    {
+      "id": "92cbc784-912d-4da3-b0ae-2a412e662cba",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #43",
+      "createdAt": "2026-11-04T02:04:11.805Z"
+    },
+    {
+      "id": "bff00f10-ff7a-470f-a8aa-735b5512526f",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #42",
+      "createdAt": "2026-11-04T02:04:11.269Z"
+    },
+    {
+      "id": "c7eecbc6-6051-4e35-9155-c3af39b2bf03",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #41",
+      "createdAt": "2026-11-04T02:04:10.663Z"
+    },
+    {
+      "id": "2b89cd70-ab86-4a7a-9a5a-b2752ed14c1d",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #21",
+      "createdAt": "2026-11-04T02:04:09.653Z"
+    },
+    {
+      "id": "cf5a06e5-ede2-4514-8c31-71301d238cbc",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #31",
+      "createdAt": "2026-11-04T02:04:09.085Z"
+    },
+    {
+      "id": "b0a2b5a6-3246-4d32-8a98-874137353686",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #32",
+      "createdAt": "2026-11-04T02:04:08.199Z"
+    },
+    {
+      "id": "5e54d22d-0ad1-41f5-b594-32f7df6189ca",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #33",
+      "createdAt": "2026-11-04T02:04:07.577Z"
+    },
+    {
+      "id": "ed1e09c4-a6da-46fa-91b3-dd8b29731640",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #34",
+      "createdAt": "2026-11-04T02:04:06.615Z"
+    },
+    {
+      "id": "40e0a9ab-01d8-42aa-81de-8fffc338c556",
+      "action": "ADMIN_TOGGLE_SEAT",
+      "detail": "Admin tắt Tọa cụ #35",
+      "createdAt": "2026-11-04T02:04:04.464Z"
+    },
+    {
+      "id": "914298d7-e431-4eb3-b59d-039062d99965",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:02:03.913Z"
+    },
+    {
+      "id": "d71ca755-913c-45fe-a325-db1f6c801e68",
+      "action": "ADMIN_RELEASE_SEAT",
+      "detail": "Admin đã giải phóng Tọa cụ #14 (đạo hữu Tịnh Hải)",
+      "createdAt": "2026-11-04T02:02:00.157Z"
+    },
+    {
+      "id": "e81057e1-a8ba-48d9-ab97-cf6f7f575e66",
+      "action": "ADMIN_RELEASE_SEAT",
+      "detail": "Admin đã giải phóng Tọa cụ #03 (đạo hữu Minh Tâm)",
+      "createdAt": "2026-11-04T02:01:59.474Z"
+    },
+    {
+      "id": "60b4a742-ac96-49a0-be2a-56b061478135",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:01:10.135Z"
+    },
+    {
+      "id": "1c1607d1-0070-411d-93c7-aa491eccfeea",
+      "action": "ADMIN_SETTINGS_UPDATE",
+      "detail": "Admin cập nhật cấu hình hệ thống Thiền Viên",
+      "createdAt": "2026-11-04T02:01:04.112Z"
+    },
+    {
+      "id": "e566fe21-9da4-4e2a-bdbf-8c02e6f98f0e",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "BOWING_COMPLETE",
+      "detail": "2124: Hoàn thành đảnh lễ Thiền sư tại Tọa cụ #31 (+5 điểm)",
+      "createdAt": "2026-11-04T01:40:25.966Z"
+    },
+    {
+      "id": "3d32f46f-d926-486b-ad33-183b97c41a05",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "BOWING_START",
+      "detail": "2124 thực hiện nghi thức đảnh lễ Thiền sư tại Tọa cụ #31",
+      "createdAt": "2026-11-04T01:40:19.449Z"
+    },
+    {
+      "id": "940ef912-25f1-4502-a79b-6944c52deea2",
+      "userId": "654ee437-72c6-4cd1-bb75-57e3a783188c",
+      "displayName": "2124",
+      "action": "USER_JOIN",
+      "detail": "2124 bước vào Thiền Viên",
+      "createdAt": "2026-11-04T01:40:17.086Z"
+    },
+    {
+      "id": "07f1f636-5537-499a-8fce-6208e3698401",
+      "userId": "fellow-minh-tam",
+      "displayName": "Minh Tâm",
+      "action": "MEDITATION_START",
+      "detail": "Bắt đầu ngồi thiền 30 phút tại Tọa cụ #03 (Liên Hoa Nội Tâm)",
+      "createdAt": "2026-11-04T01:35:48.975Z"
+    },
+    {
+      "id": "569c4b24-d8fd-4a44-b438-8711a406ab7d",
+      "userId": "fellow-tinh-hai",
+      "displayName": "Tịnh Hải",
+      "action": "MEDITATION_START",
+      "detail": "Bắt đầu ngồi thiền 15 phút tại Tọa cụ #14 (Tùng Lâm Tĩnh Độ)",
+      "createdAt": "2026-11-04T01:35:48.975Z"
+    }
+  ],
+  "visitsToday": 24
+}

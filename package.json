@@ -1,0 +1,15 @@
+{
+  "name": "thien-vien-sanctuary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "THIỀN VIÊN – Không gian an trú (Digital Meditation Sanctuary)",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "db:generate": "npm --prefix backend run prisma:generate",
+    "db:push": "npm --prefix backend run prisma:push",
+    "db:seed": "npm --prefix backend run prisma:seed"
+  }
+}

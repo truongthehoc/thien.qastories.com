@@ -1,0 +1,313 @@
+// ============================================================================
+// THIỀN VIÊN – DIGITAL MEDITATION SANCTUARY
+// Normalized MySQL Schema (15 Core Tables)
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. users: Danh sách người tham gia
+model User {
+  id                String             @id @default(uuid()) @db.VarChar(36)
+  displayName       String             @map("display_name") @db.VarChar(80)
+  avatarStyle       String             @default("monastic_brown") @map("avatar_style") @db.VarChar(32)
+  status            String             @default("ACTIVE") @db.VarChar(20) // ACTIVE, RESTRICTED, BANNED
+  restrictionReason String?            @map("restriction_reason") @db.VarChar(255)
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  lastSeenAt        DateTime           @default(now()) @map("last_seen_at")
+
+  sessions           UserSession[]
+  seatSessions       SeatSession[]
+  meditationSessions MeditationSession[]
+  bowingActivities   BowingActivity[]
+  userPoints         UserPoint?
+  pointTransactions  PointTransaction[]
+  activityLogs       ActivityLog[]
+
+  @@index([displayName])
+  @@index([status])
+  @@index([lastSeenAt])
+  @@map("users")
+}
+
+// 2. user_sessions: Phiên truy cập có thời gian hết hạn và heartbeat
+model UserSession {
+  id             String    @id @default(uuid()) @db.VarChar(36)
+  userId         String    @map("user_id") @db.VarChar(36)
+  sessionToken   String    @unique @map("session_token") @db.VarChar(128)
+  socketId       String?   @map("socket_id") @db.VarChar(64)
+  ipAddress      String?   @map("ip_address") @db.VarChar(64)
+  userAgent      String?   @map("user_agent") @db.VarChar(255)
+  isOnline       Boolean   @default(true) @map("is_online")
+  lastHeartbeat  DateTime  @default(now()) @map("last_heartbeat")
+  expiresAt      DateTime  @map("expires_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  disconnectedAt DateTime? @map("disconnected_at")
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seatSessions       SeatSession[]
+  meditationSessions MeditationSession[]
+  bowingActivities   BowingActivity[]
+
+  @@index([userId, isOnline])
+  @@index([expiresAt])
+  @@index([lastHeartbeat])
+  @@map("user_sessions")
+}
+
+// 3. meditation_seats: 50 vị trí ngồi thiền quanh Thiền sư
+model MeditationSeat {
+  id            Int      @id // 1 -> 50
+  code          String   @unique @db.VarChar(10) // "01" -> "50"
+  zoneName      String   @map("zone_name") @db.VarChar(80)
+  ringIndex     Int      @default(1) @map("ring_index") // 1 -> 4
+  posX          Float    @map("pos_x") // Tọa độ % X trên không gian
+  posY          Float    @map("pos_y") // Tọa độ % Y trên không gian
+  scale         Float    @default(1.0)
+  isEnabled     Boolean  @default(true) @map("is_enabled")
+  currentStatus String   @default("EMPTY") @map("current_status") @db.VarChar(20) // EMPTY, MEDITATING, BOWING
+  currentUserId String?  @map("current_user_id") @db.VarChar(36)
+  occupiedSince DateTime? @map("occupied_since")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  seatSessions       SeatSession[]
+  meditationSessions MeditationSession[]
+  bowingActivities   BowingActivity[]
+
+  @@index([currentStatus])
+  @@index([isEnabled])
+  @@map("meditation_seats")
+}
+
+// 4. seat_sessions: Lịch sử chiếm lĩnh & giải phóng vị trí
+model SeatSession {
+  id            String    @id @default(uuid()) @db.VarChar(36)
+  seatId        Int       @map("seat_id")
+  userId        String    @map("user_id") @db.VarChar(36)
+  userSessionId String    @map("user_session_id") @db.VarChar(36)
+  activityType  String    @map("activity_type") @db.VarChar(20) // MEDITATING, BOWING
+  status        String    @default("ACTIVE") @db.VarChar(20) // ACTIVE, COMPLETED, RELEASED, TIMEOUT, ADMIN_RELEASED
+  startedAt     DateTime  @default(now()) @map("started_at")
+  endedAt       DateTime? @map("ended_at")
+  releaseReason String?   @map("release_reason") @db.VarChar(64)
+
+  seat        MeditationSeat @relation(fields: [seatId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userSession UserSession    @relation(fields: [userSessionId], references: [id], onDelete: Cascade)
+
+  @@index([seatId, status])
+  @@index([userId, status])
+  @@index([startedAt])
+  @@map("seat_sessions")
+}
+
+// 5. meditation_sessions: Phiên ngồi thiền (5, 10, 15, 30 phút)
+model MeditationSession {
+  id                  String    @id @default(uuid()) @db.VarChar(36)
+  userId              String    @map("user_id") @db.VarChar(36)
+  userSessionId       String    @map("user_session_id") @db.VarChar(36)
+  seatId              Int       @map("seat_id")
+  targetMinutes       Int       @map("target_minutes") // 5, 10, 15, 30
+  completedSeconds    Int       @default(0) @map("completed_seconds")
+  status              String    @default("IN_PROGRESS") @db.VarChar(20) // IN_PROGRESS, COMPLETED, CANCELLED, TIMEOUT
+  pointsAwarded       Int       @default(0) @map("points_awarded")
+  startedAt           DateTime  @default(now()) @map("started_at")
+  expectedEndAt       DateTime  @map("expected_end_at")
+  completedAt         DateTime? @map("completed_at")
+
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userSession UserSession    @relation(fields: [userSessionId], references: [id], onDelete: Cascade)
+  seat        MeditationSeat @relation(fields: [seatId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([startedAt])
+  @@index([status])
+  @@map("meditation_sessions")
+}
+
+// 6. bowing_activities: Hoạt động đảnh lễ Thiền sư (Đứng -> Quỳ -> Cúi lạy)
+model BowingActivity {
+  id            String    @id @default(uuid()) @db.VarChar(36)
+  userId        String    @map("user_id") @db.VarChar(36)
+  userSessionId String    @map("user_session_id") @db.VarChar(36)
+  seatId        Int       @map("seat_id")
+  bowCount      Int       @default(3) @map("bow_count")
+  status        String    @default("IN_PROGRESS") @db.VarChar(20) // IN_PROGRESS, COMPLETED, CANCELLED
+  pointsAwarded Int       @default(0) @map("points_awarded")
+  startedAt     DateTime  @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userSession UserSession    @relation(fields: [userSessionId], references: [id], onDelete: Cascade)
+  seat        MeditationSeat @relation(fields: [seatId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+  @@index([startedAt])
+  @@map("bowing_activities")
+}
+
+// 7. user_points: Tổng điểm tích lũy và thống kê thực hành của mỗi người dùng
+model UserPoint {
+  id                     String   @id @default(uuid()) @db.VarChar(36)
+  userId                 String   @unique @map("user_id") @db.VarChar(36)
+  totalPoints            Int      @default(0) @map("total_points")
+  totalMeditationMinutes Int      @default(0) @map("total_meditation_minutes")
+  totalMeditationCount   Int      @default(0) @map("total_meditation_count")
+  totalBowingCount       Int      @default(0) @map("total_bowing_count")
+  streakDays             Int      @default(1) @map("streak_days")
+  lastActivityAt         DateTime @default(now()) @map("last_activity_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([totalPoints(sort: Desc)])
+  @@index([totalMeditationMinutes(sort: Desc)])
+  @@map("user_points")
+}
+
+// 8. point_transactions: Lịch sử giao dịch cộng điểm có idempotencyKey chống trùng
+model PointTransaction {
+  id             String   @id @default(uuid()) @db.VarChar(36)
+  userId         String   @map("user_id") @db.VarChar(36)
+  activityType   String   @map("activity_type") @db.VarChar(32) // BOWING, MEDITATION_5, MEDITATION_10, MEDITATION_15, MEDITATION_30
+  referenceId    String   @map("reference_id") @db.VarChar(36)
+  idempotencyKey String   @unique @map("idempotency_key") @db.VarChar(80) // Chống cộng điểm trùng tuyệt đối
+  points         Int
+  description    String   @db.VarChar(255)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([referenceId])
+  @@map("point_transactions")
+}
+
+// 9. audio_tracks: Danh sách file âm thanh MP3
+model AudioTrack {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  title           String   @db.VarChar(150)
+  description     String?  @db.Text
+  category        String   @db.VarChar(40) // NHAC_THIEN, TIENG_SUOI, TIENG_MUA, TIENG_CHUONG, TUNG_KINH
+  fileUrl         String   @map("file_url") @db.VarChar(255)
+  durationSeconds Int      @default(300) @map("duration_seconds")
+  sortOrder       Int      @default(0) @map("sort_order")
+  isEnabled       Boolean  @default(true) @map("is_enabled")
+  isAmbientBg     Boolean  @default(false) @map("is_ambient_bg")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  playlistItems  PlaylistItem[]
+  audioSchedules AudioSchedule[]
+
+  @@index([category, isEnabled])
+  @@index([sortOrder])
+  @@map("audio_tracks")
+}
+
+// 10. audio_playlists: Danh sách phát nhiều bài
+model AudioPlaylist {
+  id                  String   @id @default(uuid()) @db.VarChar(36)
+  name                String   @db.VarChar(120)
+  description         String?  @db.VarChar(255)
+  isLoop              Boolean  @default(true) @map("is_loop")
+  gapSeconds          Int      @default(5) @map("gap_seconds") // Khoảng nghỉ giữa 2 bài
+  ambientTrackId      String?  @map("ambient_track_id") @db.VarChar(36)
+  isEnabled           Boolean  @default(true) @map("is_enabled")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  items          PlaylistItem[]
+  audioSchedules AudioSchedule[]
+
+  @@map("audio_playlists")
+}
+
+// 11. playlist_items: Thứ tự bài nhạc trong từng Playlist
+model PlaylistItem {
+  id                  String @id @default(uuid()) @db.VarChar(36)
+  playlistId          String @map("playlist_id") @db.VarChar(36)
+  trackId             String @map("track_id") @db.VarChar(36)
+  sortOrder           Int    @default(0) @map("sort_order")
+  playDurationSeconds Int?   @map("play_duration_seconds")
+  gapAfterSeconds     Int    @default(3) @map("gap_after_seconds")
+
+  playlist AudioPlaylist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  track    AudioTrack    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@index([playlistId, sortOrder])
+  @@map("playlist_items")
+}
+
+// 12. audio_schedules: Cài đặt lịch phát theo khung giờ (VD: 05:00 Tiếng suối, 05:30 Nhạc thiền...)
+model AudioSchedule {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  name            String   @db.VarChar(120)
+  trackId         String?  @map("track_id") @db.VarChar(36)
+  playlistId      String?  @map("playlist_id") @db.VarChar(36)
+  startTime       String   @map("start_time") @db.VarChar(8) // Định dạng "HH:mm", VD: "05:00"
+  durationMinutes Int      @default(30) @map("duration_minutes")
+  sortOrder       Int      @default(0) @map("sort_order")
+  isRepeatDaily   Boolean  @default(true) @map("is_repeat_daily")
+  gapSeconds      Int      @default(0) @map("gap_seconds")
+  isEnabled       Boolean  @default(true) @map("is_enabled")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  track    AudioTrack?    @relation(fields: [trackId], references: [id], onDelete: SetNull)
+  playlist AudioPlaylist? @relation(fields: [playlistId], references: [id], onDelete: SetNull)
+
+  @@index([startTime, isEnabled])
+  @@map("audio_schedules")
+}
+
+// 13. system_settings: Cấu hình hệ thống (Tên không gian, câu chào, quy tắc điểm, timeout...)
+model SystemSetting {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  settingKey   String   @unique @map("setting_key") @db.VarChar(80)
+  settingValue String   @map("setting_value") @db.Text
+  settingGroup String   @default("GENERAL") @map("setting_group") @db.VarChar(40)
+  description  String?  @db.VarChar(255)
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+
+// 14. admin_users: Tài khoản quản trị viên (/admin)
+model AdminUser {
+  id           String    @id @default(uuid()) @db.VarChar(36)
+  username     String    @unique @db.VarChar(60)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  fullName     String    @map("full_name") @db.VarChar(100)
+  role         String    @default("SUPER_ADMIN") @db.VarChar(32)
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("admin_users")
+}
+
+// 15. activity_logs: Nhật ký hoạt động toàn hệ thống
+model ActivityLog {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  userId       String?  @map("user_id") @db.VarChar(36)
+  action       String   @db.VarChar(64)
+  entityType   String   @map("entity_type") @db.VarChar(40)
+  entityId     String?  @map("entity_id") @db.VarChar(64)
+  metadataJson String?  @map("metadata_json") @db.Text
+  ipAddress    String?  @map("ip_address") @db.VarChar(64)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action, createdAt])
+  @@index([createdAt])
+  @@map("activity_logs")
+}

@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #0d170f;
+    color: #f4f1ea;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Natural 80-120s slow environmental sunlight and canopy cycles */
+@keyframes ambientForestCycle {
+  0%, 100% {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+  35% {
+    opacity: 0.26;
+    transform: scale(1.02);
+  }
+  70% {
+    opacity: 0.12;
+    transform: scale(0.99);
+  }
+}
+
+@keyframes godRayDrift1 {
+  0%, 100% {
+    opacity: 0.32;
+    transform: rotate(-18deg) scaleY(1) translateX(0px);
+  }
+  30% {
+    opacity: 0.52;
+    transform: rotate(-16.5deg) scaleY(1.06) translateX(12px);
+  }
+  75% {
+    opacity: 0.26;
+    transform: rotate(-19deg) scaleY(0.96) translateX(-8px);
+  }
+}
+
+@keyframes godRayDrift2 {
+  0%, 100% {
+    opacity: 0.38;
+    transform: rotate(-14deg) scaleY(1) translateX(0px);
+  }
+  45% {
+    opacity: 0.58;
+    transform: rotate(-12.5deg) scaleY(1.08) translateX(16px);
+  }
+  85% {
+    opacity: 0.30;
+    transform: rotate(-15deg) scaleY(0.98) translateX(-10px);
+  }
+}
+
+@keyframes godRayDrift3 {
+  0%, 100% {
+    opacity: 0.24;
+    transform: rotate(-22deg) scaleY(1) translateX(0px);
+  }
+  50% {
+    opacity: 0.44;
+    transform: rotate(-20deg) scaleY(1.05) translateX(14px);
+  }
+}
+
+@keyframes canopyGentleSwayLeft {
+  0%, 100% {
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(0.45deg) translate3d(3px, 1.5px, 0);
+  }
+}
+
+@keyframes canopyGentleSwayRight {
+  0%, 100% {
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(-0.35deg) translate3d(-3px, 1.2px, 0);
+  }
+}
+
+@keyframes mistDeepDrift {
+  0% {
+    transform: translate3d(-5%, 0, 0) scale(1.02);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translate3d(5%, -1.5%, 0) scale(1.08);
+    opacity: 0.34;
+  }
+  100% {
+    transform: translate3d(-5%, 0, 0) scale(1.02);
+    opacity: 0.18;
+  }
+}
+
+.animate-forest-ambient {
+  animation: ambientForestCycle 90s ease-in-out infinite;
+}
+
+.animate-godray-1 {
+  animation: godRayDrift1 26s ease-in-out infinite;
+}
+
+.animate-godray-2 {
+  animation: godRayDrift2 34s ease-in-out infinite;
+}
+
+.animate-godray-3 {
+  animation: godRayDrift3 42s ease-in-out infinite;
+}
+
+.animate-mist-deep {
+  animation: mistDeepDrift 36s ease-in-out infinite;
+}
+
+.animate-canopy-left {
+  animation: canopyGentleSwayLeft 14s ease-in-out infinite;
+}
+
+.animate-canopy-right {
+  animation: canopyGentleSwayRight 18s ease-in-out infinite;
+}
+
+/* Subtle glassmorphism for sanctuary overlays */
+.sanctuary-glass {
+  background: rgba(15, 27, 17, 0.74);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(217, 167, 90, 0.22);
+}
+
+.sanctuary-glass-light {
+  background: rgba(24, 40, 26, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 246, 220, 0.14);
+}
+
+/* Zen Smooth Announcement Marquee */
+@keyframes zenMarqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-zen-marquee {
+  display: flex;
+  width: max-content;
+  animation: zenMarqueeScroll linear infinite;
+}
+
+.animate-zen-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbar for drawers and admin */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(14, 25, 17, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(142, 168, 133, 0.35);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 167, 90, 0.6);
+}
