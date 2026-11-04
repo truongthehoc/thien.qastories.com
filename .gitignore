@@ -2,12 +2,6 @@
 node_modules/
 */node_modules/
 
-# Production builds
-dist/
-*/dist/
-build/
-*/build/
-
 # Logs & temp
 *.log
 npm-debug.log*
