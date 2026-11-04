@@ -4,6 +4,8 @@
   "private": true,
   "description": "THIỀN VIÊN – Không gian an trú (Digital Meditation Sanctuary)",
   "scripts": {
+    "start": "npm --prefix backend run start:prod",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
     "dev:backend": "npm --prefix backend run start:dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "build:backend": "npm --prefix backend run build",
