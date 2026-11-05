@@ -1177,9 +1177,15 @@ export class SanctuaryService implements OnModuleInit {
     const occupiedSeatsCount = meditatingCount + bowingCount;
     const emptySeatsCount = Math.max(0, enabledSeats.length - occupiedSeatsCount);
 
-    // Online count includes active sockets + seeded fellow practitioners
-    const activeSocketCount = Math.max(1, this.onlineConnections.size);
-    const totalOnline = Math.max(occupiedSeatsCount, activeSocketCount + 2);
+    // Đếm số người dùng thực tế đang kết nối qua Socket.IO (loại trừ trùng lặp nhiều tab của cùng 1 người)
+    const uniqueOnlineUsers = new Set<string>();
+    for (const conn of this.onlineConnections.values()) {
+      if (conn.userId) {
+        uniqueOnlineUsers.add(conn.userId);
+      }
+    }
+    const realOnlineCount = uniqueOnlineUsers.size;
+    const totalOnline = Math.max(occupiedSeatsCount, realOnlineCount);
 
     const totalMeditationMinutes = this.state.users.reduce(
       (acc, u) => acc + (u.totalMeditationMinutes || 0),

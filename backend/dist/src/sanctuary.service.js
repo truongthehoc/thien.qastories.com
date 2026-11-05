@@ -847,8 +847,14 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
         const bowingCount = enabledSeats.filter((s) => s.status === 'BOWING').length;
         const occupiedSeatsCount = meditatingCount + bowingCount;
         const emptySeatsCount = Math.max(0, enabledSeats.length - occupiedSeatsCount);
-        const activeSocketCount = Math.max(1, this.onlineConnections.size);
-        const totalOnline = Math.max(occupiedSeatsCount, activeSocketCount + 2);
+        const uniqueOnlineUsers = new Set();
+        for (const conn of this.onlineConnections.values()) {
+            if (conn.userId) {
+                uniqueOnlineUsers.add(conn.userId);
+            }
+        }
+        const realOnlineCount = uniqueOnlineUsers.size;
+        const totalOnline = Math.max(occupiedSeatsCount, realOnlineCount);
         const totalMeditationMinutes = this.state.users.reduce((acc, u) => acc + (u.totalMeditationMinutes || 0), 0);
         const totalBows = this.state.users.reduce((acc, u) => acc + (u.totalBowingCount || 0), 0);
         const totalPointsAwarded = this.state.users.reduce((acc, u) => acc + (u.totalPoints || 0), 0);
