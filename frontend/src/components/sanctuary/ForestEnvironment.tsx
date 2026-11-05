@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SanctuarySeat } from '../../types/sanctuary';
 import { ZenMasterCenter } from './ZenMasterCenter';
 import { MeditationSeatNode } from './MeditationSeatNode';
-import { Sparkles, ZoomIn, ZoomOut, RotateCcw, Users } from 'lucide-react';
+import { Sparkles, Users } from 'lucide-react';
 
 interface ForestEnvironmentProps {
   seats: SanctuarySeat[];
@@ -43,9 +43,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
     return window.innerWidth < 768 || window.innerWidth < window.innerHeight;
   });
 
-  // Mobile/Tablet Camera & Pan State
-  type CameraViewMode = 'OVERVIEW' | 'MASTER' | 'LEFT' | 'RIGHT' | 'MY_SEAT';
-  const [cameraMode, setCameraMode] = useState<CameraViewMode>('OVERVIEW');
+  // Viewport Zoom & Pan State
   const [zoomLevel, setZoomLevel] = useState<number>(1.0);
   const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -75,51 +73,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
     };
   }, []);
 
-  // Preset Camera Transitions
-  const setCameraPreset = useCallback(
-    (mode: CameraViewMode) => {
-      setCameraMode(mode);
-      const stageW = Math.max(window.innerWidth, (window.innerHeight * 16) / 9);
-      const stageH = window.innerHeight;
 
-      if (mode === 'OVERVIEW') {
-        setZoomLevel(isMobile ? 0.60 : 0.95);
-        setPanOffset({ x: 0, y: isMobile ? -25 : 0 });
-      } else if (mode === 'MASTER') {
-        setZoomLevel(isMobile ? 1.25 : 1.35);
-        setPanOffset({ x: 0, y: isMobile ? 45 : 25 });
-      } else if (mode === 'LEFT') {
-        setZoomLevel(isMobile ? 1.05 : 1.20);
-        // Stage center is 50%, Left Wing is at ~28% -> diff is +22%
-        setPanOffset({ x: stageW * 0.22, y: isMobile ? -10 : 0 });
-      } else if (mode === 'RIGHT') {
-        setZoomLevel(isMobile ? 1.05 : 1.20);
-        // Stage center is 50%, Right Wing is at ~72% -> diff is -22%
-        setPanOffset({ x: -stageW * 0.22, y: isMobile ? -10 : 0 });
-      } else if (mode === 'MY_SEAT') {
-        const mySeat = seats.find((s) => s.occupant?.userId === currentUserId);
-        if (mySeat) {
-          const diffX = ((50 - mySeat.posX) / 100) * stageW;
-          const diffY = ((65 - mySeat.posY) / 100) * stageH;
-          setZoomLevel(isMobile ? 1.20 : 1.30);
-          setPanOffset({ x: diffX, y: diffY });
-        }
-      }
-    },
-    [isMobile, seats, currentUserId]
-  );
-
-  // Active zone occupant counts
-  const leftOccupants = seats.filter(
-    (s) => s.zoneName === 'Cánh Tả' && s.status !== 'EMPTY' && s.occupant
-  );
-  const centerOccupants = seats.filter(
-    (s) => s.zoneName === 'Trục Trung Tâm' && s.status !== 'EMPTY' && s.occupant
-  );
-  const rightOccupants = seats.filter(
-    (s) => s.zoneName === 'Cánh Hữu' && s.status !== 'EMPTY' && s.occupant
-  );
-  const mySeat = seats.find((s) => s.occupant?.userId === currentUserId);
 
   // Distance helper for pinch gesture
   const getDistance = (p1: { x: number; y: number }, p2: { x: number; y: number }) => {
@@ -415,145 +369,6 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
           className="absolute inset-0 pointer-events-none z-25"
         />
       )}
-
-      {/* 8. Desktop Only: Sanctuary Camera Control Bar (Trên mobile mặc định là toàn cảnh, không hiển thị khung điều hướng này) */}
-      <div className="hidden sm:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[96vw]">
-        <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/35 shadow-2xl text-xs">
-          {/* Toàn Cảnh (Bao quát cả Thiền Sư và toàn bộ hành giả) */}
-          <button
-            type="button"
-            onClick={() => setCameraPreset('OVERVIEW')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
-              cameraMode === 'OVERVIEW'
-                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
-                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
-            }`}
-            title="Góc nhìn toàn cảnh (hiển thị đầy đủ Thiền Sư và toàn thể đạo hữu)"
-          >
-            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
-            <span>Toàn cảnh</span>
-          </button>
-
-          {/* Thiền Sư An Trú */}
-          <button
-            type="button"
-            onClick={() => setCameraPreset('MASTER')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
-              cameraMode === 'MASTER'
-                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
-                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
-            }`}
-            title="Tiến gần chiêm bái Thiền Sư An Trú dưới cội Bồ đề"
-          >
-            <span>🧘</span>
-            <span>Thiền Sư</span>
-          </button>
-
-          {/* Cánh Tả */}
-          <button
-            type="button"
-            onClick={() => setCameraPreset('LEFT')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
-              cameraMode === 'LEFT'
-                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
-                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
-            }`}
-            title="Quan sát khu vực Cánh Tả"
-          >
-            <span>👈</span>
-            <span className="hidden sm:inline">Cánh </span>
-            <span>Tả</span>
-            {leftOccupants.length > 0 && (
-              <span
-                className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
-                  cameraMode === 'LEFT'
-                    ? 'bg-[#121f14] text-[#d9a75a]'
-                    : 'bg-[#d9a75a]/35 text-[#ffe3a3]'
-                }`}
-              >
-                {leftOccupants.length}
-              </span>
-            )}
-          </button>
-
-          {/* Cánh Hữu */}
-          <button
-            type="button"
-            onClick={() => setCameraPreset('RIGHT')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
-              cameraMode === 'RIGHT'
-                ? 'bg-[#d9a75a] text-[#121f14] shadow-md font-semibold'
-                : 'text-[#d8e4d5] hover:text-[#fff6dc] hover:bg-white/10'
-            }`}
-            title="Quan sát khu vực Cánh Hữu"
-          >
-            <span className="hidden sm:inline">Cánh </span>
-            <span>Hữu</span>
-            <span>👉</span>
-            {rightOccupants.length > 0 && (
-              <span
-                className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${
-                  cameraMode === 'RIGHT'
-                    ? 'bg-[#121f14] text-[#d9a75a]'
-                    : 'bg-[#d9a75a]/35 text-[#ffe3a3]'
-                }`}
-              >
-                {rightOccupants.length}
-              </span>
-            )}
-          </button>
-
-          {/* Tọa Vị Của Tôi (Nếu đang ngồi) */}
-          {mySeat && (
-            <button
-              type="button"
-              onClick={() => setCameraPreset('MY_SEAT')}
-              className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full transition-all text-[10px] sm:text-xs font-medium cursor-pointer ${
-                cameraMode === 'MY_SEAT'
-                  ? 'bg-[#2a452a] text-[#ffe7b3] border border-[#d9a75a] shadow-md font-semibold'
-                  : 'text-[#ffe7b3] bg-[#2a452a]/60 hover:bg-[#2a452a]/90'
-              }`}
-              title={`Trở về tọa cụ của tôi (#${mySeat.code})`}
-            >
-              <span>📍</span>
-              <span className="font-mono text-[9px] sm:text-[10px]">#{mySeat.code}</span>
-            </button>
-          )}
-
-          {/* Divider */}
-          <div className="h-3.5 w-[1px] bg-white/15 mx-0.5 hidden sm:block" />
-
-          {/* Manual Zoom Controls (Desktop & Quick Zoom) */}
-          <div className="hidden sm:flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setZoomLevel((z) => Math.max(0.55, z - 0.15))}
-              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
-              title="Thu nhỏ góc nhìn"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setZoomLevel((z) => Math.min(1.8, z + 0.15))}
-              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
-              title="Phóng to góc nhìn"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setCameraPreset('OVERVIEW');
-              }}
-              className="p-1 rounded-full text-[#d8e4d5] hover:text-white hover:bg-white/10 transition-colors"
-              title="Đặt lại góc nhìn mặc định"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

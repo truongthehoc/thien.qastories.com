@@ -288,11 +288,9 @@ export declare class SanctuaryController {
         chunkIndex: number;
         totalChunks: number;
         track?: undefined;
-        fileUrl?: undefined;
     } | {
-        ok: boolean;
         track: import("./sanctuary.service").AudioTrackRecord;
-        fileUrl: string;
+        ok?: undefined;
         chunkIndex?: undefined;
         totalChunks?: undefined;
     }>;

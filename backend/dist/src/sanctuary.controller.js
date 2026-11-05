@@ -300,70 +300,70 @@ let SanctuaryController = class SanctuaryController {
     }
     async uploadAudioChunk(file, body) {
         if (!file || !body.uploadId) {
-            throw new common_1.BadRequestException('Dữ liệu phân mảnh không hợp lệ.');
+            throw new common_1.BadRequestException('Dữ liệu phân mảnh không hợp lệ hoặc thiếu dữ liệu âm thanh.');
         }
-        const uploadId = (body.uploadId || '').replace(/[^a-zA-Z0-9_-]/g, '');
-        const chunkIndex = parseInt(body.chunkIndex, 10);
-        const totalChunks = parseInt(body.totalChunks, 10);
-        const root = getProjectRoot();
-        const tempDir = path.join(root, 'uploads', 'chunks', uploadId);
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir, { recursive: true });
-        }
-        const chunkPath = path.join(tempDir, `chunk_${chunkIndex}`);
-        fs.writeFileSync(chunkPath, file.buffer);
-        if (chunkIndex < totalChunks - 1) {
-            return { ok: true, chunkIndex, totalChunks };
-        }
-        const safeName = cleanVietnameseFilename(body.fileName || 'audio.mp3');
-        const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
-        if (!fs.existsSync(distAssetDir))
-            fs.mkdirSync(distAssetDir, { recursive: true });
-        const distFilePath = path.join(distAssetDir, safeName);
-        const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
-        const isDevDirPresent = fs.existsSync(path.dirname(devAssetDir));
-        if (isDevDirPresent && !fs.existsSync(devAssetDir))
-            fs.mkdirSync(devAssetDir, { recursive: true });
-        const devFilePath = path.join(devAssetDir, safeName);
-        const backendUploadDir = path.join(root, 'uploads', 'audio');
-        if (!fs.existsSync(backendUploadDir))
-            fs.mkdirSync(backendUploadDir, { recursive: true });
-        const backupFilePath = path.join(backendUploadDir, safeName);
-        const writeStream = fs.createWriteStream(backupFilePath);
-        for (let i = 0; i < totalChunks; i++) {
-            const p = path.join(tempDir, `chunk_${i}`);
-            if (fs.existsSync(p)) {
-                const chunkBuf = fs.readFileSync(p);
-                writeStream.write(chunkBuf);
-            }
-        }
-        await new Promise((resolve, reject) => {
-            writeStream.end(() => resolve());
-            writeStream.on('error', reject);
-        });
         try {
-            fs.copyFileSync(backupFilePath, distFilePath);
+            const uploadId = (body.uploadId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+            const chunkIndex = parseInt(body.chunkIndex, 10);
+            const totalChunks = parseInt(body.totalChunks, 10);
+            const root = getProjectRoot();
+            const tempDir = path.join(root, 'uploads', 'chunks');
+            if (!fs.existsSync(tempDir)) {
+                fs.mkdirSync(tempDir, { recursive: true });
+            }
+            const tempFilePath = path.join(tempDir, `${uploadId}.tmp`);
+            if (chunkIndex === 0 && fs.existsSync(tempFilePath)) {
+                try {
+                    fs.unlinkSync(tempFilePath);
+                }
+                catch (_) { }
+            }
+            fs.appendFileSync(tempFilePath, file.buffer);
+            if (chunkIndex < totalChunks - 1) {
+                return { ok: true, chunkIndex, totalChunks };
+            }
+            const safeName = cleanVietnameseFilename(body.fileName || 'audio.mp3');
+            const distAssetDir = path.join(root, 'frontend', 'dist', 'assets', 'audio');
+            if (!fs.existsSync(distAssetDir))
+                fs.mkdirSync(distAssetDir, { recursive: true });
+            const distFilePath = path.join(distAssetDir, safeName);
+            const devAssetDir = path.join(root, 'frontend', 'public', 'assets', 'audio');
+            const isDevDirPresent = fs.existsSync(path.dirname(devAssetDir));
+            if (isDevDirPresent && !fs.existsSync(devAssetDir))
+                fs.mkdirSync(devAssetDir, { recursive: true });
+            const devFilePath = path.join(devAssetDir, safeName);
+            const backendUploadDir = path.join(root, 'uploads', 'audio');
+            if (!fs.existsSync(backendUploadDir))
+                fs.mkdirSync(backendUploadDir, { recursive: true });
+            const backupFilePath = path.join(backendUploadDir, safeName);
+            fs.copyFileSync(tempFilePath, backupFilePath);
+            fs.copyFileSync(tempFilePath, distFilePath);
             if (isDevDirPresent) {
-                fs.copyFileSync(backupFilePath, devFilePath);
+                try {
+                    fs.copyFileSync(tempFilePath, devFilePath);
+                }
+                catch (_) { }
             }
+            try {
+                fs.unlinkSync(tempFilePath);
+            }
+            catch (_) { }
+            const fileUrl = `/assets/audio/${safeName}`;
+            const track = this.sanctuaryService.adminUpsertAudioTrack({
+                title: body.title || body.fileName || 'Bài nhạc Thiền',
+                description: body.description || '',
+                category: body.category || 'NHAC_THIEN',
+                fileUrl,
+                durationSeconds: Number(body.durationSeconds) || 300,
+                isAmbientBg: body.isAmbientBg === 'true',
+                isEnabled: true,
+            });
+            this.gateway.broadcastFullSync();
+            return { track };
         }
-        catch (_) { }
-        try {
-            fs.rmSync(tempDir, { recursive: true, force: true });
+        catch (err) {
+            throw new common_1.BadRequestException(`Lỗi xử lý file âm thanh: ${err.message || err}`);
         }
-        catch (_) { }
-        const fileUrl = `/assets/audio/${safeName}`;
-        const track = this.sanctuaryService.adminUpsertAudioTrack({
-            title: body.title || body.fileName || 'Bài nhạc Thiền',
-            description: body.description || '',
-            category: body.category || 'NHAC_THIEN',
-            fileUrl,
-            durationSeconds: Number(body.durationSeconds) || 300,
-            isAmbientBg: body.isAmbientBg === 'true',
-            isEnabled: true,
-        });
-        this.gateway.broadcastFullSync();
-        return { ok: true, track, fileUrl };
     }
     upsertAudioTrack(body) {
         const track = this.sanctuaryService.adminUpsertAudioTrack(body);
@@ -574,7 +574,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('admin/audio/upload/chunk'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('chunk', {
-        limits: { fileSize: 50 * 1024 * 1024 },
+        limits: { fileSize: 100 * 1024 * 1024 },
     })),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)()),

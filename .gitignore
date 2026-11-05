@@ -17,6 +17,8 @@ pnpm-debug.log*
 # Uploaded media & large binaries
 uploads/
 */uploads/
+data/
+*.zip
 
 # Editor & OS files
 .DS_Store

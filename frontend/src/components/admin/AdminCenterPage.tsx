@@ -431,7 +431,7 @@ export const AdminCenterPage: React.FC = () => {
           const chunkBlob = selectedMp3File.slice(start, end);
 
           const formData = new FormData();
-          formData.append('chunk', chunkBlob);
+          formData.append('chunk', chunkBlob, `${uploadId}_part_${i}.mp3`);
           formData.append('uploadId', uploadId);
           formData.append('chunkIndex', String(i));
           formData.append('totalChunks', String(totalChunks));
@@ -1568,17 +1568,17 @@ export const AdminCenterPage: React.FC = () => {
                             </span>
                             <span>•</span>
                             <span>{durationStr} ({track.durationSeconds}s)</span>
-                            {rawFileName && (
+                            {track.fileUrl && (
                               <>
                                 <span>•</span>
                                 <a
                                   href={track.fileUrl}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="text-[#d9a75a]/75 hover:text-[#ffd074] hover:underline truncate max-w-[150px] text-[10px] font-mono"
-                                  title={`Tải / Nghe thử: ${rawFileName}`}
+                                  className="text-[#d9a75a] hover:text-[#ffe3a3] hover:underline flex items-center gap-1 text-[10px] font-medium"
+                                  title="Mở nghe thử bài nhạc trong tab mới"
                                 >
-                                  {rawFileName}
+                                  <span>🎵 Nghe thử</span>
                                 </a>
                               </>
                             )}

@@ -566,11 +566,13 @@ const SanctuaryMainView: React.FC = () => {
         onSelectSeat={(seat) => setSelectedSeat(seat)}
       />
 
-      {/* 2. Top Minimalist Status Bar */}
-      <TopStatusBar sanctuaryName={settings.sanctuaryName} stats={stats} />
+      {/* 2. Top Minimalist Status Bar with Desktop Inline Announcement */}
+      <TopStatusBar sanctuaryName={settings.sanctuaryName} stats={stats} announcements={announcements} />
 
-      {/* Floating Zen Announcement Banner (Realtime, Marquee & Intervals) */}
-      <ZenAnnouncementBanner announcements={announcements} />
+      {/* Floating Zen Announcement Banner for Mobile (Below top bar) */}
+      <div className="block md:hidden">
+        <ZenAnnouncementBanner announcements={announcements} />
+      </div>
 
       {/* 3. Active Meditation / Bowing Subtle HUD */}
       <AnimatePresence>
