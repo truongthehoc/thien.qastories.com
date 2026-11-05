@@ -264,6 +264,14 @@ export declare class SanctuaryController {
         success: boolean;
         message: string;
     }>;
+    purgeTestDataDelete(): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    purgeTestDataAlias(): Promise<{
+        success: boolean;
+        message: string;
+    }>;
     uploadAudioFile(file: Express.Multer.File, body: {
         title?: string;
         description?: string;

@@ -361,6 +361,16 @@ export class SanctuaryController {
     return result;
   }
 
+  @Delete('admin/system/purge-test-data')
+  async purgeTestDataDelete() {
+    return this.purgeTestData();
+  }
+
+  @Post('admin/purge-test-data')
+  async purgeTestDataAlias() {
+    return this.purgeTestData();
+  }
+
   @Post('admin/audio/upload')
   @UseInterceptors(
     FileInterceptor('file', {

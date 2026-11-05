@@ -260,6 +260,12 @@ let SanctuaryController = class SanctuaryController {
         this.gateway.broadcastFullSync();
         return result;
     }
+    async purgeTestDataDelete() {
+        return this.purgeTestData();
+    }
+    async purgeTestDataAlias() {
+        return this.purgeTestData();
+    }
     uploadAudioFile(file, body) {
         let fileUrl = '';
         if (file) {
@@ -560,6 +566,18 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SanctuaryController.prototype, "purgeTestData", null);
+__decorate([
+    (0, common_1.Delete)('admin/system/purge-test-data'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SanctuaryController.prototype, "purgeTestDataDelete", null);
+__decorate([
+    (0, common_1.Post)('admin/purge-test-data'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SanctuaryController.prototype, "purgeTestDataAlias", null);
 __decorate([
     (0, common_1.Post)('admin/audio/upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
