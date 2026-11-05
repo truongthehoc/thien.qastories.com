@@ -110,7 +110,7 @@ export const ZenAnnouncementBanner: React.FC<ZenAnnouncementBannerProps> = ({
   const BadgeIcon = badge.icon;
 
   return (
-    <div className="fixed top-16 sm:top-14 inset-x-0 z-30 flex justify-center pointer-events-none px-3 sm:px-4">
+    <div className="fixed top-20 sm:top-18 inset-x-0 z-30 flex justify-center pointer-events-none px-3 sm:px-4">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentAnnouncement.id}

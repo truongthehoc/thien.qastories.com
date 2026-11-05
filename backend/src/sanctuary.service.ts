@@ -1018,7 +1018,7 @@ export class SanctuaryService implements OnModuleInit {
       let nextSessionId = uuidv4();
       let nextTargetMinutes = 15;
 
-      if (seat && seat.occupant?.userId === user.id) {
+      if (seat) {
         const now = Date.now();
         const nowIso = new Date(now).toISOString();
 
@@ -1027,9 +1027,10 @@ export class SanctuaryService implements OnModuleInit {
           nextTargetMinutes = 15;
           seat.status = 'MEDITATING';
           seat.occupant = {
-            ...seat.occupant,
+            userId: user.id,
+            displayName: user.displayName,
+            avatarStyle: user.avatarStyle,
             activityType: 'MEDITATING',
-            bowingPose: undefined,
             targetMinutes: nextTargetMinutes,
             startedAt: nowIso,
             expectedEndAt: new Date(now + nextTargetMinutes * 60 * 1000).toISOString(),
@@ -1046,12 +1047,14 @@ export class SanctuaryService implements OnModuleInit {
             pointsAwarded: 0,
           });
         } else {
-          // 2. Hết giờ thiền -> Vẫn tiếp tục thiền và nâng mốc thời gian tiếp theo
-          const prevTarget = seat.occupant.targetMinutes || 10;
-          nextTargetMinutes = prevTarget + 10; // Tăng thêm 10 phút thiền tiếp
+          // 2. Hết giờ thiền -> Vẫn tiếp tục ngồi thiền vững chãi tại vị trí đó và nâng mốc thời gian thiền tiếp theo
+          const prevTarget = seat.occupant?.targetMinutes || 10;
+          nextTargetMinutes = prevTarget + 10; // Tự động tăng thêm 10 phút thiền tiếp
           seat.status = 'MEDITATING';
           seat.occupant = {
-            ...seat.occupant,
+            userId: user.id,
+            displayName: user.displayName,
+            avatarStyle: user.avatarStyle,
             activityType: 'MEDITATING',
             targetMinutes: nextTargetMinutes,
             startedAt: nowIso,
@@ -1147,9 +1150,13 @@ export class SanctuaryService implements OnModuleInit {
 
     const updatedSeats: SeatRecord[] = [];
     for (const seat of this.state.seats) {
+      // BẢO VỆ TỌA CỤ: Đạo hữu đang thiền định (MEDITATING) hoặc đảnh lễ (BOWING) không bao giờ bị tự động xóa ghế
+      // Dù điện thoại tắt màn hình, khóa phím hoặc ngắt socket tạm thời, nhân vật vẫn an tọa vững vàng
       if (
         seat.occupant &&
         !seat.occupant.userId.startsWith('fellow-') &&
+        seat.status !== 'MEDITATING' &&
+        seat.status !== 'BOWING' &&
         expiredUserIds.has(seat.occupant.userId)
       ) {
         seat.status = 'EMPTY';

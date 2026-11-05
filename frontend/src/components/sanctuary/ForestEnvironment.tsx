@@ -46,11 +46,8 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
   // Mobile/Tablet Camera & Pan State
   type CameraViewMode = 'OVERVIEW' | 'MASTER' | 'LEFT' | 'RIGHT' | 'MY_SEAT';
   const [cameraMode, setCameraMode] = useState<CameraViewMode>('OVERVIEW');
-  const [zoomLevel, setZoomLevel] = useState<number>(() => (isMobile ? 0.60 : 1.0));
-  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>(() => ({
-    x: 0,
-    y: isMobile ? -25 : 0,
-  }));
+  const [zoomLevel, setZoomLevel] = useState<number>(1.0);
+  const [panOffset, setPanOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
   // Multi-touch & Drag Tracking Refs
@@ -301,7 +298,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
       onPointerLeave={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      {/* Interactive Sanctuary Stage Container (Giữ nguyên tỉ lệ 16:9 tự nhiên, điều hướng mượt mà, tối ưu Mobile) */}
+      {/* Interactive Sanctuary Stage Container (Full màn hình, phủ trọn vẹn 100% không gian tự nhiên) */}
       <div
         className={`absolute top-0 h-full ${
           isDragging ? 'transition-none' : 'transition-transform duration-500 ease-out'
@@ -310,7 +307,7 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
           width: 'max(100vw, calc(100vh * 16 / 9))',
           left: '50%',
           transform: `translateX(-50%) translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(${zoomLevel})`,
-          transformOrigin: isMobile ? '50% 62%' : '50% 50%',
+          transformOrigin: '50% 50%',
         }}
       >
         {/* 1. Base High-Resolution 2.5D Ancient Forest Sanctuary Painting (Khoảng đất bằng phẳng thanh tịnh) */}
@@ -419,35 +416,8 @@ export const ForestEnvironment: React.FC<ForestEnvironmentProps> = ({
         />
       )}
 
-      {/* 8. Mobile Edge Indicators: Báo hiệu khi có người chơi ở Cánh Tả hoặc Cánh Hữu */}
-      {isMobile && leftOccupants.length > 0 && cameraMode !== 'LEFT' && (
-        <button
-          type="button"
-          onClick={() => setCameraPreset('LEFT')}
-          className="fixed left-2 top-[44%] -translate-y-1/2 z-30 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/50 text-[#ffe3a3] text-[10px] shadow-2xl transition-all cursor-pointer pointer-events-auto"
-          title="Nhấn để xem các đạo hữu đang ngồi bên Cánh Tả"
-        >
-          <span className="text-[#d9a75a] font-bold">‹</span>
-          <Users className="w-3 h-3 text-[#d9a75a]" />
-          <span>{leftOccupants.length} Cánh Tả</span>
-        </button>
-      )}
-
-      {isMobile && rightOccupants.length > 0 && cameraMode !== 'RIGHT' && (
-        <button
-          type="button"
-          onClick={() => setCameraPreset('RIGHT')}
-          className="fixed right-2 top-[44%] -translate-y-1/2 z-30 flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/50 text-[#ffe3a3] text-[10px] shadow-2xl transition-all cursor-pointer pointer-events-auto"
-          title="Nhấn để xem các đạo hữu đang ngồi bên Cánh Hữu"
-        >
-          <Users className="w-3 h-3 text-[#d9a75a]" />
-          <span>{rightOccupants.length} Cánh Hữu</span>
-          <span className="text-[#d9a75a] font-bold">›</span>
-        </button>
-      )}
-
-      {/* 9. Floating Sanctuary Camera Control Bar (Đài Quan Sát Góc Nhìn Thiền Sư & Người Chơi) */}
-      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[96vw]">
+      {/* 8. Desktop Only: Sanctuary Camera Control Bar (Trên mobile mặc định là toàn cảnh, không hiển thị khung điều hướng này) */}
+      <div className="hidden sm:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto select-none max-w-[96vw]">
         <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md border border-[#d9a75a]/35 shadow-2xl text-xs">
           {/* Toàn Cảnh (Bao quát cả Thiền Sư và toàn bộ hành giả) */}
           <button

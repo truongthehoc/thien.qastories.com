@@ -470,9 +470,40 @@ const SanctuaryMainView: React.FC = () => {
         clearInterval(interval);
         soundEngine.playMindfulnessBell(0.6);
 
+        const prevMinutes = activeActivity.targetMinutes || 10;
+        const newTargetMinutes = prevMinutes + 10; // Tăng thêm 10 phút thiền tiếp
+        const additionalSec = 10 * 60;
+
+        // Cập nhật ngay ghế thiền trên frontend để nhân vật luôn an tọa vững chãi, không bị mất
+        const currentSeat = seats.find((s) => s.id === activeActivity.seatId);
+        if (currentSeat) {
+          updateSingleSeat({
+            ...currentSeat,
+            status: 'MEDITATING',
+            occupant: {
+              userId: user.id,
+              displayName: user.displayName,
+              avatarStyle: user.avatarStyle,
+              activityType: 'MEDITATING',
+              targetMinutes: newTargetMinutes,
+              startedAt: currentSeat.occupant?.startedAt || new Date().toISOString(),
+              sessionId: `med_${Date.now()}`,
+            },
+          });
+        }
+
+        // Tiếp tục duy trì phiên thiền với mốc thời gian nâng cao
+        setActiveActivity({
+          ...activeActivity,
+          sessionId: `med_${Date.now()}`,
+          targetMinutes: newTargetMinutes,
+          remainingSeconds: additionalSec,
+        });
+
         apiRequest<{
           user: UserProfile;
           pointsAwarded: number;
+          seat?: SanctuarySeat;
           nextActivity?: {
             sessionId: string;
             seatId: number;
@@ -492,28 +523,17 @@ const SanctuaryMainView: React.FC = () => {
         )
           .then((res) => {
             setUser(res.user);
-            const prevMinutes = activeActivity.targetMinutes || 10;
-            const newTargetMinutes = res.nextActivity?.targetMinutes || (prevMinutes + 10);
-            const additionalSec = (newTargetMinutes - prevMinutes) * 60;
-
+            if (res.seat) {
+              updateSingleSeat(res.seat);
+            }
             showNotification(
-              `Hoàn mãn ${prevMinutes} phút thiền định (+${res.pointsAwarded} điểm). Tiếp tục an trú thiền định (Mốc tiếp theo: ${newTargetMinutes} phút).`,
+              `Hoàn mãn ${prevMinutes} phút thiền định (+${res.pointsAwarded} điểm an trú). Đạo hữu tiếp tục an trú thiền định (Mốc tiếp theo: ${newTargetMinutes} phút).`,
               'points'
             );
-
-            // Tiếp tục an tọa thiền định và cộng dồn thời gian mà không bị đẩy ra ngoài
-            setActiveActivity({
-              ...activeActivity,
-              sessionId: res.nextActivity?.sessionId || `med_${Date.now()}`,
-              startedAtMs: Date.now(),
-              targetMinutes: newTargetMinutes,
-              remainingSeconds: additionalSec,
-            });
-
             refreshUserProfile(user.id);
           })
           .catch((err) => {
-            showNotification((err as Error).message, 'warning');
+            console.warn('Lỗi ghi nhận hoàn tất thiền, phiên vẫn duy trì an tọa tiếp tục:', err);
           });
       }
     }, 1000);
@@ -617,7 +637,7 @@ const SanctuaryMainView: React.FC = () => {
 
       {/* Floating Quick Meditation Button (Tự động sắp xếp ngẫu nhiên) */}
       {user && !activeActivity && (
-        <div className="fixed bottom-20 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto whitespace-nowrap">
+        <div className="fixed bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto whitespace-nowrap">
           <motion.button
             type="button"
             whileHover={{ scale: 1.05 }}

@@ -17,14 +17,16 @@ export const MeditationSeatNode: React.FC<MeditationSeatNodeProps> = ({
   isSelected = false,
   onSelectSeat,
 }) => {
-  if (!seat.isEnabled) return null;
-
+  // Ẩn hoàn toàn đốm sáng vị trí trống khỏi background theo yêu cầu:
+  // Chỉ hiển thị nhân vật đạo hữu tại các vị trí thực sự có người đang ngồi (isOccupied)
   const isOccupied = seat.status !== 'EMPTY' && seat.occupant !== null;
-  const isCurrentUser = isOccupied && seat.occupant?.userId === currentUserId;
+  if (!seat.isEnabled || !isOccupied || !seat.occupant) return null;
+
+  const isCurrentUser = seat.occupant.userId === currentUserId;
 
   // Determine avatar pose
   let avatarPose: 'STANDING' | 'KNEELING' | 'BOWING' | 'MEDITATING' = 'MEDITATING';
-  if (seat.status === 'BOWING' && seat.occupant) {
+  if (seat.status === 'BOWING') {
     avatarPose = seat.occupant.bowingPose || 'BOWING';
   }
 
@@ -67,90 +69,45 @@ export const MeditationSeatNode: React.FC<MeditationSeatNodeProps> = ({
     >
       <motion.button
         type="button"
-        onClick={() => onSelectSeat(seat)}
-        whileHover={{ scale: 1.12 }}
-        whileTap={{ scale: 0.96 }}
-        aria-label={`Vị trí thiền ${seat.code} - ${
-          isOccupied
-            ? `${seat.occupant?.displayName} đang ${
-                seat.status === 'MEDITATING' ? 'ngồi thiền' : 'đảnh lễ'
-              }`
-            : 'Còn trống'
+        onClick={() => {
+          // Chỉ người sở hữu tọa cụ mới có thể mở menu điều khiển (xem thông tin / xả thiền)
+          // Không cho phép người dùng bấm đổi chỗ lung tung
+          if (isCurrentUser) {
+            onSelectSeat(seat);
+          }
+        }}
+        whileHover={isCurrentUser ? { scale: 1.08 } : undefined}
+        whileTap={isCurrentUser ? { scale: 0.96 } : undefined}
+        aria-label={`Vị trí thiền #${seat.code} - ${seat.occupant.displayName}`}
+        className={`relative flex flex-col items-center justify-end focus:outline-none ${
+          isCurrentUser ? 'cursor-pointer' : 'cursor-default pointer-events-none'
         }`}
-        className="relative flex flex-col items-center justify-end focus:outline-none cursor-pointer"
       >
-        {/* Name Label above character when occupied */}
-        {isOccupied && seat.occupant && (
-          <div
-            className={`mb-0.5 px-2.5 py-[1.5px] rounded-full text-[10px] md:text-[11px] font-medium whitespace-nowrap shadow-lg backdrop-blur-sm transition-all ${
-              isCurrentUser
-                ? 'bg-[#2a3f28]/95 text-[#ffe7b3] border border-[#d9a75a]/85 ring-1 ring-[#d9a75a]/40 scale-105'
-                : 'bg-[#101c12]/90 text-[#f0f4ef] border border-[#8ea885]/45'
-            }`}
-          >
-            <span>{seat.occupant.displayName}</span>
-            {seat.status === 'BOWING' && (
-              <span className="ml-1 text-[8px] text-[#d9a75a]">• Lễ</span>
-            )}
-          </div>
-        )}
+        {/* Name Label above character */}
+        <div
+          className={`mb-0.5 px-2.5 py-[1.5px] rounded-full text-[10px] md:text-[11px] font-medium whitespace-nowrap shadow-lg backdrop-blur-sm transition-all ${
+            isCurrentUser
+              ? 'bg-[#2a3f28]/95 text-[#ffe7b3] border border-[#d9a75a]/85 ring-1 ring-[#d9a75a]/40 scale-105'
+              : 'bg-[#101c12]/90 text-[#f0f4ef] border border-[#8ea885]/45'
+          }`}
+        >
+          <span>{seat.occupant.displayName}</span>
+          {seat.status === 'BOWING' && (
+            <span className="ml-1 text-[8px] text-[#d9a75a]">• Lễ</span>
+          )}
+        </div>
 
-        {/* Practitioner Avatar if occupied */}
-        {isOccupied && seat.occupant && (
-          <div className="-mb-2 z-10">
-            <PractitionerAvatar
-              pose={avatarPose}
-              avatarStyle={seat.occupant.avatarStyle}
-              isCurrentUser={isCurrentUser}
-              facingDirection={facingDirection}
-              customImageUrl={customImageUrl}
-              isFlipped={isFlipped}
-            />
-          </div>
-        )}
-
-        {/* 
-          VỊ TRÍ NGỒI:
-          Theo yêu cầu: Chỉ cần flare ánh sáng để đánh dấu, không cần biểu tượng bồ đoàn dày đặc.
-        */}
-        {!isOccupied && (
-          <div className="relative flex items-center justify-center py-1">
-            {/* Vùng hào quang sáng dịu trên mặt cỏ tự nhiên */}
-            <motion.div
-              className="w-7 h-3 rounded-full pointer-events-none"
-              style={{
-                background: isSelected
-                  ? 'radial-gradient(ellipse at center, rgba(255, 248, 220, 0.95) 0%, rgba(217, 167, 90, 0.65) 40%, transparent 75%)'
-                  : 'radial-gradient(ellipse at center, rgba(255, 246, 215, 0.8) 0%, rgba(217, 167, 90, 0.4) 40%, rgba(217, 167, 90, 0.08) 65%, transparent 75%)',
-                filter: 'blur(2px)',
-              }}
-              animate={{
-                scale: [0.92, 1.15, 0.92],
-                opacity: [0.65, 0.95, 0.65],
-              }}
-              transition={{
-                duration: 3.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-
-            {/* Điểm tâm sáng flare ánh sáng lung linh */}
-            <div className="absolute w-2 h-1 rounded-full bg-[#fffce8] shadow-[0_0_8px_#ffe49e] group-hover:scale-150 transition-transform duration-300" />
-
-            {/* Số hiệu tọa cụ chỉ hiện khi đưa chuột vào */}
-            <div className="absolute -bottom-3.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none px-1.5 py-[0.5px] rounded bg-[#101c12]/90 border border-[#d9a75a]/50 text-[8px] text-[#ffeec9] font-mono shadow-md whitespace-nowrap">
-              #{seat.code}
-            </div>
-          </div>
-        )}
-
-        {/* Hover Tooltip for Empty Seat */}
-        {!isOccupied && (
-          <div className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-7 px-2 py-0.5 rounded bg-[#101c12]/92 border border-[#d9a75a]/40 text-[10px] text-[#f5ebd6] whitespace-nowrap shadow-lg z-30">
-            Tọa cụ #{seat.code} • {seat.zoneName}
-          </div>
-        )}
+        {/* Practitioner Avatar */}
+        <div className="-mb-2 z-10">
+          <PractitionerAvatar
+            pose={avatarPose}
+            avatarStyle={seat.occupant.avatarStyle}
+            isCurrentUser={isCurrentUser}
+            facingDirection={facingDirection}
+            customImageUrl={customImageUrl}
+            isFlipped={isFlipped}
+          />
+        </div>
       </motion.button>
     </div>
   );

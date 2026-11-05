@@ -286,9 +286,9 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
         </button>
       </div>
 
-      {/* 2. GÓC DƯỚI BÊN TRÁI: Thanh điều chỉnh âm lượng */}
-      <div className="fixed bottom-3 left-3 z-30 pointer-events-auto select-none opacity-80 sm:opacity-45 sm:hover:opacity-100 transition-all duration-300">
-        <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/15 shadow-lg text-[#fff6dc]">
+      {/* 2. GÓC BÊN PHẢI: Thanh điều chỉnh âm lượng dạng dọc siêu gọn (Tiết kiệm diện tích) */}
+      <div className="fixed right-3 top-1/2 -translate-y-1/2 z-30 pointer-events-auto select-none opacity-80 sm:opacity-50 sm:hover:opacity-100 transition-all duration-300">
+        <div className="flex flex-col items-center gap-1.5 p-2 rounded-2xl bg-black/55 hover:bg-black/85 backdrop-blur-md border border-white/15 shadow-2xl text-[#fff6dc]">
           {/* Mute/Unmute Icon Button */}
           <button
             type="button"
@@ -304,21 +304,30 @@ export const AudioPlayerBar: React.FC<AudioPlayerBarProps> = ({
             )}
           </button>
 
-          {/* Volume Slider */}
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={isMuted ? 0 : volume}
-            onChange={(e) => {
-              setIsMuted(false);
-              setVolume(parseFloat(e.target.value));
-            }}
-            aria-label="Âm lượng"
-            title={`Âm lượng: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
-            className="w-12 sm:w-20 h-1 accent-[#d9a75a] bg-white/25 rounded-full cursor-pointer hover:bg-white/40 transition-all"
-          />
+          {/* Dạng dọc: vertical slider */}
+          <div className="relative flex items-center justify-center h-20 w-4 py-1">
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.05}
+              value={isMuted ? 0 : volume}
+              onChange={(e) => {
+                setIsMuted(false);
+                setVolume(parseFloat(e.target.value));
+              }}
+              aria-label="Âm lượng"
+              title={`Âm lượng: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
+              className="h-16 w-1 accent-[#d9a75a] bg-white/25 rounded-full cursor-pointer hover:bg-white/40 transition-all [writing-mode:vertical-lr] [direction:rtl]"
+              style={{
+                WebkitAppearance: 'slider-vertical',
+              }}
+            />
+          </div>
+
+          <span className="font-mono text-[9px] text-[#ffe3a3]/80">
+            {isMuted ? '0%' : `${Math.round(volume * 100)}%`}
+          </span>
         </div>
       </div>
 

@@ -713,16 +713,17 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
             const seat = this.state.seats.find((s) => s.id === params.seatId);
             let nextSessionId = (0, uuid_1.v4)();
             let nextTargetMinutes = 15;
-            if (seat && seat.occupant?.userId === user.id) {
+            if (seat) {
                 const now = Date.now();
                 const nowIso = new Date(now).toISOString();
                 if (params.activityType === 'BOWING') {
                     nextTargetMinutes = 15;
                     seat.status = 'MEDITATING';
                     seat.occupant = {
-                        ...seat.occupant,
+                        userId: user.id,
+                        displayName: user.displayName,
+                        avatarStyle: user.avatarStyle,
                         activityType: 'MEDITATING',
-                        bowingPose: undefined,
                         targetMinutes: nextTargetMinutes,
                         startedAt: nowIso,
                         expectedEndAt: new Date(now + nextTargetMinutes * 60 * 1000).toISOString(),
@@ -739,11 +740,13 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
                     });
                 }
                 else {
-                    const prevTarget = seat.occupant.targetMinutes || 10;
+                    const prevTarget = seat.occupant?.targetMinutes || 10;
                     nextTargetMinutes = prevTarget + 10;
                     seat.status = 'MEDITATING';
                     seat.occupant = {
-                        ...seat.occupant,
+                        userId: user.id,
+                        displayName: user.displayName,
+                        avatarStyle: user.avatarStyle,
                         activityType: 'MEDITATING',
                         targetMinutes: nextTargetMinutes,
                         startedAt: nowIso,
@@ -825,6 +828,8 @@ let SanctuaryService = SanctuaryService_1 = class SanctuaryService {
         for (const seat of this.state.seats) {
             if (seat.occupant &&
                 !seat.occupant.userId.startsWith('fellow-') &&
+                seat.status !== 'MEDITATING' &&
+                seat.status !== 'BOWING' &&
                 expiredUserIds.has(seat.occupant.userId)) {
                 seat.status = 'EMPTY';
                 seat.occupant = null;

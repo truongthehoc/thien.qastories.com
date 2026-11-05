@@ -12,17 +12,17 @@ export const TopStatusBar: React.FC<TopStatusBarProps> = ({
   stats,
 }) => {
   return (
-    <header className="fixed top-0 inset-x-0 z-30 flex items-center justify-between px-3 sm:px-6 py-3 pointer-events-none">
-      {/* Top Left: Logo & Sanctuary Name */}
-      <div className="pointer-events-auto flex items-center gap-2.5 px-3.5 py-2 rounded-2xl sanctuary-glass shadow-lg">
-        <div className="w-8 h-8 rounded-xl bg-[#d9a75a]/20 border border-[#d9a75a]/45 flex items-center justify-center">
-          <Leaf className="w-4 h-4 text-[#d9a75a]" />
+    <header className="fixed top-0 inset-x-0 z-30 flex items-center justify-between px-2.5 sm:px-6 py-2 sm:py-3 pointer-events-none">
+      {/* Top Left: Logo & Sanctuary Name (Thu gọn tối đa trên mobile để tiết kiệm diện tích) */}
+      <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl sanctuary-glass shadow-lg">
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#d9a75a]/20 border border-[#d9a75a]/45 flex items-center justify-center shrink-0">
+          <Leaf className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#d9a75a]" />
         </div>
         <div>
-          <h1 className="font-serif text-sm sm:text-base font-semibold tracking-wide text-[#fff6dc] leading-tight">
+          <h1 className="font-serif text-xs sm:text-base font-semibold tracking-wide text-[#fff6dc] leading-tight">
             {sanctuaryName || 'THIỀN VIÊN'}
           </h1>
-          <p className="text-[10px] text-[#b4c4b0] hidden sm:block">
+          <p className="text-[9px] text-[#b4c4b0] hidden md:block">
             Không gian an trú • Rừng thiền đại thụ
           </p>
         </div>

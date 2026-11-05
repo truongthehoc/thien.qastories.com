@@ -64,7 +64,7 @@ export const SeatActionModal: React.FC<SeatActionModalProps> = ({
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
           <div className="w-11 h-11 rounded-2xl bg-[#d9a75a]/20 border border-[#d9a75a]/45 flex flex-col items-center justify-center">
-            {isOccupied && !forceRandomMode ? (
+            {isCurrentUser ? (
               <>
                 <span className="text-[9px] uppercase text-[#c7d3c3]">Tọa cụ</span>
                 <span className="font-serif font-bold text-sm text-[#ffe3a3]">#{seat.code}</span>
@@ -75,66 +75,34 @@ export const SeatActionModal: React.FC<SeatActionModalProps> = ({
           </div>
           <div>
             <h2 className="font-serif text-lg font-semibold text-[#fff6dc]">
-              {isOccupied && !forceRandomMode
-                ? `Vị trí Tọa cụ số ${seat.code}`
-                : 'An Tọa Thiền Định'}
+              {isCurrentUser ? `Tọa Cụ #${seat.code} (${seat.zoneName})` : 'An Tọa Thiền Định'}
             </h2>
             <p className="text-xs text-[#b5c4b1]">
-              {isOccupied && !forceRandomMode
-                ? `Khu vực: ${seat.zoneName}`
-                : 'Hệ thống tự động sắp xếp vị trí còn trống ngẫu nhiên'}
+              {isCurrentUser
+                ? 'Bạn đang an trú tại vị trí này'
+                : 'Hệ thống tự động sắp xếp vị trí thanh tịnh ngẫu nhiên'}
             </p>
           </div>
         </div>
 
-        {/* Case 1: Occupied by another practitioner */}
-        {isOccupied && !isCurrentUser && !forceRandomMode && seat.occupant && (
-          <div className="p-4 rounded-2xl bg-[#101d12]/80 border border-[#8ea885]/25 space-y-3.5 text-sm">
-            <div className="flex items-center gap-2 text-[#ffe3a3] font-medium">
-              <UserCheck className="w-4 h-4 text-[#d9a75a]" />
-              <span>Đạo hữu {seat.occupant.displayName} đang an trú tại đây</span>
-            </div>
-            <p className="text-xs text-[#c2d0bf] leading-relaxed">
-              Trạng thái hiện tại:{' '}
-              <strong className="text-[#fff6dc]">
-                {seat.status === 'MEDITATING'
-                  ? `Đang ngồi thiền (${seat.occupant.targetMinutes || 10} phút)`
-                  : 'Đang thực hiện nghi thức đảnh lễ Thiền sư'}
-              </strong>
-              .
-            </p>
-            <p className="text-[11px] text-[#94a691] italic">
-              Vị trí này đã có người ngồi. Bạn có thể vào tọa thiền để hệ thống tự động chọn một chỗ trống thanh tịnh cho bạn.
-            </p>
-            <button
-              type="button"
-              onClick={() => setForceRandomMode(true)}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#b8863b] via-[#d9a75a] to-[#b8863b] text-[#111d13] font-semibold text-xs tracking-wide shadow flex items-center justify-center gap-1.5 hover:brightness-110 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Vào Tọa Thiền (An vị ngẫu nhiên)</span>
-            </button>
-          </div>
-        )}
-
-        {/* Case 2: Occupied by Current User */}
-        {isCurrentUser && !forceRandomMode && (
+        {/* Case 1: Đạo hữu đang an tọa tại vị trí này */}
+        {isCurrentUser && (
           <div className="space-y-4">
-            <div className="p-4 rounded-2xl bg-[#d9a75a]/15 border border-[#d9a75a]/40 text-xs text-[#f5ebd6]">
-              Bạn đang an trú tại tọa cụ số <strong>{seat.code}</strong> ({seat.zoneName}). Bạn có thể tiếp tục hoàn thành thời khóa hoặc xả thiền để nhường vị trí cho đạo hữu khác.
+            <div className="p-4 rounded-2xl bg-[#d9a75a]/15 border border-[#d9a75a]/40 text-xs text-[#f5ebd6] leading-relaxed">
+              Bạn đang an trú tại tọa cụ số <strong>#{seat.code}</strong> ({seat.zoneName}). Vị trí thiền được cố định ngẫu nhiên trong suốt thời khóa thiền định.
             </div>
             <button
               type="button"
               onClick={onLeaveSeat}
-              className="w-full py-2.5 rounded-xl bg-red-950/60 hover:bg-red-900/70 border border-red-400/30 text-red-200 text-xs font-medium transition-colors"
+              className="w-full py-2.5 rounded-xl bg-red-950/60 hover:bg-red-900/70 border border-red-400/30 text-red-200 text-xs font-medium transition-colors cursor-pointer"
             >
               Xả thiền & Rời khỏi vị trí
             </button>
           </div>
         )}
 
-        {/* Case 3: Empty Seat OR Auto-allocate random seat mode */}
-        {(!isOccupied || forceRandomMode) && (
+        {/* Case 2: Vào an tọa ngẫu nhiên */}
+        {!isCurrentUser && (
           <div className="space-y-5">
             {/* Tự động sắp xếp ghi chú */}
             <div className="px-3 py-2 rounded-xl bg-[#d9a75a]/10 border border-[#d9a75a]/25 text-[11px] text-[#ebd4a5] flex items-center gap-2">
